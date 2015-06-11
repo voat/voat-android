@@ -5,37 +5,81 @@ package co.voat.android.data;
  * Created by John on 6/11/2015.
  */
 public class Post {
-    int score;
-    String author;
+    int id;
+    int commentCount;
+    //TODO fix date
+    String date;
+    int upVotes;
+    int downVotes;
+    //TODO fix date
+    String lastEditDate;
+    int views;
+    String userName;
+    String subverse;
+    String thumbnail;
     String title;
-    String imageUrl;
-    String link;
+    int type;
+    String url;
+    String content;
+    String formattedContent;
 
-    public Post(int score, String author, String title, String imageUrl, String link) {
-        this.score = score;
-        this.author = author;
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.link = link;
+    public int getId() {
+        return id;
     }
 
-    public int getScore() {
-        return score;
+    public int getCommentCount() {
+        return commentCount;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getDate() {
+        return date;
+    }
+
+    public int getUpVotes() {
+        return upVotes;
+    }
+
+    public int getDownVotes() {
+        return downVotes;
+    }
+
+    public String getLastEditDate() {
+        return lastEditDate;
+    }
+
+    public int getViews() {
+        return views;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getSubverse() {
+        return subverse;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public int getType() {
+        return type;
     }
 
-    public String getLink() {
-        return link;
+    public String getUrl() {
+        return url;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public String getFormattedContent() {
+        return formattedContent;
     }
 }

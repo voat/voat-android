@@ -15,12 +15,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import co.voat.android.api.SubverseResponse;
+import co.voat.android.api.VoatClient;
 import co.voat.android.data.Post;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import timber.log.Timber;
 
 
 public class MainActivity extends BaseActivity {
@@ -38,17 +43,23 @@ public class MainActivity extends BaseActivity {
         ButterKnife.inject(this);
         setSupportActionBar(toolbar);
         list.setLayoutManager(new LinearLayoutManager(this));
-        list.setAdapter(new PostAdapter(loadPosts()));
+
+        VoatClient.instance().getSubverse("all", new Callback<SubverseResponse>() {
+            @Override
+            public void success(SubverseResponse subverseResponse, Response response) {
+                if (subverseResponse.success) {
+                    list.setAdapter(new PostAdapter(subverseResponse.data));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Timber.e(error.toString());
+            }
+        });
     }
 
-    private List<Post> loadPosts() {
-        ArrayList<Post> posts = new ArrayList<>();
-        for (int i=0; i<20;i++) {
-            posts.add(new Post(i, "Me", "Check it out", "https://camo.githubusercontent.com/0b8ab92abe8962753f1cd0adf291ffb53ba29d59/687474703a2f2f766f61742e636f2f47726170686963732f766f61742d676f61742e706e67",
-                    "https://camo.githubusercontent.com/0b8ab92abe8962753f1cd0adf291ffb53ba29d59/687474703a2f2f766f61742e636f2f47726170686963732f766f61742d676f61742e706e67"));
-        }
-        return posts;
-    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -111,11 +122,11 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
             Post post = getValueAt(position);
-            holder.scoreText.setText(post.getScore() + "");
+            holder.scoreText.setText(post.getUpVotes() + "");
             holder.titleText.setText(post.getTitle());
-            holder.authorText.setText(post.getAuthor());
+            holder.authorText.setText(post.getUserName());
             Glide.with(holder.image.getContext())
-                    .load(post.getImageUrl())
+                    .load(post.getThumbnail())
                     .into(holder.image);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
