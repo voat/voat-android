@@ -1,10 +1,16 @@
 package co.voat.android.data;
 
+import java.io.Serializable;
+
 /**
  * Submission, ya know?
  * Created by John on 6/11/2015.
  */
-public class Submission {
+//TODO parcelable instead
+public class Submission implements Serializable{
+
+    public Submission() {}
+
     int id;
     int commentCount;
     //TODO fix date

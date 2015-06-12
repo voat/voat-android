@@ -47,7 +47,7 @@ public class VoatClient {
         @GET("/v/{subverse}/{submissionID}/comments")
         void getComments(
                 @Path("subverse") String subverse,
-                @Path("submissionID") String submissionID,
+                @Path("submissionID") int submissionID,
                 Callback<CommentsResponse> responseCallback
         );
 
