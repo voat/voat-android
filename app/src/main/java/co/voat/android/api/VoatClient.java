@@ -8,7 +8,9 @@ import co.voat.android.data.Submission;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.POST;
 import retrofit.http.Path;
 
 /**
@@ -18,75 +20,75 @@ import retrofit.http.Path;
 public class VoatClient {
     //Replace with your API_KEY
     private static final String API_KEY_VALUE = "myUt2YVP/i8OKVovtTlOAQ==";
-    private static final String API_URL = "http://vout.co/api/v1/";
-    private static final String FAKE_API_URL = "http://fakevout.azurewebsites.net/api/v1/";
+    private static final String API_URL = "http://vout.co/api/";
+    private static final String FAKE_API_URL = "http://fakevout.azurewebsites.net/api/";
     private static final String PARAM_API_KEY = "Voat-ApiKey";
 
     private static Voat mVoat;
 
     public interface Voat {
-        @GET("/v/{subverse}")
+        @GET("/v1/v/{subverse}")
         void getSubmissions(
                 @Path("subverse") String subverse,
                 Callback<SubmissionsResponse> responseCallback
         );
 
-        @GET("/v/{subverse}/{submissionID}")
+        @GET("/v1/v/{subverse}/{submissionID}")
         void getSubmission(
                 @Path("subverse") String subverse,
                 @Path("submissionID") String submissionID,
                 Callback<Submission> responseCallback
         );
 
-        @GET("/v/{subverse}/info")
+        @GET("/v1/v/{subverse}/info")
         void getSubverse(
                 @Path("subverse") String subverse,
                 Callback<SubverseResponse> responseCallback
         );
 
-        @GET("/v/{subverse}/{submissionID}/comments")
+        @GET("/v1/v/{subverse}/{submissionID}/comments")
         void getComments(
                 @Path("subverse") String subverse,
                 @Path("submissionID") int submissionID,
                 Callback<CommentsResponse> responseCallback
         );
 
-        @GET("/v/comments/{commentID}")
+        @GET("/v1/v/comments/{commentID}")
         void getComment(
                 @Path("commentID") String commentID,
                 Callback<CommentResponse> responseCallback
         );
 
-        @GET("/u/preferences")
+        @GET("/v1/u/preferences")
         void getUserPreferences(
                 Callback<UserPreferencesResponse> responseCallback
         );
 
-        @GET("/u/{user}/info")
+        @GET("/v1/u/{user}/info")
         void getUserInfo(
                 @Path("user") String user,
                 Callback<UserResponse> responseCallback
         );
 
-        @GET("/u/{user}/comments")
+        @GET("/v1/u/{user}/comments")
         void getUserComments(
                 @Path("user") String user,
                 Callback<CommentsResponse> responseCallback
         );
 
-        @GET("/u/{user}/submissions")
+        @GET("/v1/u/{user}/submissions")
         void getUserSubmissions(
                 @Path("user") String user,
                 Callback<SubmissionsResponse> responseCallback
         );
 
-        @GET("/u/{user}/subscriptions")
+        @GET("/v1/u/{user}/subscriptions")
         void getUserSubscriptions(
                 @Path("user") String user,
                 Callback<SubscriptionsResponse> responseCallback
         );
 
-        @GET("/u/messages/{type}/{state}")
+        @GET("/v1/u/messages/{type}/{state}")
         void getUserMessages(
                 @Path("type") int type,
                 @Path("state") int state,
@@ -98,6 +100,12 @@ public class VoatClient {
 //        void getUserSaved(
 //                Callback<SubmissionsResponse> responseCallback
 //        );
+
+        @POST("/token")
+        void login(
+                @Body String auth,
+                Callback<AuthResponse> authResponseCallback
+        );
     }
 
     public static Voat instance() {

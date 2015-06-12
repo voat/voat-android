@@ -84,6 +84,7 @@ public class MainActivity extends BaseActivity {
     private final View.OnClickListener onHeaderClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            //TODO login if not, user profile if so
             gotoUser(null);
             drawerLayout.closeDrawers();
         }

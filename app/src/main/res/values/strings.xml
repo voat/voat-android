@@ -3,6 +3,11 @@
 
     <string name="filter">Filter</string>
 
+    <!-- Login -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+
     <!-- Drawer -->
     <string name="home">Home</string>
     <string name="inbox">Inbox</string>

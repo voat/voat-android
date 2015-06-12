@@ -57,5 +57,7 @@ public class UserActivity extends BaseActivity {
         Glide.with(this)
                 .load("http://i.imgur.com/wt4NRqA.jpg")
                 .into(userImage);
+
+        new LoginDialog(this).show();
     }
 }
