@@ -1,11 +1,12 @@
 package co.voat.android.data;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by Jawn on 6/11/2015.
  */
-public class User {
+public class User implements Serializable {
     String userName;
     String registrationDate;
     String bio;

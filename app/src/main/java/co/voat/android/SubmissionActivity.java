@@ -7,6 +7,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class SubmissionActivity extends BaseActivity {
 
     @InjectView(R.id.post_root)
     View postRoot;
-
+    @InjectView(R.id.submission_content)
+    TextView submissionContentText;
     @InjectView(R.id.comment_list)
     RecyclerView commentList;
 
@@ -52,6 +54,7 @@ public class SubmissionActivity extends BaseActivity {
         submission = (Submission) getIntent().getSerializableExtra(EXTRA_SUBMISSION);
         SubmissionViewHolder holder = new SubmissionViewHolder(postRoot);
         holder.bind(submission);
+        submissionContentText.setText(submission.getContent());
         commentList.setLayoutManager(new LinearLayoutManager(this));
         VoatClient.instance().getComments(submission.getSubverse(), submission.getId(), new Callback<CommentsResponse>() {
             @Override

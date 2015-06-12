@@ -81,6 +81,14 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    private final View.OnClickListener onHeaderClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            gotoUser(null);
+            drawerLayout.closeDrawers();
+        }
+    };
+
     private final AdapterView.OnItemSelectedListener spinnerItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -112,7 +120,10 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setupDrawer() {
+        //TODO set the proper tab as selected
+        navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
         navigationView.setNavigationItemSelectedListener(navigationItemSelectedListener);
+        headerImage.setOnClickListener(onHeaderClickListener);
         Glide.with(this)
                 .load("http://i.imgur.com/wt4NRqA.jpg")
                 .into(headerImage);
