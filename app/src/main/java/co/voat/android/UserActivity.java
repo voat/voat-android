@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import co.voat.android.data.User;
+import co.voat.android.dialogs.LoginDialog;
 
 /**
  * Check out this user... so lame
