@@ -1,10 +1,10 @@
 package co.voat.android.data;
 
 /**
- * Post, ya know?
+ * Submission, ya know?
  * Created by John on 6/11/2015.
  */
-public class Post {
+public class Submission {
     int id;
     int commentCount;
     //TODO fix date

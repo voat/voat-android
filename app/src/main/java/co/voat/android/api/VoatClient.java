@@ -1,12 +1,17 @@
 package co.voat.android.api;
 
 import co.voat.android.BuildConfig;
+import co.voat.android.data.Submission;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.http.GET;
 import retrofit.http.Path;
 
+/**
+ * Client to get all the things from Voat
+ * voat.co/api/help
+ */
 public class VoatClient {
     //Replace with your API_KEY
     private static final String API_KEY_VALUE = "myUt2YVP/i8OKVovtTlOAQ==";
@@ -17,11 +22,79 @@ public class VoatClient {
     private static Voat mVoat;
 
     public interface Voat {
-        @GET("/v/{subverseName}")
+        @GET("/v/{subverse}")
+        void getSubmissions(
+                @Path("subverse") String subverse,
+                Callback<SubmissionsResponse> responseCallback
+        );
+
+        @GET("/v/{subverse}/{submissionID}")
+        void getSubmission(
+                @Path("subverse") String subverse,
+                @Path("submissionID") String submissionID,
+                Callback<Submission> responseCallback
+        );
+
+        @GET("/v/{subverse}/info")
         void getSubverse(
-                @Path("subverseName") String user,
+                @Path("subverse") String subverse,
                 Callback<SubverseResponse> responseCallback
         );
+
+        @GET("/v/{subverse}/{submissionID}/comments")
+        void getComments(
+                @Path("subverse") String subverse,
+                @Path("submissionID") String submissionID,
+                Callback<CommentsResponse> responseCallback
+        );
+
+        @GET("/v/comments/{commentID}")
+        void getComment(
+                @Path("commentID") String commentID,
+                Callback<CommentResponse> responseCallback
+        );
+
+        @GET("/u/preferences")
+        void getUserPreferences(
+                Callback<UserPreferencesResponse> responseCallback
+        );
+
+        @GET("/u/{user}/info")
+        void getUserInfo(
+                @Path("user") String user,
+                Callback<UserResponse> responseCallback
+        );
+
+        @GET("/u/{user}/comments")
+        void getUserComments(
+                @Path("user") String user,
+                Callback<CommentsResponse> responseCallback
+        );
+
+        @GET("/u/{user}/submissions")
+        void getUserSubmissions(
+                @Path("user") String user,
+                Callback<SubmissionsResponse> responseCallback
+        );
+
+        @GET("/u/{user}/subscriptions")
+        void getUserSubscriptions(
+                @Path("user") String user,
+                Callback<SubscriptionsResponse> responseCallback
+        );
+
+        @GET("/u/messages/{type}/{state}")
+        void getUserMessages(
+                @Path("type") int type,
+                @Path("state") int state,
+                Callback<UserMessagesResponse> responseCallback
+        );
+
+        //Not yet
+//        @GET("/u/saved")
+//        void getUserSaved(
+//                Callback<SubmissionsResponse> responseCallback
+//        );
     }
 
     public static Voat instance() {
