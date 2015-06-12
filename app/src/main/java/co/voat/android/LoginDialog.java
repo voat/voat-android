@@ -16,6 +16,7 @@ import co.voat.android.data.User;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import retrofit.mime.TypedString;
 import timber.log.Timber;
 
 /**
@@ -23,6 +24,10 @@ import timber.log.Timber;
  * Created by Jawn on 6/12/2015.
  */
 public class LoginDialog extends AppCompatDialog {
+
+    private static final String PARAM_GRANT_TYPE = "grant_type=password";
+    private static final String PARAM_USERNAME = "&username=";
+    private static final String PARAM_PASSWORD = "&password=";
 
     @InjectView(R.id.username)
     EditText usernameEditText;
@@ -43,9 +48,8 @@ public class LoginDialog extends AppCompatDialog {
             hasError = true;
         }
         if (!hasError) {
-            final String auth = "grant_type=password&username=" + username + "&password" + password;
             //TODO chain the auth and retrieving the user using RxAndroid
-            VoatClient.instance().login(auth, authResponseCallback);
+            VoatClient.instance().login(createLoginString(username, password), authResponseCallback);
         }
     }
 
@@ -53,6 +57,7 @@ public class LoginDialog extends AppCompatDialog {
         @Override
         public void success(AuthResponse authResponse, Response response) {
             Timber.d("Login success");
+            VoatClient.setAuth(authResponse);
             VoatClient.instance().getUserInfo(authResponse.userName, userResponseCallback);
         }
 
@@ -79,5 +84,11 @@ public class LoginDialog extends AppCompatDialog {
         super(context);
         setContentView(R.layout.dialog_login);
         ButterKnife.inject(this);
+    }
+
+    private TypedString createLoginString(String username, String password) {
+        return new TypedString(
+                PARAM_GRANT_TYPE + PARAM_USERNAME + username + PARAM_PASSWORD + password
+        );
     }
 }

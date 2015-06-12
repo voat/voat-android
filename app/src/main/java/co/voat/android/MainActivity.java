@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -44,6 +45,8 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.subverses_spinner)
     Spinner subversesSpinner;
     ArrayAdapter<String> subversesSpinnerAdapter;
+    @InjectView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.list)
     RecyclerView list;
 
@@ -70,6 +73,12 @@ public class MainActivity extends BaseActivity {
         @Override
         public boolean onNavigationItemSelected(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
+                case R.id.nav_my_subverse:
+                    gotoMySubscriptions();
+                    break;
+                case R.id.nav_messages:
+                    gotoMessages();
+                    break;
                 case R.id.nav_settings:
                     //TODO delay this until the drawer is closed
                     gotoSettings();
@@ -100,6 +109,13 @@ public class MainActivity extends BaseActivity {
         public void onNothingSelected(AdapterView<?> parent) { }
     };
 
+    private final SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            loadSubverse(subversesSpinnerAdapter.getItem(0));
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,6 +126,7 @@ public class MainActivity extends BaseActivity {
         subversesSpinnerAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, VoatClient.getDefaultSubverses());
         subversesSpinner.setAdapter(subversesSpinnerAdapter);
         subversesSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
+        swipeRefreshLayout.setOnRefreshListener(refreshListener);
         list.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -131,9 +148,11 @@ public class MainActivity extends BaseActivity {
     }
 
     private void loadSubverse(String subverse) {
+        swipeRefreshLayout.setRefreshing(true);
         VoatClient.instance().getSubmissions(subverse, new Callback<SubmissionsResponse>() {
             @Override
             public void success(SubmissionsResponse submissionsResponse, Response response) {
+                swipeRefreshLayout.setRefreshing(false);
                 if (submissionsResponse.success) {
                     list.setAdapter(new PostAdapter(submissionsResponse.data));
                 }
@@ -141,6 +160,7 @@ public class MainActivity extends BaseActivity {
 
             @Override
             public void failure(RetrofitError error) {
+                swipeRefreshLayout.setRefreshing(false);
                 Timber.e(error.toString());
             }
         });

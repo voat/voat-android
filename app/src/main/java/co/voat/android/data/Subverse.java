@@ -13,4 +13,36 @@ public class Subverse {
     String sidebar;
     //TODO enum
     String type;
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public int getSubscriberCount() {
+        return subscriberCount;
+    }
+
+    public boolean isRatedAdult() {
+        return ratedAdult;
+    }
+
+    public String getSidebar() {
+        return sidebar;
+    }
+
+    public String getType() {
+        return type;
+    }
 }

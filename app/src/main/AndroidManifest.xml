@@ -23,6 +23,8 @@
         <activity android:name=".SettingsActivity"/>
         <activity android:name=".SubmissionActivity"/>
         <activity android:name=".UserActivity"/>
+        <activity android:name=".SubscriptionsActivity"/>
+        <activity android:name=".MessagesActivity"/>
     </application>
 
 </manifest>

@@ -14,5 +14,11 @@
     <string name="my_subverses">My Subverses</string>
     <string name="settings">Settings</string>
 
+    <!-- Error -->
+    <string name="error">Eeek! Voat is sinking!</string>
+    <string name="error_no_bio">Aww snap, this user did not yet write their bio. If they did, it would show up here, you know.</string>
+
+    <!-- Empty -->
+    <string name="empty">Nothing to see here</string>
 
 </resources>

@@ -2,6 +2,8 @@ package co.voat.android;
 
 import android.app.Application;
 
+import com.google.gson.Gson;
+
 import timber.log.Timber;
 
 /**
@@ -10,6 +12,13 @@ import timber.log.Timber;
  */
 public class VoatApp extends Application {
 
+    private static Gson gson;
+    public static Gson gson() {
+        if (gson == null) {
+            gson = new Gson();
+        }
+        return gson;
+    }
     @Override
     public void onCreate() {
         super.onCreate();

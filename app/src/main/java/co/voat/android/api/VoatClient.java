@@ -7,14 +7,15 @@ import java.util.List;
 
 import co.voat.android.BuildConfig;
 import co.voat.android.data.Submission;
-import co.voat.android.data.User;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.http.Body;
 import retrofit.http.GET;
+import retrofit.http.Headers;
 import retrofit.http.POST;
 import retrofit.http.Path;
+import retrofit.mime.TypedString;
 
 /**
  * Client to get all the things from Voat
@@ -105,9 +106,10 @@ public class VoatClient {
 //                Callback<SubmissionsResponse> responseCallback
 //        );
 
+        @Headers("Content-Type: application/x-www-form-urlencoded")
         @POST("/token")
         void login(
-                @Body String auth,
+                @Body TypedString auth,
                 Callback<AuthResponse> authResponseCallback
         );
     }
@@ -124,13 +126,18 @@ public class VoatClient {
         return mVoat;
     }
 
+    private static AuthResponse currentAuth;
+    public static void setAuth(AuthResponse auth) {
+        currentAuth = auth;
+    }
+
     public static class VoatRequestInterceptor implements RequestInterceptor {
         @Override
         public void intercept(RequestFacade request) {
             request.addHeader(PARAM_API_KEY, API_KEY_VALUE);
-            if (User.getCurrentUser() != null
-                    && !TextUtils.isEmpty(User.getCurrentUser().getAuthToken())) {
-                request.addHeader(PARAM_BEARER_KEY, User.getCurrentUser().getAuthToken());
+            if (currentAuth != null
+                    && !TextUtils.isEmpty(currentAuth.accessToken)) {
+                request.addHeader(PARAM_BEARER_KEY, currentAuth.accessToken);
             }
         }
     }

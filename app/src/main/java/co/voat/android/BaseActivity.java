@@ -25,6 +25,16 @@ public class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
+    protected void gotoMySubscriptions() {
+        startActivity(SubscriptionsActivity.newInstance(this));
+        overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
+    }
+
+    protected void gotoMessages() {
+        startActivity(MessagesActivity.newInstance(this));
+        overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
+    }
+
     @Override
     public void finish() {
         super.finish();
