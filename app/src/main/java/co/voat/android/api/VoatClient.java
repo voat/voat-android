@@ -1,5 +1,8 @@
 package co.voat.android.api;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import co.voat.android.BuildConfig;
 import co.voat.android.data.Submission;
 import retrofit.Callback;
@@ -114,5 +117,21 @@ public class VoatClient {
         public void intercept(RequestFacade request) {
             request.addHeader(PARAM_API_KEY, API_KEY_VALUE);
         }
+    }
+
+    //TODO make this a thing when it is added to the API
+    public static List<String> getDefaultSubverses() {
+        ArrayList<String> defaults = new ArrayList<>();
+        defaults.add("Api");
+        defaults.add("AskFakeVout");
+        defaults.add("Playground");
+        defaults.add("Test");
+        defaults.add("Universall");
+        defaults.add("funnystuff");
+        defaults.add("nsfw");
+        defaults.add("Anon");
+        defaults.add("MinCCP");
+        defaults.add("Private");
+        return defaults;
     }
 }

@@ -12,7 +12,10 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -27,6 +30,7 @@ import co.voat.android.data.Submission;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
+import timber.log.Timber;
 
 
 public class MainActivity extends BaseActivity {
@@ -39,6 +43,9 @@ public class MainActivity extends BaseActivity {
     ImageView headerImage;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
+    @InjectView(R.id.subverses_spinner)
+    Spinner subversesSpinner;
+    ArrayAdapter<String> subversesSpinnerAdapter;
     @InjectView(R.id.list)
     RecyclerView list;
 
@@ -76,6 +83,16 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    private final AdapterView.OnItemSelectedListener spinnerItemSelectedListener = new AdapterView.OnItemSelectedListener() {
+        @Override
+        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            loadSubverse(subversesSpinnerAdapter.getItem(position));
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> parent) { }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,21 +100,12 @@ public class MainActivity extends BaseActivity {
         ButterKnife.inject(this);
         setupToolbar();
         setupDrawer();
+        subversesSpinnerAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, VoatClient.getDefaultSubverses());
+        subversesSpinner.setAdapter(subversesSpinnerAdapter);
+        subversesSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
         list.setLayoutManager(new LinearLayoutManager(this));
 
-        VoatClient.instance().getSubmissions("all", new Callback<SubmissionsResponse>() {
-            @Override
-            public void success(SubmissionsResponse submissionsResponse, Response response) {
-                if (submissionsResponse.success) {
-                    list.setAdapter(new PostAdapter(submissionsResponse.data));
-                }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-
-            }
-        });
     }
 
     private void setupToolbar() {
@@ -112,6 +120,22 @@ public class MainActivity extends BaseActivity {
         Glide.with(this)
                 .load("http://i.imgur.com/wt4NRqA.jpg")
                 .into(headerImage);
+    }
+
+    private void loadSubverse(String subverse) {
+        VoatClient.instance().getSubmissions(subverse, new Callback<SubmissionsResponse>() {
+            @Override
+            public void success(SubmissionsResponse submissionsResponse, Response response) {
+                if (submissionsResponse.success) {
+                    list.setAdapter(new PostAdapter(submissionsResponse.data));
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Timber.e(error.toString());
+            }
+        });
     }
 
     public static class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
