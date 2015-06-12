@@ -35,6 +35,8 @@ public class MainActivity extends BaseActivity {
     DrawerLayout drawerLayout;
     @InjectView(R.id.nav_view)
     NavigationView navigationView;
+    @InjectView(R.id.nav_header_image)
+    ImageView headerImage;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.list)
@@ -59,24 +61,28 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    private final NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
+        @Override
+        public boolean onNavigationItemSelected(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.nav_settings:
+                    //TODO delay this until the drawer is closed
+                    gotoSettings();
+                    break;
+            }
+            menuItem.setChecked(true);
+            drawerLayout.closeDrawers();
+            return true;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
         ButterKnife.inject(this);
-        toolbar.inflateMenu(R.menu.menu_main);
-        toolbar.setNavigationOnClickListener(navigationClickListener);
-        toolbar.setOnMenuItemClickListener(menuItemClickListener);
-        toolbar.setNavigationIcon(R.drawable.ic_menu);
-        navigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem menuItem) {
-                        menuItem.setChecked(true);
-                        drawerLayout.closeDrawers();
-                        return true;
-                    }
-                });
+        setupToolbar();
+        setupDrawer();
         list.setLayoutManager(new LinearLayoutManager(this));
 
         VoatClient.instance().getSubmissions("all", new Callback<SubmissionsResponse>() {
@@ -92,6 +98,20 @@ public class MainActivity extends BaseActivity {
 
             }
         });
+    }
+
+    private void setupToolbar() {
+        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setNavigationOnClickListener(navigationClickListener);
+        toolbar.setOnMenuItemClickListener(menuItemClickListener);
+        toolbar.setNavigationIcon(R.drawable.ic_menu);
+    }
+
+    private void setupDrawer() {
+        navigationView.setNavigationItemSelectedListener(navigationItemSelectedListener);
+        Glide.with(this)
+                .load("http://i.imgur.com/wt4NRqA.jpg")
+                .into(headerImage);
     }
 
     public static class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
