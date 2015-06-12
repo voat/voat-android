@@ -10,7 +10,9 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.api.AuthResponse;
+import co.voat.android.api.UserResponse;
 import co.voat.android.api.VoatClient;
+import co.voat.android.data.User;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -29,7 +31,7 @@ public class LoginDialog extends AppCompatDialog {
 
     @OnClick(R.id.login)
     void onLoginClick(View v) {
-        String username = usernameEditText.getText().toString();
+        final String username = usernameEditText.getText().toString();
         String password = passwordEditText.getText().toString();
         boolean hasError = false;
         if (TextUtils.isEmpty(username)) {
@@ -42,22 +44,36 @@ public class LoginDialog extends AppCompatDialog {
         }
         if (!hasError) {
             final String auth = "grant_type=password&username=" + username + "&password" + password;
-            VoatClient.instance().login(auth, new Callback<AuthResponse>() {
-                @Override
-                public void success(AuthResponse authResponse, Response response) {
-                    Timber.d("Check it out: " + authResponse.accessToken);
-                    dismiss();
-                }
-
-                @Override
-                public void failure(RetrofitError error) {
-                    Timber.e(error.toString());
-                    dismiss();
-                }
-            });
-
+            //TODO chain the auth and retrieving the user using RxAndroid
+            VoatClient.instance().login(auth, authResponseCallback);
         }
     }
+
+    private final Callback<AuthResponse> authResponseCallback = new Callback<AuthResponse>() {
+        @Override
+        public void success(AuthResponse authResponse, Response response) {
+            Timber.d("Login success");
+            VoatClient.instance().getUserInfo(authResponse.userName, userResponseCallback);
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Timber.e(error.toString());
+        }
+    };
+
+    private final Callback<UserResponse> userResponseCallback = new Callback<UserResponse>() {
+        @Override
+        public void success(UserResponse userResponse, Response response) {
+            User.setCurrentUser(userResponse.data);
+            dismiss();
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Timber.e(error.toString());
+        }
+    };
 
     public LoginDialog(Context context) {
         super(context);

@@ -7,6 +7,15 @@ import java.util.List;
  * Created by Jawn on 6/11/2015.
  */
 public class User implements Serializable {
+
+    static User currentUser;
+    public static User getCurrentUser() {
+        return currentUser;
+    }
+    public static void setCurrentUser(User user) {
+        currentUser = user;
+    }
+
     String userName;
     String registrationDate;
     String bio;
@@ -16,6 +25,8 @@ public class User implements Serializable {
     Points commentVoting;
     Points submissionVoting;
     List<Badge> badges;
+    //Custom
+    String authToken;
 
     public String getUserName() {
         return userName;
@@ -51,6 +62,14 @@ public class User implements Serializable {
 
     public List<Badge> getBadges() {
         return badges;
+    }
+
+    public String getAuthToken() {
+        return authToken;
+    }
+
+    public void setAuthToken(String authToken) {
+        this.authToken = authToken;
     }
 
     public class Preferences {
