@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Voat</string>
 
-    <string name="settings">settings</string>
+    <string name="filter">Filter</string>
+
+    <!-- Drawer -->
+    <string name="home">Home</string>
+    <string name="inbox">Inbox</string>
+    <string name="my_subverses">My Subverses</string>
+    <string name="settings">Settings</string>
+
 
 </resources>

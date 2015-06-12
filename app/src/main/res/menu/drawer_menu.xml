@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_drawer_home"
+            android:title="@string/home" />
+        <item
+            android:id="@+id/nav_messages"
+            android:icon="@drawable/ic_drawer_inbox"
+            android:title="@string/inbox" />
+
+        <item
+            android:id="@+id/nav_my_subverse"
+            android:icon="@drawable/ic_drawer_v"
+            android:title="@string/my_subverses" />
+    </group>
+
+    <item android:title="">
+        <menu>
+            <item
+                android:icon="@drawable/ic_drawer_settings"
+                android:title="@string/settings" />
+        </menu>
+    </item>
+
+</menu>

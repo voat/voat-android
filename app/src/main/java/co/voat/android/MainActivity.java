@@ -1,12 +1,14 @@
 package co.voat.android;
 
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,73 +21,82 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import co.voat.android.api.SubverseResponse;
+import co.voat.android.api.SubmissionsResponse;
 import co.voat.android.api.VoatClient;
-import co.voat.android.data.Post;
+import co.voat.android.data.Submission;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import timber.log.Timber;
 
 
 public class MainActivity extends BaseActivity {
 
+    @InjectView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @InjectView(R.id.nav_view)
+    NavigationView navigationView;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
-
     @InjectView(R.id.list)
     RecyclerView list;
+
+    private final Toolbar.OnMenuItemClickListener menuItemClickListener = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case android.R.id.home:
+                    drawerLayout.openDrawer(GravityCompat.START);
+                    return true;
+            }
+            return false;
+        }
+    };
+
+    private final View.OnClickListener navigationClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            drawerLayout.openDrawer(GravityCompat.START);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_nav_drawer);
         ButterKnife.inject(this);
-        setSupportActionBar(toolbar);
+        toolbar.inflateMenu(R.menu.menu_main);
+        toolbar.setNavigationOnClickListener(navigationClickListener);
+        toolbar.setOnMenuItemClickListener(menuItemClickListener);
+        toolbar.setNavigationIcon(R.drawable.ic_menu);
+        navigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem menuItem) {
+                        menuItem.setChecked(true);
+                        drawerLayout.closeDrawers();
+                        return true;
+                    }
+                });
         list.setLayoutManager(new LinearLayoutManager(this));
 
-        VoatClient.instance().getSubverse("all", new Callback<SubverseResponse>() {
+        VoatClient.instance().getSubmissions("all", new Callback<SubmissionsResponse>() {
             @Override
-            public void success(SubverseResponse subverseResponse, Response response) {
-                if (subverseResponse.success) {
-                    list.setAdapter(new PostAdapter(subverseResponse.data));
+            public void success(SubmissionsResponse submissionsResponse, Response response) {
+                if (submissionsResponse.success) {
+                    list.setAdapter(new PostAdapter(submissionsResponse.data));
                 }
             }
 
             @Override
             public void failure(RetrofitError error) {
-                Timber.e(error.toString());
+
             }
         });
     }
 
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
-
     public static class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder> {
 
-        private List<Post> mValues;
+        private List<Submission> mValues;
 
         public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -104,11 +115,11 @@ public class MainActivity extends BaseActivity {
             }
         }
 
-        public Post getValueAt(int position) {
+        public Submission getValueAt(int position) {
             return mValues.get(position);
         }
 
-        public PostAdapter(List<Post> items) {
+        public PostAdapter(List<Submission> items) {
             mValues = items;
         }
 
@@ -121,12 +132,12 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onBindViewHolder(final ViewHolder holder, int position) {
-            Post post = getValueAt(position);
-            holder.scoreText.setText(post.getUpVotes() + "");
-            holder.titleText.setText(post.getTitle());
-            holder.authorText.setText(post.getUserName());
+            Submission submission = getValueAt(position);
+            holder.scoreText.setText(submission.getUpVotes() + "");
+            holder.titleText.setText(submission.getTitle());
+            holder.authorText.setText(submission.getUserName());
             Glide.with(holder.image.getContext())
-                    .load(post.getThumbnail())
+                    .load(submission.getThumbnail())
                     .into(holder.image);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
