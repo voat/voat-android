@@ -25,7 +25,7 @@
         <activity android:name=".UserActivity"/>
         <activity android:name=".SubscriptionsActivity"/>
         <activity android:name=".MessagesActivity"/>
-        <activity android:name=".ImageActivity"/>
+        <activity android:name=".ImageActivity" android:theme="@style/AppTheme.TranslucentWindow"/>
     </application>
 
 </manifest>

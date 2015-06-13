@@ -1,11 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/purple</item>
         <item name="colorPrimaryDark">@color/purple_dark</item>
         <item name="colorAccent">@color/blue</item>
+    </style>
+
+    <style name="AppTheme" parent="BaseTheme">
+    </style>
+
+    <style name="AppTheme.TranslucentWindow">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/black_50</item>
     </style>
 
     <style name="Card">

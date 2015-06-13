@@ -23,12 +23,17 @@ import timber.log.Timber;
  */
 public class SubmissionDialog extends AppCompatDialog {
 
+    private static final int MODE_TEXT = 0;
+    private static final int MODE_LINK = 1;
+
     @InjectView(R.id.subverse)
     EditText subverseText;
     @InjectView(R.id.title)
     EditText titleText;
     @InjectView(R.id.text)
     EditText textText;
+
+    private int mode;
 
     private Callback<SubmissionResponse> postSubmissionCallback = new Callback<SubmissionResponse>() {
         @Override
@@ -75,5 +80,23 @@ public class SubmissionDialog extends AppCompatDialog {
         super(context);
         setContentView(R.layout.dialog_submission);
         ButterKnife.inject(this);
+        setMode(MODE_TEXT);
+    }
+
+    public void setSubverse(String subverse) {
+        subverseText.setText(subverse);
+    }
+
+    public void setMode(int mode) {
+        switch (mode) {
+            case MODE_LINK:
+                textText.setHint(R.string.url);
+                break;
+            case MODE_TEXT:
+            default:
+                textText.setHint(R.string.text);
+                break;
+        }
+        this.mode = mode;
     }
 }

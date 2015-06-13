@@ -71,6 +71,14 @@ public class SubscriptionsActivity extends BaseActivity {
 
     public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionViewHolder> {
 
+        private final View.OnClickListener onItemClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = (int) v.getTag(R.id.list_position);
+                gotoMain(mValues.get(position).getName());
+            }
+        };
+
         private List<Subscription> mValues;
 
         public Subscription getValueAt(int position) {
@@ -92,6 +100,7 @@ public class SubscriptionsActivity extends BaseActivity {
             Subscription subscription = getValueAt(position);
             holder.bind(subscription);
             holder.itemView.setTag(R.id.list_position, position);
+            holder.itemView.setOnClickListener(onItemClickListener);
         }
 
         @Override

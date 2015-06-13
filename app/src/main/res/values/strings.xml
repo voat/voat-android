@@ -17,6 +17,7 @@
     <string name="text">Text</string>
     <string name="url">Url</string>
     <string name="submit">Submit</string>
+    <string name="share_url_via">Share url via</string>
 
     <!-- Messages -->
     <string name="user">User</string>
@@ -41,6 +42,8 @@
     <string name="required_field">This is required.</string>
     <string name="too_short">Too short!</string>
     <string name="too_long">Too long!</string>
+    <string name="no_browser">Somehow you don\'t have a browser...</string>
+    <string name="no_share">No app to share with</string>
 
     <!-- Empty -->
     <string name="empty">Nothing to see here</string>

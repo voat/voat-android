@@ -10,6 +10,11 @@ import co.voat.android.data.User;
  */
 public class BaseActivity extends AppCompatActivity {
 
+    protected void gotoMain(String selectedSubmission) {
+        startActivity(MainActivity.newInstance(this, selectedSubmission));
+        overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
+    }
+
     protected void gotoSettings() {
         startActivity(SettingsActivity.newInstance(this));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);

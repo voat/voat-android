@@ -1,5 +1,7 @@
 package co.voat.android;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -39,6 +41,14 @@ import timber.log.Timber;
 
 
 public class MainActivity extends BaseActivity {
+
+    private static final String EXTRA_SELECTED_SUBVERSE = "extra_selected_subverse";
+
+    public static Intent newInstance(Context context, String selectedSubverse) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putExtra(EXTRA_SELECTED_SUBVERSE, selectedSubverse);
+        return intent;
+    }
 
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
