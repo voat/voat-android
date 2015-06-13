@@ -29,6 +29,7 @@ import co.voat.android.api.SubmissionsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Submission;
 import co.voat.android.data.User;
+import co.voat.android.dialogs.LoginDialog;
 import co.voat.android.dialogs.SubmissionDialog;
 import co.voat.android.viewHolders.SubmissionViewHolder;
 import retrofit.Callback;
@@ -106,7 +107,11 @@ public class MainActivity extends BaseActivity {
         @Override
         public void onClick(View v) {
             //TODO login if not, user profile if so
-            gotoUser(null);
+            if (User.getCurrentUser() != null) {
+                gotoUser();
+            } else {
+                new LoginDialog(MainActivity.this).show();
+            }
             drawerLayout.closeDrawers();
         }
     };

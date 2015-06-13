@@ -20,6 +20,10 @@ public class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
+    protected void gotoUser() {
+        gotoUser(null);
+    }
+
     protected void gotoUser(User user) {
         startActivity(UserActivity.newInstance(this, user));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);

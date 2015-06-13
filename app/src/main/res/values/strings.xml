@@ -21,6 +21,11 @@
     <string name="message">Message</string>
     <string name="send">Send</string>
 
+    <!-- User -->
+    <string name="member_for">Member for:</string>
+    <string name="SCP">SCP</string>
+    <string name="ccp">CCP</string>
+
     <!-- Drawer -->
     <string name="home">Home</string>
     <string name="messages">Messages</string>

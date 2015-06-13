@@ -11,4 +11,32 @@ public class Points {
     float upRatio;
     float downRatio;
     float bias;
+
+    public int getTotal() {
+        return total;
+    }
+
+    public int getSum() {
+        return sum;
+    }
+
+    public int getUpCount() {
+        return upCount;
+    }
+
+    public int getDownCount() {
+        return downCount;
+    }
+
+    public float getUpRatio() {
+        return upRatio;
+    }
+
+    public float getDownRatio() {
+        return downRatio;
+    }
+
+    public float getBias() {
+        return bias;
+    }
 }
