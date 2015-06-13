@@ -22,7 +22,7 @@ public class SubmissionViewHolder extends RecyclerView.ViewHolder {
 
     public static SubmissionViewHolder create(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_post, parent, false);
+                .inflate(R.layout.item_submission, parent, false);
         return new SubmissionViewHolder(view);
     }
 

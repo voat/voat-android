@@ -2,10 +2,11 @@
 <FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/root">
 
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/activity_main_swipe_refresh_layout"
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -15,5 +16,7 @@
             android:layout_height="match_parent"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/empty_view"/>
 
 </FrameLayout>

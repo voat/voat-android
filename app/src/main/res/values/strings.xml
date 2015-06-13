@@ -15,9 +15,15 @@
     <string name="url">Url</string>
     <string name="submit">Submit</string>
 
+    <!-- Messages -->
+    <string name="user">User</string>
+    <string name="subject">Subject</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+
     <!-- Drawer -->
     <string name="home">Home</string>
-    <string name="inbox">Inbox</string>
+    <string name="messages">Messages</string>
     <string name="my_subverses">My Subverses</string>
     <string name="settings">Settings</string>
 
@@ -26,6 +32,7 @@
     <string name="error_no_bio">Aww snap, this user did not yet write their bio. If they did, it would show up here, you know.</string>
     <string name="required_field">This is required.</string>
     <string name="too_short">Too short!</string>
+    <string name="too_long">Too long!</string>
 
     <!-- Empty -->
     <string name="empty">Nothing to see here</string>

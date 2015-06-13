@@ -3,24 +3,20 @@ package co.voat.android;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.view.ViewGroup;
-
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import co.voat.android.api.UserMessagesResponse;
-import co.voat.android.api.VoatClient;
+import butterknife.OnClick;
 import co.voat.android.data.Message;
-import co.voat.android.viewHolders.MessageViewHolder;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import timber.log.Timber;
+import co.voat.android.dialogs.SendMessageDialog;
+import co.voat.android.fragments.MessagesFragment;
 
 /**
  * Check out that inbox!
@@ -33,72 +29,61 @@ public class MessagesActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.list)
-    RecyclerView messagesList;
-    @InjectView(R.id.empty_root)
-    View emptyView;
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
+    @InjectView(R.id.tabs)
+    TabLayout tabLayout;
+    @InjectView(R.id.viewpager)
+    ViewPager messagesViewPager;
 
-    private final Callback<UserMessagesResponse> messagesResponseCallback = new Callback<UserMessagesResponse>() {
+    @OnClick(R.id.fab)
+    void onFabClick(View v) {
+        new SendMessageDialog(this).show();
+    }
+
+    private final View.OnClickListener navigationClickListener = new View.OnClickListener() {
         @Override
-        public void success(UserMessagesResponse messagesResponse, Response response) {
-            if (messagesResponse.success
-                    && messagesResponse.data != null
-                    && !messagesResponse.data.isEmpty()) {
-                emptyView.setVisibility(View.GONE);
-                messagesList.setAdapter(new MessagesAdapter(messagesResponse.data));
-            } else {
-                emptyView.setVisibility(View.VISIBLE);
-            }
-
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            Timber.e(error.toString());
-            Snackbar.make(getWindow().getDecorView(), getString(R.string.error), Snackbar.LENGTH_SHORT)
-                    .show();
+        public void onClick(View v) {
+            finish();
         }
     };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subscriptions);
+        setContentView(R.layout.activity_messages);
         ButterKnife.inject(this);
-        messagesList.setLayoutManager(new LinearLayoutManager(this));
-        VoatClient.instance().getUserMessages(Message.MESSAGE_TYPE_ALL,
-                Message.MESSAGE_STATE_ALL,
-                messagesResponseCallback);
+        toolbar.setTitle(getString(R.string.messages));
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationOnClickListener(navigationClickListener);
+        messagesViewPager.setAdapter(new MessagesPagerAdapter(getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(messagesViewPager);
     }
 
-    public class MessagesAdapter extends RecyclerView.Adapter<MessageViewHolder> {
+    public static class MessagesPagerAdapter extends FragmentStatePagerAdapter {
 
-        private List<Message> mValues;
-
-        public Message getValueAt(int position) {
-            return mValues.get(position);
+        MessagesPagerAdapter(FragmentManager fm) {
+            super(fm);
         }
 
-        public MessagesAdapter(List<Message> items) {
-            mValues = items;
+        /**
+         * Return the fragment page to be shown
+         */
+        @Override
+        public Fragment getItem(int position) {
+            return MessagesFragment.newInstance(Message.MESSAGE_TYPES[position]);
         }
 
         @Override
-        public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            MessageViewHolder holder = MessageViewHolder.create(parent);
-            return holder;
+        public int getCount() {
+            return Message.MESSAGE_TYPES.length;
         }
 
         @Override
-        public void onBindViewHolder(final MessageViewHolder holder, int position) {
-            Message message = getValueAt(position);
-            holder.bind(message);
-            holder.itemView.setTag(R.id.list_position, position);
+        public CharSequence getPageTitle(int position) {
+            return Message.MESSAGE_TYPES[position];
         }
 
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
     }
+
 }

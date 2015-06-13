@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/purple</item>
         <item name="colorPrimaryDark">@color/purple_dark</item>
+        <item name="colorAccent">@color/blue</item>
     </style>
 
     <style name="Card">

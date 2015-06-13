@@ -8,8 +8,8 @@
             android:title="@string/home" />
         <item
             android:id="@+id/nav_messages"
-            android:icon="@drawable/ic_drawer_inbox"
-            android:title="@string/inbox" />
+            android:icon="@drawable/ic_drawer_messages"
+            android:title="@string/messages" />
 
         <item
             android:id="@+id/nav_my_subverse"

@@ -5,16 +5,20 @@ package co.voat.android.data;
  */
 public class Message {
 
-    public static final int MESSAGE_TYPE_INBOX = 1;
-    public static final int MESSAGE_TYPE_SENT = 2;
-    public static final int MESSAGE_TYPE_COMMENT = 4;
-    public static final int MESSAGE_TYPE_SUBMISSION = 8;
-    public static final int MESSAGE_TYPE_MENTION = 16;
-    public static final int MESSAGE_TYPE_ALL = 31;
+    public static final String MESSAGE_TYPE_INBOX = "Inbox";
+    public static final String MESSAGE_TYPE_SENT = "Sent";
+    public static final String MESSAGE_TYPE_COMMENT = "comment";
+    public static final String MESSAGE_TYPE_SUBMISSION = "submission";
+    public static final String MESSAGE_TYPE_MENTION = "mention";
+    public static final String MESSAGE_TYPE_ALL = "all";
+    public static final String[] MESSAGE_TYPES = {
+            MESSAGE_TYPE_INBOX, MESSAGE_TYPE_SENT, MESSAGE_TYPE_COMMENT, MESSAGE_TYPE_SUBMISSION,
+            MESSAGE_TYPE_MENTION, MESSAGE_TYPE_ALL
+    };
 
-    public static final int MESSAGE_STATE_UNREAD = 1;
-    public static final int MESSAGE_STATE_READ = 2;
-    public static final int MESSAGE_STATE_ALL = 3;
+    public static final String MESSAGE_STATE_UNREAD = "unread";
+    public static final String MESSAGE_STATE_READ = "read";
+    public static final String MESSAGE_STATE_ALL = "all";
 
     int id;
     int commentID;

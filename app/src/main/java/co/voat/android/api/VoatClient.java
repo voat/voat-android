@@ -103,9 +103,15 @@ public class VoatClient {
 
         @GET("/v1/u/messages/{type}/{state}")
         void getUserMessages(
-                @Path("type") int type,
-                @Path("state") int state,
+                @Path("type") String type,
+                @Path("state") String state,
                 Callback<UserMessagesResponse> responseCallback
+        );
+
+        @POST("/v1/u/messages")
+        void postMessage(
+                @Body MessageBody body,
+                Callback<SimpleResponse> responseCallback
         );
 
         //Not yet

@@ -35,6 +35,7 @@ public class SubmissionDialog extends AppCompatDialog {
         public void success(SubmissionResponse submissionResponse, Response response) {
             if (submissionResponse.success) {
                 Timber.d("Post was successful");
+                dismiss();
             }
         }
 
