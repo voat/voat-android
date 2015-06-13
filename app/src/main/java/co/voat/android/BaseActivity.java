@@ -20,6 +20,11 @@ public class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
+    protected void gotoImage(Submission submission) {
+        startActivity(ImageActivity.newInstance(this, submission));
+        overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
+    }
+
     protected void gotoUser() {
         gotoUser(null);
     }

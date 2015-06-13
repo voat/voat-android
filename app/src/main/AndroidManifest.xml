@@ -25,6 +25,7 @@
         <activity android:name=".UserActivity"/>
         <activity android:name=".SubscriptionsActivity"/>
         <activity android:name=".MessagesActivity"/>
+        <activity android:name=".ImageActivity"/>
     </application>
 
 </manifest>

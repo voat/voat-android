@@ -204,6 +204,14 @@ public class MainActivity extends BaseActivity {
             }
         };
 
+        private final View.OnClickListener onImageClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = (int) v.getTag(R.id.list_position);
+                gotoImage(mValues.get(position));
+            }
+        };
+
         private List<Submission> mValues;
 
         public Submission getValueAt(int position) {
@@ -218,6 +226,8 @@ public class MainActivity extends BaseActivity {
         public SubmissionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             SubmissionViewHolder holder = SubmissionViewHolder.create(parent);
             holder.itemView.setOnClickListener(onItemClickListener);
+            holder.comments.setOnClickListener(onItemClickListener);
+            holder.image.setOnClickListener(onImageClickListener);
             return holder;
         }
 
@@ -226,6 +236,8 @@ public class MainActivity extends BaseActivity {
             Submission submission = getValueAt(position);
             holder.bind(submission);
             holder.itemView.setTag(R.id.list_position, position);
+            holder.comments.setTag(R.id.list_position, position);
+            holder.image.setTag(R.id.list_position, position);
         }
 
         @Override

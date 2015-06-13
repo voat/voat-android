@@ -16,9 +16,10 @@
     <dimen name="text_size_huge">32sp</dimen>
     <dimen name="text_size_gigantic">48sp</dimen>
 
+    <dimen name="elevation_low">2dp</dimen>
     <dimen name="elevation_default">4dp</dimen>
     <dimen name="elevation_large">8dp</dimen>
 
     <dimen name="detail_backdrop_height">256dp</dimen>
-    <dimen name="list_item_avatar_size">40dp</dimen>
+    <dimen name="image_size">96dp</dimen>
 </resources>

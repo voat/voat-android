@@ -1,6 +1,7 @@
 package co.voat.android.viewHolders;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.data.Submission;
+import co.voat.android.util.ColorUtils;
+import co.voat.android.util.CommonColors;
+import co.voat.android.util.CommonStrings;
+import co.voat.android.util.UrlUtils;
 
 /**
  * Submissions, yay!
@@ -26,14 +31,20 @@ public class SubmissionViewHolder extends RecyclerView.ViewHolder {
         return new SubmissionViewHolder(view);
     }
 
-    @InjectView(R.id.post_score)
-    TextView scoreText;
+    @InjectView(R.id.post_source)
+    public TextView sourceText;
     @InjectView(R.id.post_title)
-    TextView titleText;
-    @InjectView(R.id.post_author)
-    TextView authorText;
+    public TextView titleText;
+    @InjectView(R.id.post_origin)
+    public TextView originText;
     @InjectView(R.id.post_image)
-    ImageView image;
+    public ImageView image;
+    @InjectView(R.id.post_comments)
+    public View comments;
+    @InjectView(R.id.post_upvote)
+    public View upVote;
+    @InjectView(R.id.post_downvote)
+    public View downVote;
 
     public SubmissionViewHolder(View view) {
         super(view);
@@ -41,11 +52,20 @@ public class SubmissionViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Submission submission) {
-        scoreText.setText(submission.getUpVotes() + "");
+        sourceText.setText(ColorUtils.colorWords(submission.getUserName(), CommonColors.colorPrimary(itemView.getContext())));
+        sourceText.append(" " + CommonStrings.in(itemView.getContext()) + " ");
+        sourceText.append(ColorUtils.colorWords(submission.getSubverse(), CommonColors.colorPrimary(itemView.getContext())));
         titleText.setText(submission.getTitle());
-        authorText.setText(submission.getUserName());
-        Glide.with(image.getContext())
-                .load(submission.getThumbnail())
-                .into(image);
+        originText.setText((TextUtils.isEmpty(submission.getUrl()) ? "" : UrlUtils.getBaseUrl(submission.getUrl())) + " "
+                + submission.getDate());
+        if (TextUtils.isEmpty(submission.getThumbnail())) {
+            image.setVisibility(View.GONE);
+        } else {
+            image.setVisibility(View.VISIBLE);
+            Glide.with(image.getContext())
+                    .load(submission.getThumbnail())
+                    .into(image);
+        }
+
     }
 }

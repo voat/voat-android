@@ -8,6 +8,9 @@
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
 
+    <!-- Submissions-->
+    <string name="in">in</string>
+
     <!-- Submission-->
     <string name="subverse">Subverse</string>
     <string name="title">Title</string>
