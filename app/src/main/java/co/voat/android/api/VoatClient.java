@@ -39,6 +39,13 @@ public class VoatClient {
                 Callback<SubmissionsResponse> responseCallback
         );
 
+        @POST("/v1/v/{subverse}")
+        void postSubmission(
+                @Path("subverse") String subverse,
+                @Body SubmissionBody body,
+                Callback<SubmissionResponse> responseCallback
+        );
+
         @GET("/v1/v/{subverse}/{submissionID}")
         void getSubmission(
                 @Path("subverse") String subverse,

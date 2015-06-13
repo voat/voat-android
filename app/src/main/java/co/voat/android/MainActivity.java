@@ -24,10 +24,12 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import co.voat.android.api.SubmissionsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Submission;
 import co.voat.android.data.User;
+import co.voat.android.dialogs.SubmissionDialog;
 import co.voat.android.viewHolders.SubmissionViewHolder;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -54,6 +56,11 @@ public class MainActivity extends BaseActivity {
     SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.list)
     RecyclerView list;
+
+    @OnClick(R.id.fab)
+    void onClickAdd(View v) {
+        new SubmissionDialog(this).show();
+    }
 
     private final Toolbar.OnMenuItemClickListener menuItemClickListener = new Toolbar.OnMenuItemClickListener() {
         @Override

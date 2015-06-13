@@ -1,7 +1,7 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/purple</item>
         <item name="colorPrimaryDark">@color/purple_dark</item>
@@ -11,7 +11,6 @@
         <item name="cardUseCompatPadding">true</item>
         <item name="cardElevation">@dimen/elevation_default</item>
         <item name="cardCornerRadius">1dp</item>
-        <item name="cardBackgroundColor">@color/black</item>
     </style>
 
 </resources>
