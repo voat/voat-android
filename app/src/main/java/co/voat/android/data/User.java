@@ -89,5 +89,69 @@ public class User implements Serializable {
         boolean enableAdultContent;
         boolean publiclyDisplayVotes;
         boolean publiclyDisplaySubscriptions;
+
+        public void setUserName(String userName) {
+            this.userName = userName;
+        }
+
+        public void setDisableCustomCSS(boolean disableCustomCSS) {
+            this.disableCustomCSS = disableCustomCSS;
+        }
+
+        public void setEnableNightMode(boolean enableNightMode) {
+            this.enableNightMode = enableNightMode;
+        }
+
+        public void setLanguage(String language) {
+            this.language = language;
+        }
+
+        public void setOpenLinkNewWindow(boolean openLinkNewWindow) {
+            this.openLinkNewWindow = openLinkNewWindow;
+        }
+
+        public void setEnableAdultContent(boolean enableAdultContent) {
+            this.enableAdultContent = enableAdultContent;
+        }
+
+        public void setPubliclyDisplayVotes(boolean publiclyDisplayVotes) {
+            this.publiclyDisplayVotes = publiclyDisplayVotes;
+        }
+
+        public void setPubliclyDisplaySubscriptions(boolean publiclyDisplaySubscriptions) {
+            this.publiclyDisplaySubscriptions = publiclyDisplaySubscriptions;
+        }
+
+        public String getUserName() {
+            return userName;
+        }
+
+        public boolean isDisableCustomCSS() {
+            return disableCustomCSS;
+        }
+
+        public boolean isEnableNightMode() {
+            return enableNightMode;
+        }
+
+        public String getLanguage() {
+            return language;
+        }
+
+        public boolean isOpenLinkNewWindow() {
+            return openLinkNewWindow;
+        }
+
+        public boolean isEnableAdultContent() {
+            return enableAdultContent;
+        }
+
+        public boolean isPubliclyDisplayVotes() {
+            return publiclyDisplayVotes;
+        }
+
+        public boolean isPubliclyDisplaySubscriptions() {
+            return publiclyDisplaySubscriptions;
+        }
     }
 }
