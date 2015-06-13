@@ -13,9 +13,9 @@
         />
 
     <TextView
+        android:id="@+id/nav_header_username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username"
         android:padding="@dimen/padding_medium"
         android:layout_alignParentBottom="true"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"/>

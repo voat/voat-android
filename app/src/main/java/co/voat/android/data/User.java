@@ -3,7 +3,10 @@ package co.voat.android.data;
 import java.io.Serializable;
 import java.util.List;
 
+import co.voat.android.api.AuthResponse;
+
 /**
+ * User error
  * Created by Jawn on 6/11/2015.
  */
 public class User implements Serializable {
@@ -26,7 +29,12 @@ public class User implements Serializable {
     Points submissionVoting;
     List<Badge> badges;
     //Custom
-    String authToken;
+    AuthResponse authResponse;
+
+    public User(String username, AuthResponse authResponse) {
+        this.userName = username;
+        this.authResponse = authResponse;
+    }
 
     public String getUserName() {
         return userName;
@@ -64,12 +72,12 @@ public class User implements Serializable {
         return badges;
     }
 
-    public String getAuthToken() {
-        return authToken;
+    public AuthResponse getAuthToken() {
+        return authResponse;
     }
 
-    public void setAuthToken(String authToken) {
-        this.authToken = authToken;
+    public void setAuthToken(AuthResponse authToken) {
+        this.authResponse = authToken;
     }
 
     public static class Preferences {

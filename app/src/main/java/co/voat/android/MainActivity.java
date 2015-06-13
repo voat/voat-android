@@ -8,6 +8,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
@@ -25,6 +27,7 @@ import butterknife.InjectView;
 import co.voat.android.api.SubmissionsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Submission;
+import co.voat.android.data.User;
 import co.voat.android.viewHolders.SubmissionViewHolder;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -40,6 +43,8 @@ public class MainActivity extends BaseActivity {
     NavigationView navigationView;
     @InjectView(R.id.nav_header_image)
     ImageView headerImage;
+    @InjectView(R.id.nav_header_username)
+    TextView headerUsername;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.subverses_spinner)
@@ -127,6 +132,7 @@ public class MainActivity extends BaseActivity {
         subversesSpinner.setAdapter(subversesSpinnerAdapter);
         subversesSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
+        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue));
         list.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -145,6 +151,15 @@ public class MainActivity extends BaseActivity {
         Glide.with(this)
                 .load("http://i.imgur.com/wt4NRqA.jpg")
                 .into(headerImage);
+        User user = User.getCurrentUser();
+        if (user != null) {
+            headerUsername.setText(user.getUserName());
+            if (!TextUtils.isEmpty(user.getProfilePicture())) {
+                Glide.with(this)
+                        .load(user.getProfilePicture())
+                        .into(headerImage);
+            }
+        }
     }
 
     private void loadSubverse(String subverse) {

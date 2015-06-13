@@ -28,7 +28,7 @@ public class VoatPrefs {
         return null;
     }
 
-    public static void setUser(Context context, User user) {
+    public static void putUser(Context context, User user) {
         getSharedPreferences(context)
                 .edit()
                 .putString(PREF_USER, VoatApp.gson().toJson(user))

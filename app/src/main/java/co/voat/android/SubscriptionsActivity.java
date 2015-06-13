@@ -16,6 +16,7 @@ import butterknife.InjectView;
 import co.voat.android.api.SubscriptionsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Subscription;
+import co.voat.android.data.User;
 import co.voat.android.viewHolders.SubscriptionViewHolder;
 import retrofit.Callback;
 import retrofit.RetrofitError;
@@ -65,7 +66,7 @@ public class SubscriptionsActivity extends BaseActivity {
         setContentView(R.layout.activity_subscriptions);
         ButterKnife.inject(this);
         subversesList.setLayoutManager(new LinearLayoutManager(this));
-        VoatClient.instance().getUserSubscriptions("Jawnnypoo", subscriptionsResponseCallback);
+        VoatClient.instance().getUserSubscriptions(User.getCurrentUser().getUserName(), subscriptionsResponseCallback);
     }
 
     public class SubscriptionAdapter extends RecyclerView.Adapter<SubscriptionViewHolder> {

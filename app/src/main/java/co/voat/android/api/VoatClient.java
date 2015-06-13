@@ -7,6 +7,7 @@ import java.util.List;
 
 import co.voat.android.BuildConfig;
 import co.voat.android.data.Submission;
+import co.voat.android.data.User;
 import retrofit.Callback;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
@@ -27,7 +28,7 @@ public class VoatClient {
     private static final String API_URL = "http://vout.co/api/";
     private static final String FAKE_API_URL = "http://fakevout.azurewebsites.net/api/";
     private static final String PARAM_API_KEY = "Voat-ApiKey";
-    private static final String PARAM_BEARER_KEY = "Authorization: Bearer";
+    private static final String PARAM_AUTHORIZATION_KEY = "Authorization";
 
     private static Voat mVoat;
 
@@ -126,18 +127,13 @@ public class VoatClient {
         return mVoat;
     }
 
-    private static AuthResponse currentAuth;
-    public static void setAuth(AuthResponse auth) {
-        currentAuth = auth;
-    }
-
     public static class VoatRequestInterceptor implements RequestInterceptor {
         @Override
         public void intercept(RequestFacade request) {
             request.addHeader(PARAM_API_KEY, API_KEY_VALUE);
-            if (currentAuth != null
-                    && !TextUtils.isEmpty(currentAuth.accessToken)) {
-                request.addHeader(PARAM_BEARER_KEY, currentAuth.accessToken);
+            if (User.getCurrentUser() != null
+                    && !TextUtils.isEmpty(User.getCurrentUser().getAuthToken().accessToken)) {
+                request.addHeader(PARAM_AUTHORIZATION_KEY, "Bearer " + User.getCurrentUser().getAuthToken().accessToken);
             }
         }
     }

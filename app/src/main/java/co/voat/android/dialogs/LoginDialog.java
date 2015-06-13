@@ -1,4 +1,4 @@
-package co.voat.android;
+package co.voat.android.dialogs;
 
 import android.content.Context;
 import android.support.v7.app.AppCompatDialog;
@@ -9,10 +9,14 @@ import android.widget.EditText;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import co.voat.android.R;
+import co.voat.android.VoatApp;
+import co.voat.android.VoatPrefs;
 import co.voat.android.api.AuthResponse;
 import co.voat.android.api.UserResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.User;
+import co.voat.android.events.LoginEvent;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -57,8 +61,13 @@ public class LoginDialog extends AppCompatDialog {
         @Override
         public void success(AuthResponse authResponse, Response response) {
             Timber.d("Login success");
-            VoatClient.setAuth(authResponse);
+            User basicUser = new User(authResponse.userName, authResponse);
+            User.setCurrentUser(basicUser);
+            VoatPrefs.putUser(getContext(), basicUser);
+            //TODO defer this till we get the full user and we can update the ui accordingly
+            VoatApp.bus().post(new LoginEvent());
             VoatClient.instance().getUserInfo(authResponse.userName, userResponseCallback);
+            dismiss();
         }
 
         @Override
@@ -71,7 +80,7 @@ public class LoginDialog extends AppCompatDialog {
         @Override
         public void success(UserResponse userResponse, Response response) {
             User.setCurrentUser(userResponse.data);
-            dismiss();
+
         }
 
         @Override
