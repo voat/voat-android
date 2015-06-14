@@ -1,6 +1,7 @@
 package co.voat.android.dialogs;
 
 import android.content.Context;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.view.View;
@@ -24,10 +25,16 @@ import timber.log.Timber;
  */
 public class SendMessageDialog extends AppCompatDialog {
 
+    @InjectView(R.id.user_hint)
+    TextInputLayout userHint;
     @InjectView(R.id.user)
     EditText userText;
+    @InjectView(R.id.subject_hint)
+    TextInputLayout subjectHint;
     @InjectView(R.id.subject)
     EditText subjectText;
+    @InjectView(R.id.message_hint)
+    TextInputLayout messageHint;
     @InjectView(R.id.message)
     EditText messageText;
 
@@ -38,19 +45,19 @@ public class SendMessageDialog extends AppCompatDialog {
         String message = messageText.getText().toString();
         boolean hasError = false;
         if (TextUtils.isEmpty(user)) {
-            userText.setError(getContext().getString(R.string.required_field));
+            userHint.setError(getContext().getString(R.string.required_field));
             hasError = true;
         }
         if (TextUtils.isEmpty(subject)) {
-            subjectText.setError(getContext().getString(R.string.required_field));
+            subjectHint.setError(getContext().getString(R.string.required_field));
             hasError = true;
         }
         if (TextUtils.isEmpty(message)) {
-            messageText.setError(getContext().getString(R.string.required_field));
+            messageHint.setError(getContext().getString(R.string.required_field));
             hasError = true;
         }
         if (subject.length() > 50 ) {
-            subjectText.setError(getContext().getString(R.string.too_long));
+            subjectHint.setError(getContext().getString(R.string.too_long));
             hasError = true;
         }
         if (!hasError) {

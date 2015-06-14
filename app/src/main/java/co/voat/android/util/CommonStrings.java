@@ -17,4 +17,20 @@ public class CommonStrings {
         }
         return in;
     }
+
+    private static String self;
+    public static String self(Context context) {
+        if (self == null) {
+            self = context.getString(R.string.self);
+        }
+        return self;
+    }
+
+    private static String dot;
+    public static String dot(Context context) {
+        if (dot == null) {
+            dot = context.getString(R.string.dot);
+        }
+        return dot;
+    }
 }

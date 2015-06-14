@@ -1,10 +1,15 @@
 package co.voat.android.dialogs;
 
 import android.content.Context;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatDialog;
+import android.text.InputType;
 import android.text.TextUtils;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+
+import java.util.regex.Pattern;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -23,16 +28,28 @@ import timber.log.Timber;
  */
 public class SubmissionDialog extends AppCompatDialog {
 
-    private static final int MODE_TEXT = 0;
-    private static final int MODE_LINK = 1;
+    public static final int MODE_TEXT = 0;
+    public static final int MODE_LINK = 1;
 
+    public interface OnSubmissionListener {
+        void onSubmitted();
+    }
+    OnSubmissionListener listener;
+
+    @InjectView(R.id.subverse_hint)
+    TextInputLayout subverseHint;
     @InjectView(R.id.subverse)
     EditText subverseText;
+    @InjectView(R.id.title_hint)
+    TextInputLayout titleHint;
     @InjectView(R.id.title)
     EditText titleText;
+    @InjectView(R.id.text_hint)
+    TextInputLayout textHint;
     @InjectView(R.id.text)
     EditText textText;
 
+    private static Pattern urlPattern = Patterns.WEB_URL;
     private int mode;
 
     private Callback<SubmissionResponse> postSubmissionCallback = new Callback<SubmissionResponse>() {
@@ -40,6 +57,9 @@ public class SubmissionDialog extends AppCompatDialog {
         public void success(SubmissionResponse submissionResponse, Response response) {
             if (submissionResponse.success) {
                 Timber.d("Post was successful");
+                if (listener != null) {
+                    listener.onSubmitted();
+                }
                 dismiss();
             }
         }
@@ -57,22 +77,32 @@ public class SubmissionDialog extends AppCompatDialog {
         String text = textText.getText().toString();
         boolean hasError = false;
         if (TextUtils.isEmpty(subverse)) {
-            subverseText.setError(getContext().getString(R.string.required_field));
+            subverseHint.setError(getContext().getString(R.string.required_field));
             hasError = true;
         }
         if (TextUtils.isEmpty(title)) {
-            titleText.setError(getContext().getString(R.string.required_field));
+            titleHint.setError(getContext().getString(R.string.required_field));
             hasError = true;
         }
         if (title.length() < 5 ) {
-            titleText.setError(getContext().getString(R.string.too_short));
+            titleHint.setError(getContext().getString(R.string.too_short));
             hasError = true;
         }
+        if (mode == MODE_LINK) {
+            if (!urlPattern.matcher(text).matches() || !text.startsWith("http")
+                || !text.startsWith("ftp")) {
+                textHint.setError(getContext().getString(R.string.not_a_valid_url));
+                hasError = true;
+            }
+        }
         if (!hasError) {
-            SubmissionBody request = new SubmissionBody.Builder(title)
-                    .setContent(text)
-                    .build();
-            VoatClient.instance().postSubmission(subverse, request, postSubmissionCallback);
+            SubmissionBody.Builder request = new SubmissionBody.Builder(title);
+            if (mode == MODE_TEXT) {
+                request.setContent(text);
+            } else {
+                request.setUrl(text);
+            }
+            VoatClient.instance().postSubmission(subverse, request.build(), postSubmissionCallback);
         }
     }
 
@@ -88,15 +118,25 @@ public class SubmissionDialog extends AppCompatDialog {
     }
 
     public void setMode(int mode) {
+        String hint;
         switch (mode) {
             case MODE_LINK:
-                textText.setHint(R.string.url);
+                hint = getContext().getString(R.string.url);
+                textText.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
                 break;
             case MODE_TEXT:
             default:
-                textText.setHint(R.string.text);
+                hint = getContext().getString(R.string.text);
+                textText.setInputType(InputType.TYPE_TEXT_FLAG_CAP_SENTENCES
+                        |InputType.TYPE_TEXT_FLAG_AUTO_CORRECT
+                        |InputType.TYPE_TEXT_FLAG_MULTI_LINE);
                 break;
         }
+        textHint.setHint(hint);
         this.mode = mode;
+    }
+
+    public void setOnSubmissionListener(OnSubmissionListener listener) {
+        this.listener = listener;
     }
 }

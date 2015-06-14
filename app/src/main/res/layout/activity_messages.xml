@@ -30,13 +30,14 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end|bottom"
         android:layout_margin="@dimen/padding_large"
-        app:elevation="@dimen/elevation_default"
-        android:src="@drawable/ic_send" />
+        app:fab_colorNormal="?attr/colorPrimary"
+        app:fab_colorPressed="?attr/colorPrimaryDark"
+        app:fab_icon="@drawable/ic_send"/>
 
 </android.support.design.widget.CoordinatorLayout>

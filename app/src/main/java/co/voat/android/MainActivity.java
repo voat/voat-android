@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -21,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.List;
 
@@ -58,6 +60,8 @@ public class MainActivity extends BaseActivity {
     ImageView headerImage;
     @InjectView(R.id.nav_header_username)
     TextView headerUsername;
+    @InjectView(R.id.coordinator_root)
+    View coordinatorRoot;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.subverses_spinner)
@@ -67,11 +71,26 @@ public class MainActivity extends BaseActivity {
     SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.list)
     RecyclerView list;
+    @InjectView(R.id.fab)
+    FloatingActionsMenu fab;
 
-    @OnClick(R.id.fab)
-    void onClickAdd(View v) {
-        new SubmissionDialog(this).show();
+    @OnClick(R.id.fab_submit_text)
+    void onSubmitText(View v) {
+        submissionDialog = new SubmissionDialog(this);
+        submissionDialog.setMode(SubmissionDialog.MODE_TEXT);
+        submissionDialog.setOnSubmissionListener(submissionListener);
+        fab.collapse();
+        submissionDialog.show();
     }
+    @OnClick(R.id.fab_submit_link)
+    void onSubmitLink(View v) {
+        submissionDialog = new SubmissionDialog(this);
+        submissionDialog.setMode(SubmissionDialog.MODE_LINK);
+        submissionDialog.setOnSubmissionListener(submissionListener);
+        fab.collapse();
+        submissionDialog.show();
+    }
+    SubmissionDialog submissionDialog;
 
     private final Toolbar.OnMenuItemClickListener menuItemClickListener = new Toolbar.OnMenuItemClickListener() {
         @Override
@@ -143,11 +162,21 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    private final SubmissionDialog.OnSubmissionListener submissionListener = new SubmissionDialog.OnSubmissionListener() {
+        @Override
+        public void onSubmitted() {
+            Snackbar.make(coordinatorRoot, getString(R.string.submission_successfully_posted), Snackbar.LENGTH_SHORT)
+                    .show();
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
         ButterKnife.inject(this);
+        submissionDialog = new SubmissionDialog(this);
+        submissionDialog.setOnSubmissionListener(submissionListener);
         setupToolbar();
         setupDrawer();
         subversesSpinnerAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, VoatClient.getDefaultSubverses());

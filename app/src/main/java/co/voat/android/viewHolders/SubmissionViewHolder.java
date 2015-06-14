@@ -56,8 +56,12 @@ public class SubmissionViewHolder extends RecyclerView.ViewHolder {
         sourceText.append(" " + CommonStrings.in(itemView.getContext()) + " ");
         sourceText.append(ColorUtils.colorWords(submission.getSubverse(), CommonColors.colorPrimary(itemView.getContext())));
         titleText.setText(submission.getTitle());
-        originText.setText((TextUtils.isEmpty(submission.getUrl()) ? "" : UrlUtils.getBaseUrl(submission.getUrl())) + " "
-                + submission.getDate());
+        if (!TextUtils.isEmpty(submission.getUrl())) {
+            originText.setText(UrlUtils.getBaseUrl(submission.getUrl()));
+        } else {
+            originText.setText(CommonStrings.self(itemView.getContext()) + "." + submission.getSubverse());
+        }
+        originText.append(" " + CommonStrings.dot(itemView.getContext()) + " " + submission.getDate());
         if (TextUtils.isEmpty(submission.getThumbnail())) {
             image.setVisibility(View.GONE);
         } else {
