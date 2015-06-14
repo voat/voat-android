@@ -52,11 +52,11 @@ public class LoginDialog extends AppCompatDialog {
         String password = passwordEditText.getText().toString();
         boolean hasError = false;
         if (TextUtils.isEmpty(username)) {
-            usernameHint.setError("No!");
+            usernameHint.setError(getContext().getString(R.string.required_field));
             hasError = true;
         }
         if (TextUtils.isEmpty(password)) {
-            passwordHint.setError("No!");
+            passwordHint.setError(getContext().getString(R.string.required_field));
             hasError = true;
         }
         if (!hasError) {
@@ -101,6 +101,10 @@ public class LoginDialog extends AppCompatDialog {
         @Override
         public void failure(RetrofitError error) {
             Timber.e(error.toString());
+            User.setCurrentUser(null);
+            VoatPrefs.clearUser(getContext());
+            Toast.makeText(getContext(), getContext().getString(R.string.log_in_error), Toast.LENGTH_SHORT)
+                    .show();
         }
     };
 
