@@ -24,6 +24,9 @@ import butterknife.InjectView;
 import co.voat.android.data.Badge;
 import co.voat.android.data.User;
 import co.voat.android.events.LogoffEvent;
+import co.voat.android.util.ColorUtils;
+import co.voat.android.util.CommonColors;
+import co.voat.android.util.CommonStrings;
 import co.voat.android.viewHolders.BadgeViewHolder;
 
 /**
@@ -54,10 +57,8 @@ public class UserActivity extends BaseActivity {
     TextView bioText;
     @InjectView(R.id.user_member_time)
     TextView memberTimeText;
-    @InjectView(R.id.user_scp)
-    TextView scpText;
-    @InjectView(R.id.user_ccp)
-    TextView ccpText;
+    @InjectView(R.id.user_cp)
+    TextView cpText;
     @InjectView(R.id.badge_list)
     RecyclerView badgeList;
 
@@ -123,10 +124,13 @@ public class UserActivity extends BaseActivity {
         } else {
             bioText.setText(getString(R.string.error_no_bio));
         }
-        memberTimeText.setText(user.getRegistrationDate());
+        memberTimeText.setText(R.string.member_for);
+        memberTimeText.append(" " + user.getRegistrationDate());
 
-        scpText.setText(user.getSubmissionPoints().getSum() + "");
-        ccpText.setText(user.getCommentPoints().getSum() + "");
+        cpText.setText(getString(R.string.cp) + " ");
+        cpText.append(ColorUtils.colorWords("" + user.getSubmissionPoints().getSum(), CommonColors.colorPrimary(UserActivity.this)));
+        cpText.append(" " + CommonStrings.dot(UserActivity.this) + " ");
+        cpText.append(ColorUtils.colorWords("" + user.getCommentPoints().getSum(), CommonColors.colorPrimary(UserActivity.this)));
         //For testing...
         if (BuildConfig.DEBUG) {
             badgeList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

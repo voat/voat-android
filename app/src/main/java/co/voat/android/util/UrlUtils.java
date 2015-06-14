@@ -18,4 +18,14 @@ public class UrlUtils {
         }
         return "";
     }
+
+    public static boolean isImageLink(String link) {
+        link = link.toLowerCase();
+        if (link.endsWith(".png") || link.endsWith(".jpg") || link.endsWith(".jpeg")
+                || link.endsWith(".gif")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

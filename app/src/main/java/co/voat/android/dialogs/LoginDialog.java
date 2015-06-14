@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -77,6 +78,8 @@ public class LoginDialog extends AppCompatDialog {
         @Override
         public void failure(RetrofitError error) {
             Timber.e(error.toString());
+            Toast.makeText(getContext(), getContext().getString(R.string.log_in_error), Toast.LENGTH_SHORT)
+                    .show();
         }
     };
 

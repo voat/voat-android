@@ -71,6 +71,9 @@ public class VoatNavigationView extends NavigationView {
                         .load(R.drawable.goat)
                         .into(headerUserImage);
             }
+        } else {
+            headerUserImage.setImageDrawable(null);
+            headerUsername.setText(getContext().getString(R.string.log_in));
         }
     }
 

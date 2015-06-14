@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
@@ -67,6 +68,8 @@ public class SubmissionDialog extends AppCompatDialog {
         @Override
         public void failure(RetrofitError error) {
             Timber.e(error.toString());
+            Toast.makeText(getContext(), getContext().getString(R.string.submission_error), Toast.LENGTH_SHORT)
+                    .show();
         }
     };
 

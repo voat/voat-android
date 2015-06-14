@@ -32,9 +32,8 @@
     <string name="send">Send</string>
 
     <!-- User -->
-    <string name="member_for">Member for:</string>
-    <string name="SCP">SCP</string>
-    <string name="ccp">CCP</string>
+    <string name="member_for">Member for</string>
+    <string name="cp">CP</string>
 
     <!-- Drawer -->
     <string name="home">Home</string>
@@ -46,11 +45,13 @@
     <string name="error">Eeek! Voat is sinking!</string>
     <string name="error_no_bio">\"Aww snap, this user did not yet write their bio. If they did, it would show up here, you know.\"</string>
     <string name="required_field">This is required</string>
+    <string name="log_in_error">Error logging in</string>
     <string name="too_short">Too short</string>
     <string name="too_long">Too long</string>
     <string name="not_a_valid_url">Not a valid url</string>
     <string name="no_browser">Somehow you don\'t have a browser...</string>
     <string name="no_share">No app to share with</string>
+    <string name="submission_error">Submission did not work</string>
 
     <!-- Empty -->
     <string name="empty">Nothing to see here</string>
