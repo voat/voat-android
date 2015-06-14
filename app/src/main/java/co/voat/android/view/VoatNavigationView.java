@@ -19,6 +19,7 @@ import co.voat.android.data.User;
 import co.voat.android.events.LoginEvent;
 import co.voat.android.events.LogoffEvent;
 import co.voat.android.util.CommonColors;
+import co.voat.android.util.CommonDrawables;
 
 /**
  * So that we dont have navigation specific stuff all over our activities
@@ -58,6 +59,9 @@ public class VoatNavigationView extends NavigationView {
     }
 
     public void bindUser() {
+        Glide.with(getContext())
+                .load(CommonDrawables.getRandomHeader())
+                .into(headerImage);
         headerImage.setColorFilter(CommonColors.colorPrimary(getContext()), PorterDuff.Mode.MULTIPLY);
         User user = User.getCurrentUser();
         if (user != null) {

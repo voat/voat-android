@@ -31,6 +31,9 @@ import timber.log.Timber;
  */
 public class AboutActivity extends BaseActivity {
 
+    private static final String REPO_USER = "Jawnnypoo";
+    private static final String REPO_NAME = "voat-android";
+
     public static Intent newInstance(Context context) {
         Intent intent = new Intent(context, AboutActivity.class);
         return intent;
@@ -73,7 +76,7 @@ public class AboutActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(navigationClickListener);
         versionText.setText(BuildConfig.VERSION_NAME);
         physicsLayout.getPhysics().enableFling();
-        GithubClient.instance().contributors("Jawnnypoo", "voat-android", contributorResponseCallback);
+        GithubClient.instance().contributors(REPO_USER, REPO_NAME, contributorResponseCallback);
 
     }
 
@@ -84,7 +87,8 @@ public class AboutActivity extends BaseActivity {
                 .setFriction(0.0f)
                 .setRestitution(0.0f)
                 .build();
-        for (Contributor contributor : contributors) {
+        for (int i=0; i<contributors.size(); i++) {
+            Contributor contributor = contributors.get(i);
             CircleImageView imageView = new CircleImageView(this);
             FrameLayout.LayoutParams llp = new FrameLayout.LayoutParams(
                     getResources().getDimensionPixelSize(R.dimen.image_size),

@@ -26,6 +26,7 @@ import co.voat.android.data.User;
 import co.voat.android.events.LogoffEvent;
 import co.voat.android.util.ColorUtils;
 import co.voat.android.util.CommonColors;
+import co.voat.android.util.CommonDrawables;
 import co.voat.android.util.CommonStrings;
 import co.voat.android.viewHolders.BadgeViewHolder;
 
@@ -101,6 +102,9 @@ public class UserActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(navigationClickListener);
         toolbar.inflateMenu(R.menu.menu_user);
         toolbar.setOnMenuItemClickListener(menuItemClickListener);
+        Glide.with(this)
+                .load(CommonDrawables.getRandomHeader())
+                .into(backdrop);
         user = (User) getIntent().getSerializableExtra(EXTRA_USER);
         if (user == null) {
             user = User.getCurrentUser();

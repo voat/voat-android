@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:scaleType="fitXY"
         android:contentDescription="@null"
-        android:src="@drawable/header_image"
+        android:background="?attr/colorAccent"
         />
 
     <de.hdodenhof.circleimageview.CircleImageView
