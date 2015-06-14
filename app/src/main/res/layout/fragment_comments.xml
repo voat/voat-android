@@ -8,7 +8,9 @@
     <TextView
         android:id="@+id/submission_content"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/padding_default"
+        android:textSize="@dimen/text_size_normal"/>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/comment_list"

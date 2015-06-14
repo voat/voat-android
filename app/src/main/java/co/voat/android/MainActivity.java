@@ -11,6 +11,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.api.SubmissionsResponse;
+import co.voat.android.api.SubscriptionsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Submission;
 import co.voat.android.data.User;
@@ -37,7 +39,10 @@ import retrofit.RetrofitError;
 import retrofit.client.Response;
 import timber.log.Timber;
 
-
+/**
+ * The most main activity there ever were
+ * Created by Jawn on 6/10/2015.
+ */
 public class MainActivity extends BaseActivity {
 
     private static final String EXTRA_SELECTED_SUBVERSE = "extra_selected_subverse";
@@ -92,6 +97,8 @@ public class MainActivity extends BaseActivity {
         submissionDialog.show();
     }
     SubmissionDialog submissionDialog;
+
+    String selectedSubverse;
 
     private final Toolbar.OnMenuItemClickListener menuItemClickListener = new Toolbar.OnMenuItemClickListener() {
         @Override
@@ -150,6 +157,27 @@ public class MainActivity extends BaseActivity {
         }
     };
 
+    private final Callback<SubscriptionsResponse> subscriptionsResponseCallback = new Callback<SubscriptionsResponse>() {
+        @Override
+        public void success(SubscriptionsResponse subscriptionsResponse, Response response) {
+            if (subscriptionsResponse.success) {
+                //TODO filter to subverse subscriptions and add them here
+                subversesSpinnerAdapter = new ArrayAdapter<>(MainActivity.this,
+                        R.layout.support_simple_spinner_dropdown_item,
+                        VoatClient.getDefaultSubverses());
+                subversesSpinner.setAdapter(subversesSpinnerAdapter);
+                if (TextUtils.isEmpty(selectedSubverse)) {
+                    loadSubverse(subversesSpinnerAdapter.getItem(0));
+                }
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Timber.e(error.toString());
+        }
+    };
+
     private final SubmissionDialog.OnSubmissionListener submissionListener = new SubmissionDialog.OnSubmissionListener() {
         @Override
         public void onSubmitted() {
@@ -163,16 +191,27 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
         ButterKnife.inject(this);
+        selectedSubverse = getIntent().getStringExtra(EXTRA_SELECTED_SUBVERSE);
         submissionDialog = new SubmissionDialog(this);
         submissionDialog.setOnSubmissionListener(submissionListener);
         setupToolbar();
         setupDrawer();
-        subversesSpinnerAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, VoatClient.getDefaultSubverses());
-        subversesSpinner.setAdapter(subversesSpinnerAdapter);
-        subversesSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
+        setupSpinner();
+
+        // This is a hack seen here:
+        // http://stackoverflow.com/questions/2562248/how-to-keep-onitemselected-from-firing-off-on-a-newly-instantiated-spinner
+        subversesSpinner.post(new Runnable() {
+            @Override
+            public void run() {
+                subversesSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
+            }
+        });
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue));
         list.setLayoutManager(new LinearLayoutManager(this));
+        if (!TextUtils.isEmpty(selectedSubverse)) {
+            loadSubverse(selectedSubverse);
+        }
     }
 
     private void setupToolbar() {
@@ -186,6 +225,18 @@ public class MainActivity extends BaseActivity {
         //TODO set the proper tab as selected
         navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
         navigationView.setNavigationItemSelectedListener(navigationItemSelectedListener);
+    }
+
+    private void setupSpinner() {
+        if (User.getCurrentUser() == null) {
+            subversesSpinnerAdapter = new ArrayAdapter<>(this,
+                    R.layout.support_simple_spinner_dropdown_item,
+                    VoatClient.getDefaultSubverses());
+            subversesSpinner.setAdapter(subversesSpinnerAdapter);
+        } else {
+            VoatClient.instance().getUserSubscriptions(User.getCurrentUser().getUserName(),
+                    subscriptionsResponseCallback);
+        }
     }
 
     private void loadSubverse(String subverse) {
