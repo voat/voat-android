@@ -3,10 +3,12 @@ package co.voat.android;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,6 +23,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import co.voat.android.data.Badge;
 import co.voat.android.data.User;
+import co.voat.android.events.LogoffEvent;
 import co.voat.android.viewHolders.BadgeViewHolder;
 
 /**
@@ -67,6 +70,27 @@ public class UserActivity extends BaseActivity {
         }
     };
 
+    private final Toolbar.OnMenuItemClickListener menuItemClickListener = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.action_log_off:
+                    User.setCurrentUser(null);
+                    VoatPrefs.clearUser(UserActivity.this);
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            VoatApp.bus().post(new LogoffEvent());
+                        }
+                    }, 450);
+                    finish();
+                    return true;
+            }
+            return false;
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,20 +98,19 @@ public class UserActivity extends BaseActivity {
         ButterKnife.inject(this);
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(navigationClickListener);
+        toolbar.inflateMenu(R.menu.menu_user);
+        toolbar.setOnMenuItemClickListener(menuItemClickListener);
         user = (User) getIntent().getSerializableExtra(EXTRA_USER);
         if (user == null) {
             user = User.getCurrentUser();
         }
         bind(user);
-        Glide.with(this)
-                .load("http://i.imgur.com/wt4NRqA.jpg")
-                .into(backdrop);
     }
 
     private void bind(User user) {
         if (!TextUtils.isEmpty(user.getProfilePicture())) {
             Glide.with(this)
-                    .load("http://i.imgur.com/wt4NRqA.jpg")
+                    .load(user.getProfilePicture())
                     .into(userImage);
         } else {
             Glide.with(this)
@@ -102,8 +125,8 @@ public class UserActivity extends BaseActivity {
         }
         memberTimeText.setText(user.getRegistrationDate());
 
-        //scpText.setText(user.getSubmissionPoints().getSum() + "");
-        //ccpText.setText(user.getCommentPoints().getSum() + "");
+        scpText.setText(user.getSubmissionPoints().getSum() + "");
+        ccpText.setText(user.getCommentPoints().getSum() + "");
         //For testing...
         if (BuildConfig.DEBUG) {
             badgeList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));

@@ -8,6 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -29,16 +31,28 @@ public class SubmissionActivity extends BaseActivity {
         return intent;
     }
 
+    @InjectView(R.id.toolbar)
+    Toolbar toolbar;
     @InjectView(R.id.tabs)
     TabLayout tabLayout;
     @InjectView(R.id.viewpager)
     ViewPager viewPager;
+
+    private final View.OnClickListener navigationClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            finish();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submission);
         ButterKnife.inject(this);
+        toolbar.setTitle(getString(R.string.messages));
+        toolbar.setNavigationIcon(R.drawable.ic_back);
+        toolbar.setNavigationOnClickListener(navigationClickListener);
         Submission submission = (Submission) getIntent().getSerializableExtra(EXTRA_SUBMISSION);
         viewPager.setAdapter(new PostPagerAdapter(getSupportFragmentManager(), submission));
         tabLayout.setupWithViewPager(viewPager);

@@ -29,8 +29,6 @@ public class ImageActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.root)
-    View root;
     @InjectView(R.id.image)
     PhotoView image;
 

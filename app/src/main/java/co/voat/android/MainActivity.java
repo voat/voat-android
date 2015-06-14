@@ -11,17 +11,13 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
 import java.util.List;
@@ -54,14 +50,10 @@ public class MainActivity extends BaseActivity {
 
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
+    @InjectView(R.id.nav_header_root)
+    View navigationViewHeader;
     @InjectView(R.id.nav_view)
     NavigationView navigationView;
-    @InjectView(R.id.nav_header_image)
-    ImageView headerImage;
-    @InjectView(R.id.nav_header_username)
-    TextView headerUsername;
-    @InjectView(R.id.coordinator_root)
-    View coordinatorRoot;
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
     @InjectView(R.id.subverses_spinner)
@@ -74,6 +66,15 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.fab)
     FloatingActionsMenu fab;
 
+    @OnClick(R.id.nav_header_root)
+    void onNavHeaderClick(View v) {
+        if (User.getCurrentUser() != null) {
+            gotoUser();
+        } else {
+            new LoginDialog(MainActivity.this).show();
+        }
+        drawerLayout.closeDrawers();
+    }
     @OnClick(R.id.fab_submit_text)
     void onSubmitText(View v) {
         submissionDialog = new SubmissionDialog(this);
@@ -132,19 +133,6 @@ public class MainActivity extends BaseActivity {
         }
     };
 
-    private final View.OnClickListener onHeaderClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            //TODO login if not, user profile if so
-            if (User.getCurrentUser() != null) {
-                gotoUser();
-            } else {
-                new LoginDialog(MainActivity.this).show();
-            }
-            drawerLayout.closeDrawers();
-        }
-    };
-
     private final AdapterView.OnItemSelectedListener spinnerItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -165,7 +153,7 @@ public class MainActivity extends BaseActivity {
     private final SubmissionDialog.OnSubmissionListener submissionListener = new SubmissionDialog.OnSubmissionListener() {
         @Override
         public void onSubmitted() {
-            Snackbar.make(coordinatorRoot, getString(R.string.submission_successfully_posted), Snackbar.LENGTH_SHORT)
+            Snackbar.make(root, getString(R.string.submission_successfully_posted), Snackbar.LENGTH_SHORT)
                     .show();
         }
     };
@@ -198,19 +186,6 @@ public class MainActivity extends BaseActivity {
         //TODO set the proper tab as selected
         navigationView.getMenu().findItem(R.id.nav_home).setChecked(true);
         navigationView.setNavigationItemSelectedListener(navigationItemSelectedListener);
-        headerImage.setOnClickListener(onHeaderClickListener);
-        Glide.with(this)
-                .load("http://i.imgur.com/wt4NRqA.jpg")
-                .into(headerImage);
-        User user = User.getCurrentUser();
-        if (user != null) {
-            headerUsername.setText(user.getUserName());
-            if (!TextUtils.isEmpty(user.getProfilePicture())) {
-                Glide.with(this)
-                        .load(user.getProfilePicture())
-                        .into(headerImage);
-            }
-        }
     }
 
     private void loadSubverse(String subverse) {

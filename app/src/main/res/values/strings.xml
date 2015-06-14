@@ -7,6 +7,9 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
+    <string name="log_off">Log off</string>
+    <string name="successfully_logged_off">Successfully logged off</string>
+    <string name="successfully_logged_in">Successfully logged in</string>
 
     <!-- Submissions-->
     <string name="in">in</string>
@@ -41,7 +44,7 @@
 
     <!-- Error -->
     <string name="error">Eeek! Voat is sinking!</string>
-    <string name="error_no_bio">Aww snap, this user did not yet write their bio. If they did, it would show up here, you know.</string>
+    <string name="error_no_bio">\"Aww snap, this user did not yet write their bio. If they did, it would show up here, you know.\"</string>
     <string name="required_field">This is required</string>
     <string name="too_short">Too short</string>
     <string name="too_long">Too long</string>

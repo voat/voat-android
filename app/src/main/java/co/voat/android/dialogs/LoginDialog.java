@@ -1,6 +1,7 @@
 package co.voat.android.dialogs;
 
 import android.content.Context;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatDialog;
 import android.text.TextUtils;
 import android.view.View;
@@ -33,10 +34,16 @@ public class LoginDialog extends AppCompatDialog {
     private static final String PARAM_USERNAME = "&username=";
     private static final String PARAM_PASSWORD = "&password=";
 
+    @InjectView(R.id.username_hint)
+    TextInputLayout usernameHint;
     @InjectView(R.id.username)
     EditText usernameEditText;
+    @InjectView(R.id.password_hint)
+    TextInputLayout passwordHint;
     @InjectView(R.id.password)
     EditText passwordEditText;
+
+    AuthResponse auth;
 
     @OnClick(R.id.login)
     void onLoginClick(View v) {
@@ -44,11 +51,11 @@ public class LoginDialog extends AppCompatDialog {
         String password = passwordEditText.getText().toString();
         boolean hasError = false;
         if (TextUtils.isEmpty(username)) {
-            usernameEditText.setError("No!");
+            usernameHint.setError("No!");
             hasError = true;
         }
         if (TextUtils.isEmpty(password)) {
-            passwordEditText.setError("No!");
+            passwordHint.setError("No!");
             hasError = true;
         }
         if (!hasError) {
@@ -61,13 +68,10 @@ public class LoginDialog extends AppCompatDialog {
         @Override
         public void success(AuthResponse authResponse, Response response) {
             Timber.d("Login success");
+            auth = authResponse;
             User basicUser = new User(authResponse.userName, authResponse);
             User.setCurrentUser(basicUser);
-            VoatPrefs.putUser(getContext(), basicUser);
-            //TODO defer this till we get the full user and we can update the ui accordingly
-            VoatApp.bus().post(new LoginEvent());
             VoatClient.instance().getUserInfo(authResponse.userName, userResponseCallback);
-            dismiss();
         }
 
         @Override
@@ -79,8 +83,16 @@ public class LoginDialog extends AppCompatDialog {
     private final Callback<UserResponse> userResponseCallback = new Callback<UserResponse>() {
         @Override
         public void success(UserResponse userResponse, Response response) {
-            User.setCurrentUser(userResponse.data);
-
+            if (!userResponse.success) {
+                Timber.e(userResponse.error);
+                return;
+            }
+            User user = userResponse.data;
+            user.setAuthToken(auth);
+            User.setCurrentUser(user);
+            VoatPrefs.putUser(getContext(), user);
+            VoatApp.bus().post(new LoginEvent());
+            dismiss();
         }
 
         @Override
