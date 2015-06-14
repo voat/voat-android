@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <uk.co.senab.photoview.PhotoView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/image"
+        android:contentDescription="@null"
+        android:layout_gravity="center"
+        />
+
+
+
+    <LinearLayout
+        android:id="@+id/toolbar_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:id="@+id/upvote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_up"
+            android:background="?attr/actionBarItemBackground"/>
+
+        <ImageView
+            android:id="@+id/downvote"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_down"
+            android:background="?attr/actionBarItemBackground"/>
+
+        <ImageView
+            android:id="@+id/share"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_share"
+            android:background="?attr/actionBarItemBackground"/>
+
+        <ImageView
+            android:id="@+id/download"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_download"
+            android:background="?attr/actionBarItemBackground"/>
+
+        <ImageView
+            android:id="@+id/browser"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/ic_browser"
+            android:background="?attr/actionBarItemBackground"/>
+
+    </LinearLayout>
+
+
+</FrameLayout>

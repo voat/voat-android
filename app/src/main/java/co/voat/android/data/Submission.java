@@ -7,8 +7,10 @@ import java.io.Serializable;
  * Created by John on 6/11/2015.
  */
 //TODO parcelable instead
-public class Submission implements Serializable{
+public class Submission implements Serializable {
 
+    public static final int TYPE_SELF = 1;
+    public static final int TYPE_LINK = 2;
     public Submission() {}
 
     int id;

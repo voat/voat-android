@@ -3,29 +3,21 @@ package co.voat.android;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
-
-import java.util.List;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import co.voat.android.api.CommentsResponse;
-import co.voat.android.api.VoatClient;
-import co.voat.android.data.Comment;
 import co.voat.android.data.Submission;
-import co.voat.android.viewHolders.CommentViewHolder;
-import co.voat.android.viewHolders.SubmissionViewHolder;
-import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
-import timber.log.Timber;
+import co.voat.android.fragments.CommentFragment;
+import co.voat.android.fragments.WebFragment;
 
 /**
- * Created by Jawn on 6/11/2015.
+ * All the stuff
+ * Created by Jawn on 6/13/2015.
  */
 public class SubmissionActivity extends BaseActivity {
 
@@ -37,70 +29,75 @@ public class SubmissionActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.post_root)
-    View postRoot;
-    @InjectView(R.id.submission_content)
-    TextView submissionContentText;
-    @InjectView(R.id.comment_list)
-    RecyclerView commentList;
-
-    Submission submission;
+    @InjectView(R.id.tabs)
+    TabLayout tabLayout;
+    @InjectView(R.id.viewpager)
+    ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_detail);
+        setContentView(R.layout.activity_submission);
         ButterKnife.inject(this);
-        submission = (Submission) getIntent().getSerializableExtra(EXTRA_SUBMISSION);
-        SubmissionViewHolder holder = new SubmissionViewHolder(postRoot);
-        holder.bind(submission);
-        submissionContentText.setText(submission.getContent());
-        commentList.setLayoutManager(new LinearLayoutManager(this));
-        VoatClient.instance().getComments(submission.getSubverse(), submission.getId(), new Callback<CommentsResponse>() {
-            @Override
-            public void success(CommentsResponse commentsResponse, Response response) {
-                if (commentsResponse.success) {
-                    commentList.setAdapter(new CommentAdapter(commentsResponse.data));
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Timber.e(error.toString());
-            }
-        });
+        Submission submission = (Submission) getIntent().getSerializableExtra(EXTRA_SUBMISSION);
+        viewPager.setAdapter(new PostPagerAdapter(getSupportFragmentManager(), submission));
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-    public class CommentAdapter extends RecyclerView.Adapter<CommentViewHolder> {
+    public static class PostPagerAdapter extends FragmentStatePagerAdapter {
 
-        private List<Comment> mValues;
-
-        public Comment getValueAt(int position) {
-            return mValues.get(position);
+        Submission submission;
+        PostPagerAdapter(FragmentManager fm, Submission submission) {
+            super(fm);
+            this.submission = submission;
         }
 
-        public CommentAdapter(List<Comment> items) {
-            mValues = items;
+        /**
+         * Return the fragment page to be shown
+         */
+        @Override
+        public Fragment getItem(int position) {
+            switch (submission.getType()) {
+                case Submission.TYPE_LINK:
+                    if (position == 0) {
+                        return WebFragment.newInstance(submission.getUrl());
+                    } else {
+                        return CommentFragment.newInstance(submission);
+                    }
+                case Submission.TYPE_SELF:
+                    return CommentFragment.newInstance(submission);
+                default:
+                    return null;
+            }
         }
 
         @Override
-        public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            CommentViewHolder holder = CommentViewHolder.create(parent);
-            return holder;
+        public int getCount() {
+            switch (submission.getType()) {
+                case Submission.TYPE_LINK:
+                    return 2;
+                case Submission.TYPE_SELF:
+                    return 1;
+                default:
+                    return 1;
+            }
         }
 
         @Override
-        public void onBindViewHolder(final CommentViewHolder holder, int position) {
-            Comment submission = getValueAt(position);
-            holder.bind(submission);
-            holder.itemView.setTag(R.id.list_position, position);
+        public CharSequence getPageTitle(int position) {
+            switch (submission.getType()) {
+                case Submission.TYPE_LINK:
+                    if (position == 0) {
+                        return "Web";
+                    } else {
+                        return "Comments";
+                    }
+                case Submission.TYPE_SELF:
+                    return "Comments";
+                default:
+                    return null;
+            }
         }
 
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
     }
-
-
 }
