@@ -58,7 +58,7 @@
                     android:id="@+id/post_comments"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_drawer_messages"
+                    android:src="@drawable/ic_comment"
                     android:tint="?attr/colorPrimary"
                     android:background="?attr/actionBarItemBackground"/>
 
@@ -66,7 +66,7 @@
                     android:id="@+id/post_upvote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_up"
+                    android:src="@drawable/ic_upvote"
                     android:tint="?attr/colorPrimary"
                     android:background="?attr/actionBarItemBackground"/>
 
@@ -74,7 +74,7 @@
                     android:id="@+id/post_downvote"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_down"
+                    android:src="@drawable/ic_downvote"
                     android:tint="?attr/colorPrimary"
                     android:background="?attr/actionBarItemBackground"/>
 

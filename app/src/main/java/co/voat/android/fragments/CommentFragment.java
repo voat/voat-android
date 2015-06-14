@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
+import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,7 +66,12 @@ public class CommentFragment extends BaseFragment {
         submission = (Submission) getArguments().getSerializable(EXTRA_SUBMISSION);
         SubmissionViewHolder holder = new SubmissionViewHolder(postRoot);
         holder.bind(submission);
-        submissionContentText.setText(submission.getContent());
+        if (TextUtils.isEmpty(submission.getFormattedContent())) {
+            submissionContentText.setVisibility(View.GONE);
+        } else {
+            submissionContentText.setText(Html.fromHtml(submission.getFormattedContent()));
+            submissionContentText.setMovementMethod(LinkMovementMethod.getInstance());
+        }
         commentList.setLayoutManager(new LinearLayoutManager(getActivity()));
         VoatClient.instance().getComments(submission.getSubverse(), submission.getId(), new Callback<CommentsResponse>() {
             @Override
