@@ -1,6 +1,7 @@
 package co.voat.android.view;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
 import android.support.design.widget.NavigationView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -17,6 +18,7 @@ import co.voat.android.VoatApp;
 import co.voat.android.data.User;
 import co.voat.android.events.LoginEvent;
 import co.voat.android.events.LogoffEvent;
+import co.voat.android.util.CommonColors;
 
 /**
  * So that we dont have navigation specific stuff all over our activities
@@ -56,9 +58,7 @@ public class VoatNavigationView extends NavigationView {
     }
 
     public void bindUser() {
-        Glide.with(getContext())
-                .load(R.drawable.header)
-                .into(headerImage);
+        headerImage.setColorFilter(CommonColors.colorPrimary(getContext()), PorterDuff.Mode.MULTIPLY);
         User user = User.getCurrentUser();
         if (user != null) {
             headerUsername.setText(user.getUserName());

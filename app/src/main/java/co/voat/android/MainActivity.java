@@ -133,6 +133,10 @@ public class MainActivity extends BaseActivity {
                     //TODO delay this until the drawer is closed
                     gotoSettings();
                     break;
+                case R.id.nav_about:
+                    //TODO delay this until the drawer is closed
+                    gotoAbout();
+                    break;
             }
             menuItem.setChecked(true);
             drawerLayout.closeDrawers();
@@ -265,7 +269,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 int position = (int) v.getTag(R.id.list_position);
-                gotoDetail(mValues.get(position));
+                gotoSubmission(mValues.get(position));
             }
         };
 

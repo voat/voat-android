@@ -50,7 +50,12 @@ public class BaseActivity extends AppCompatActivity {
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
-    protected void gotoDetail(Submission submission) {
+    protected void gotoAbout() {
+        startActivity(AboutActivity.newInstance(this));
+        overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
+    }
+
+    protected void gotoSubmission(Submission submission) {
         startActivity(SubmissionActivity.newInstance(this, submission));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }

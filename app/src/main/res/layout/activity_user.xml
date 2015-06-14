@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/detail_backdrop_height"
                 android:scaleType="fitXY"
-                android:background="@drawable/header"/>
+                android:background="@drawable/header_image"/>
 
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/user_image"

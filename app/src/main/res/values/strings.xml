@@ -40,6 +40,7 @@
     <string name="messages">Messages</string>
     <string name="my_subverses">My Subverses</string>
     <string name="settings">Settings</string>
+    <string name="about">About</string>
 
     <!-- Error -->
     <string name="error">Eeek! Voat is sinking!</string>

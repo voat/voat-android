@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary" />
+
+    <com.jawnnypoo.physicslayout.PhysicsFrameLayout
+        android:id="@+id/physics_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:gravityX="0"
+        app:gravityY="0">
+
+        <!-- The rest is added manually in code -->
+        <TextView
+            android:id="@+id/version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_default"
+            android:textSize="@dimen/text_size_large"
+            android:layout_gravity="bottom"/>
+
+    </com.jawnnypoo.physicslayout.PhysicsFrameLayout>
+
+</LinearLayout>
