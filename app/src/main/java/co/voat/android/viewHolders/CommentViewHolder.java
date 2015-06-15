@@ -2,6 +2,7 @@ package co.voat.android.viewHolders;
 
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +40,7 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
     public void bind(Comment comment) {
         scoreText.setText(comment.getUpVotes() + "");
         contentText.setText(Html.fromHtml(comment.getFormattedContent()));
+        contentText.setMovementMethod(LinkMovementMethod.getInstance());
         authorText.setText(comment.getUserName());
     }
 }

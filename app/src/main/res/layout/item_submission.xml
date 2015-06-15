@@ -39,7 +39,7 @@
                 android:id="@+id/post_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="@dimen/text_size_large"
+                android:textSize="@dimen/text_size_normal"
                 android:textStyle="bold"/>
 
             <TextView
@@ -54,14 +54,30 @@
                 android:orientation="horizontal"
                 android:layout_gravity="right">
 
-                <ImageView
-                    android:id="@+id/post_comments"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_comment"
-                    android:tint="?attr/colorPrimary"
-                    android:background="?attr/actionBarItemBackground"/>
+                    android:orientation="vertical">
+                    <ImageView
+                        android:id="@+id/post_comments"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_comment"
+                        android:tint="?attr/colorPrimary"
+                        android:background="?attr/actionBarItemBackground"/>
+                    <TextView
+                        android:id="@+id/comments_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        />
+                </LinearLayout>
 
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
                 <ImageView
                     android:id="@+id/post_upvote"
                     android:layout_width="wrap_content"
@@ -69,6 +85,18 @@
                     android:src="@drawable/ic_upvote"
                     android:tint="?attr/colorPrimary"
                     android:background="?attr/actionBarItemBackground"/>
+                    <TextView
+                        android:id="@+id/upvote_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        />
+                    </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
                 <ImageView
                     android:id="@+id/post_downvote"
@@ -77,6 +105,15 @@
                     android:src="@drawable/ic_downvote"
                     android:tint="?attr/colorPrimary"
                     android:background="?attr/actionBarItemBackground"/>
+
+                    <TextView
+                        android:id="@+id/downvote_count"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        />
+
+                    </LinearLayout>
 
             </LinearLayout>
 

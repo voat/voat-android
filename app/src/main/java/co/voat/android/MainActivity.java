@@ -215,6 +215,10 @@ public class MainActivity extends BaseActivity {
         list.setLayoutManager(new LinearLayoutManager(this));
         if (!TextUtils.isEmpty(selectedSubverse)) {
             loadSubverse(selectedSubverse);
+        } else {
+            if (User.getCurrentUser() == null) {
+                loadSubverse(subversesSpinnerAdapter.getItem(0));
+            }
         }
     }
 

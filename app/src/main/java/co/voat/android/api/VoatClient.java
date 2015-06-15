@@ -72,6 +72,14 @@ public class VoatClient {
                 Callback<CommentResponse> responseCallback
         );
 
+        @POST("/v1/v/{subverse}/{submissionID}/comment")
+        void postComment(
+                @Path("subverse") String subverse,
+                @Path("submissionID") int submissionID,
+                @Body CommentBody body,
+                Callback<CommentResponse> responseCallback
+        );
+
         @GET("/v1/u/preferences")
         void getUserPreferences(
                 Callback<UserPreferencesResponse> responseCallback

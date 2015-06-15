@@ -1,7 +1,9 @@
 package co.voat.android.viewHolders;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,12 +25,12 @@ import co.voat.android.util.UrlUtils;
  * Submissions, yay!
  * Created by Jawn on 6/11/2015.
  */
-public class SubmissionViewHolder extends RecyclerView.ViewHolder {
+public class CommentsHeaderViewHolder extends RecyclerView.ViewHolder {
 
-    public static SubmissionViewHolder create(ViewGroup parent) {
+    public static CommentsHeaderViewHolder create(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_submission, parent, false);
-        return new SubmissionViewHolder(view);
+                .inflate(R.layout.item_comments_header, parent, false);
+        return new CommentsHeaderViewHolder(view);
     }
 
     @InjectView(R.id.post_source)
@@ -39,20 +41,10 @@ public class SubmissionViewHolder extends RecyclerView.ViewHolder {
     public TextView originText;
     @InjectView(R.id.post_image)
     public ImageView image;
-    @InjectView(R.id.post_comments)
-    public View comments;
-    @InjectView(R.id.comments_count)
-    public TextView commentCount;
-    @InjectView(R.id.post_upvote)
-    public View upVote;
-    @InjectView(R.id.upvote_count)
-    public TextView upvoteCount;
-    @InjectView(R.id.post_downvote)
-    public View downVote;
-    @InjectView(R.id.downvote_count)
-    public TextView downvoteCount;
+    @InjectView(R.id.post_content)
+    public TextView contentText;
 
-    public SubmissionViewHolder(View view) {
+    public CommentsHeaderViewHolder(View view) {
         super(view);
         ButterKnife.inject(this, view);
     }
@@ -76,8 +68,13 @@ public class SubmissionViewHolder extends RecyclerView.ViewHolder {
                     .load(submission.getThumbnail())
                     .into(image);
         }
-        commentCount.setText("" + submission.getCommentCount());
-        upvoteCount.setText("" + submission.getUpVotes());
-        downvoteCount.setText("" + submission.getDownVotes());
+
+        if (!TextUtils.isEmpty(submission.getFormattedContent())) {
+            contentText.setText(Html.fromHtml(submission.getFormattedContent()));
+            contentText.setMovementMethod(LinkMovementMethod.getInstance());
+        } else {
+            contentText.setVisibility(View.GONE);
+        }
+
     }
 }

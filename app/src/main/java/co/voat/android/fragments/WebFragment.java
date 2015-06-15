@@ -69,6 +69,12 @@ public class WebFragment extends BaseFragment {
         ButterKnife.inject(this, view);
         url = getArguments().getString(EXTRA_URL);
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
+        //Fix so that the webview isnt zoomed in initially
+        //http://stackoverflow.com/questions/3808532/how-to-set-the-initial-zoom-width-for-a-webview
+        webView.getSettings().setLoadWithOverviewMode(true);
+        webView.getSettings().setUseWideViewPort(true);
+        webView.getSettings().setBuiltInZoomControls(true);
+        webView.getSettings().setDisplayZoomControls(false);
         webView.setWebViewClient(webViewClient);
         webView.loadUrl(url);
     }

@@ -2,6 +2,7 @@ package co.voat.android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.widget.LinearLayoutManager;
@@ -105,6 +106,7 @@ public class UserActivity extends BaseActivity {
         Glide.with(this)
                 .load(CommonDrawables.getRandomHeader())
                 .into(backdrop);
+        backdrop.setColorFilter(CommonColors.colorPrimary(this), PorterDuff.Mode.MULTIPLY);
         user = (User) getIntent().getSerializableExtra(EXTRA_USER);
         if (user == null) {
             user = User.getCurrentUser();

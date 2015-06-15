@@ -24,6 +24,7 @@
     <string name="submission_successfully_posted">Submission successfully posted</string>
     <string name="self">self</string>
     <string name="dot">•</string>
+    <string name="comment_posted">Comment posted</string>
 
     <!-- Messages -->
     <string name="user">User</string>
@@ -53,6 +54,8 @@
     <string name="no_browser">Somehow you don\'t have a browser...</string>
     <string name="no_share">No app to share with</string>
     <string name="submission_error">Submission did not work</string>
+    <string name="comment_error">Comment did not work</string>
+    <string name="must_be_logged_in">You must be logged in</string>
 
     <!-- Empty -->
     <string name="empty">Nothing to see here</string>
