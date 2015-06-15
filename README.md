@@ -16,6 +16,7 @@ You should be able to import the project directly to Android Studio by clicking 
 The following 3rd party libraries are used:
 
 - Retrofit (http://square.github.io/retrofit/)
+- OkHttp (http://square.github.io/okhttp/)
 - Otto (http://square.github.io/otto/)
 - Glide (https://github.com/bumptech/glide)
 - Butter Knife (http://jakewharton.github.io/butterknife/)
