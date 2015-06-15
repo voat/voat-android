@@ -12,10 +12,12 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
+import co.voat.android.VoatApp;
 import co.voat.android.api.CommentBody;
 import co.voat.android.api.CommentResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Submission;
+import co.voat.android.events.PostedCommentEvent;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -58,6 +60,7 @@ public class CommentDialog extends AppCompatDialog {
             if (simpleResponse.success) {
                 Toast.makeText(getContext(), R.string.comment_posted, Toast.LENGTH_SHORT)
                         .show();
+                VoatApp.bus().post(new PostedCommentEvent(submission));
                 dismiss();
             }
         }
