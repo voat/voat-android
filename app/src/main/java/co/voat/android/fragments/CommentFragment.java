@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -51,6 +52,43 @@ public class CommentFragment extends BaseFragment {
     }
 
     Submission submission;
+    ViewGroup commentMenu;
+
+    private final View.OnClickListener commentReplyListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(), "reply", Toast.LENGTH_SHORT)
+                    .show();
+            commentMenu.setVisibility(View.GONE);
+        }
+    };
+
+    private final View.OnClickListener upVoteCommentListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(), "upVote", Toast.LENGTH_SHORT)
+                    .show();
+            commentMenu.setVisibility(View.GONE);
+        }
+    };
+
+    private final View.OnClickListener downVoteCommentListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(), "downvote", Toast.LENGTH_SHORT)
+                    .show();
+            commentMenu.setVisibility(View.GONE);
+        }
+    };
+
+    private final View.OnClickListener profileListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(getActivity(), "Profile", Toast.LENGTH_SHORT)
+                    .show();
+            commentMenu.setVisibility(View.GONE);
+        }
+    };
 
     @Nullable
     @Override
@@ -62,13 +100,14 @@ public class CommentFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
+        //commentMenu = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.action_comments, null);
+        commentMenu = (ViewGroup) view.findViewById(R.id.action_root);
+        commentMenu.findViewById(R.id.action_reply).setOnClickListener(commentReplyListener);
+        commentMenu.findViewById(R.id.action_upvote).setOnClickListener(upVoteCommentListener);
+        commentMenu.findViewById(R.id.action_downvote).setOnClickListener(downVoteCommentListener);
+        commentMenu.findViewById(R.id.action_profile).setOnClickListener(profileListener);
+
         submission = (Submission) getArguments().getSerializable(EXTRA_SUBMISSION);
-//        if (TextUtils.isEmpty(submission.getFormattedContent())) {
-//            submissionContentText.setVisibility(View.GONE);
-//        } else {
-//            submissionContentText.setText(Html.fromHtml(submission.getFormattedContent()));
-//            submissionContentText.setMovementMethod(LinkMovementMethod.getInstance());
-//        }
         commentList.setLayoutManager(new LinearLayoutManager(getActivity()));
         VoatClient.instance().getComments(submission.getSubverse(), submission.getId(), new Callback<CommentsResponse>() {
             @Override
@@ -104,14 +143,22 @@ public class CommentFragment extends BaseFragment {
             this.submission = submission;
         }
 
+        private final View.OnLongClickListener onCommentLongClick = new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                commentMenu.setVisibility(View.VISIBLE);
+                return true;
+            }
+        };
+
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             if (viewType == TYPE_HEADER) {
-                //inflate your layout and pass it to view holder
                 return CommentsHeaderViewHolder.create(parent);
             } else if (viewType == TYPE_COMMENT) {
-                //inflate your layout and pass it to view holder
-                return CommentViewHolder.create(parent);
+                RecyclerView.ViewHolder holder = CommentViewHolder.create(parent);
+                holder.itemView.setOnLongClickListener(onCommentLongClick);
+                return holder;
             }
             throw new IllegalArgumentException("No view type matches");
         }

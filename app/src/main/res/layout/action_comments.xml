@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/action_root"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/action_reply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_comment"
+        android:tint="?attr/colorPrimary"/>
+
+    <ImageView
+        android:id="@+id/action_profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_profile"
+        android:tint="?attr/colorPrimary"/>
+
+    <ImageView
+        android:id="@+id/action_upvote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_upvote"
+        android:tint="?attr/colorPrimary"/>
+
+    <ImageView
+        android:id="@+id/action_downvote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_downvote"
+        android:tint="?attr/colorPrimary"/>
+
+</LinearLayout>

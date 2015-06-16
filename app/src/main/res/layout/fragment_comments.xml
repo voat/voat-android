@@ -21,4 +21,7 @@
         app:fab_colorPressed="?attr/colorPrimaryDark"
         app:fab_icon="@drawable/ic_comment"/>
 
+    <include layout="@layout/action_comments"
+        android:visibility="gone"/>
+
 </FrameLayout>
