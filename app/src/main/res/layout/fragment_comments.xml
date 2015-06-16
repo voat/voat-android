@@ -19,6 +19,6 @@
         android:layout_margin="@dimen/padding_large"
         app:fab_colorNormal="?attr/colorPrimary"
         app:fab_colorPressed="?attr/colorPrimaryDark"
-        app:fab_icon="@drawable/ic_send"/>
+        app:fab_icon="@drawable/ic_comment"/>
 
 </FrameLayout>

@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
@@ -29,8 +30,10 @@ import butterknife.OnClick;
 import co.voat.android.api.SubmissionsResponse;
 import co.voat.android.api.SubscriptionsResponse;
 import co.voat.android.api.VoatClient;
+import co.voat.android.api.VoteResponse;
 import co.voat.android.data.Submission;
 import co.voat.android.data.User;
+import co.voat.android.data.Vote;
 import co.voat.android.dialogs.LoginDialog;
 import co.voat.android.dialogs.SubmissionDialog;
 import co.voat.android.viewHolders.SubmissionViewHolder;
@@ -285,6 +288,46 @@ public class MainActivity extends BaseActivity {
             }
         };
 
+        private final Callback<VoteResponse> voteResponseCallback = new Callback<VoteResponse>() {
+            @Override
+            public void success(VoteResponse voteResponse, Response response) {
+                if (voteResponse.success && voteResponse.data.success) {
+                    Toast.makeText(MainActivity.this, getString(R.string.vote_cast), Toast.LENGTH_SHORT)
+                            .show();
+                } else {
+                    Toast.makeText(MainActivity.this, voteResponse.data.message, Toast.LENGTH_SHORT)
+                            .show();
+                }
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+                Timber.e(error.toString());
+                Toast.makeText(MainActivity.this, getString(R.string.error), Toast.LENGTH_SHORT)
+                        .show();
+            }
+        };
+
+        private final View.OnClickListener onUpvoteClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = (int) v.getTag(R.id.list_position);
+                VoatClient.instance().postVote(Vote.VOTE_SUBMISSION,
+                        mValues.get(position).getId(),
+                        Vote.VOTE_UP, "", voteResponseCallback);
+            }
+        };
+
+        private final View.OnClickListener onDownvoteClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int position = (int) v.getTag(R.id.list_position);
+                VoatClient.instance().postVote(Vote.VOTE_SUBMISSION,
+                        mValues.get(position).getId(),
+                        Vote.VOTE_DOWN, "", voteResponseCallback);
+            }
+        };
+
         private List<Submission> mValues;
 
         public Submission getValueAt(int position) {
@@ -301,6 +344,8 @@ public class MainActivity extends BaseActivity {
             holder.itemView.setOnClickListener(onItemClickListener);
             holder.comments.setOnClickListener(onItemClickListener);
             holder.image.setOnClickListener(onImageClickListener);
+            holder.upVote.setOnClickListener(onUpvoteClickListener);
+            holder.downVote.setOnClickListener(onDownvoteClickListener);
             return holder;
         }
 
@@ -311,6 +356,8 @@ public class MainActivity extends BaseActivity {
             holder.itemView.setTag(R.id.list_position, position);
             holder.comments.setTag(R.id.list_position, position);
             holder.image.setTag(R.id.list_position, position);
+            holder.upVote.setTag(R.id.list_position, position);
+            holder.downVote.setTag(R.id.list_position, position);
         }
 
         @Override

@@ -122,6 +122,15 @@ public class VoatClient {
                 Callback<SimpleResponse> responseCallback
         );
 
+        @POST("/v1/vote/{type}/{id}/{vote}")
+        void postVote(
+                @Path("type") String type,
+                @Path("id") int id,
+                @Path("vote") int vote,
+                @Body String ignoreThisCauseRetrofitWontAcceptPostWithNoBody,
+                Callback<VoteResponse> responseCallback
+        );
+
         //Not yet
 //        @GET("/u/saved")
 //        void getUserSaved(

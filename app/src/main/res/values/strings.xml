@@ -13,6 +13,7 @@
 
     <!-- Submissions-->
     <string name="in">in</string>
+    <string name="vote_cast">Vote cast</string>
 
     <!-- Submission-->
     <string name="subverse">Subverse</string>
