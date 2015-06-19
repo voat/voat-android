@@ -71,4 +71,8 @@
     <!-- Empty -->
     <string name="empty">Nothing to see here</string>
 
+    <!-- Muzei -->
+    <string name="source_name">Voat</string>
+    <string name="source_description">Choose subverses from Voat</string>
+
 </resources>

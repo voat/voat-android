@@ -39,4 +39,5 @@ dependencies {
     compile 'com.getbase:floatingactionbutton:1.9.1'
     compile 'com.github.chrisbanes.photoview:library:1.2.3'
     compile 'com.jawnnypoo:physicslayout:1.0.0'
+    compile 'com.google.android.apps.muzei:muzei-api:2.0'
 }

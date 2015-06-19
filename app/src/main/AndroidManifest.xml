@@ -4,6 +4,10 @@
 
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <!-- Required by RemoteMuzeiArtSource -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
     <application
         android:name=".VoatApp"
         android:allowBackup="true"
@@ -26,6 +30,17 @@
         <activity android:name=".SubscriptionsActivity"/>
         <activity android:name=".MessagesActivity"/>
         <activity android:name=".AboutActivity"/>
+
+        <service android:name=".services.VoatArtSource"
+            android:label="@string/source_name"
+            android:description="@string/source_description"
+            android:icon="@drawable/ic_source">
+            <intent-filter>
+                <action android:name="com.google.android.apps.muzei.api.MuzeiArtSource" />
+            </intent-filter>
+            <meta-data android:name="color" android:value="@color/purple" />
+        </service>
+
     </application>
 
 </manifest>

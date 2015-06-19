@@ -24,11 +24,11 @@ import retrofit.mime.TypedString;
  */
 public class VoatClient {
     //Replace with your API_KEY
-    private static final String API_KEY_VALUE = "myUt2YVP/i8OKVovtTlOAQ==";
-    private static final String API_URL = "http://vout.co/api/";
-    private static final String FAKE_API_URL = "http://fakevout.azurewebsites.net/api/";
-    private static final String PARAM_API_KEY = "Voat-ApiKey";
-    private static final String PARAM_AUTHORIZATION_KEY = "Authorization";
+    public static final String API_KEY_VALUE = "myUt2YVP/i8OKVovtTlOAQ==";
+    public static final String API_URL = "http://vout.co/api/";
+    public static final String FAKE_API_URL = "http://fakevout.azurewebsites.net/api/";
+    public static final String PARAM_API_KEY = "Voat-ApiKey";
+    public static final String PARAM_AUTHORIZATION_KEY = "Authorization";
 
     private static Voat mVoat;
 
@@ -37,6 +37,11 @@ public class VoatClient {
         void getSubmissions(
                 @Path("subverse") String subverse,
                 Callback<SubmissionsResponse> responseCallback
+        );
+
+        @GET("/v1/v/{subverse}")
+        SubmissionsResponse getSubmissions(
+                @Path("subverse") String subverse
         );
 
         @POST("/v1/v/{subverse}")
