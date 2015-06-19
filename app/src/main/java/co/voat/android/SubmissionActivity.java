@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.squareup.otto.Subscribe;
@@ -16,6 +17,10 @@ import com.squareup.otto.Subscribe;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import co.voat.android.data.Submission;
+import co.voat.android.events.ContextualCommentEvent;
+import co.voat.android.events.ContextualDownvoteEvent;
+import co.voat.android.events.ContextualProfileEvent;
+import co.voat.android.events.ContextualUpvoteEvent;
 import co.voat.android.events.ShowContextualMenuEvent;
 import co.voat.android.fragments.CommentFragment;
 import co.voat.android.fragments.WebFragment;
@@ -58,6 +63,26 @@ public class SubmissionActivity extends BaseActivity {
             toggleContextualToolbar();
         }
     };
+    private final Toolbar.OnMenuItemClickListener contextualMenuItemClickListener = new Toolbar.OnMenuItemClickListener() {
+        @Override
+        public boolean onMenuItemClick(MenuItem menuItem) {
+            switch (menuItem.getItemId()) {
+                case R.id.action_upvote:
+                    VoatApp.bus().post(new ContextualUpvoteEvent());
+                    return true;
+                case R.id.action_downvote:
+                    VoatApp.bus().post(new ContextualDownvoteEvent());
+                    return true;
+                case R.id.action_profile:
+                    VoatApp.bus().post(new ContextualProfileEvent());
+                    return true;
+                case R.id.action_comment:
+                    VoatApp.bus().post(new ContextualCommentEvent());
+                    return true;
+            }
+            return false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +95,7 @@ public class SubmissionActivity extends BaseActivity {
         contextualToolbar.setNavigationIcon(R.drawable.ic_back);
         contextualToolbar.setNavigationOnClickListener(contextualNavigationClickListener);
         contextualToolbar.inflateMenu(R.menu.menu_comments);
+        contextualToolbar.setOnMenuItemClickListener(contextualMenuItemClickListener);
         Submission submission = (Submission) getIntent().getSerializableExtra(EXTRA_SUBMISSION);
         viewPager.setAdapter(new PostPagerAdapter(getSupportFragmentManager(), submission));
         tabLayout.setupWithViewPager(viewPager);

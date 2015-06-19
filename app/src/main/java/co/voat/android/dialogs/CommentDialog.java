@@ -77,6 +77,7 @@ public class CommentDialog extends AppCompatDialog {
         super(context);
         setContentView(R.layout.dialog_comment);
         ButterKnife.inject(this);
+        commentHint.setErrorEnabled(true);
         this.submission = submission;
     }
 }

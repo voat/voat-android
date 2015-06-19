@@ -10,6 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -19,9 +22,15 @@ import co.voat.android.R;
 import co.voat.android.VoatApp;
 import co.voat.android.api.CommentsResponse;
 import co.voat.android.api.VoatClient;
+import co.voat.android.api.VoteResponse;
 import co.voat.android.data.Comment;
 import co.voat.android.data.Submission;
+import co.voat.android.data.Vote;
 import co.voat.android.dialogs.CommentDialog;
+import co.voat.android.events.ContextualCommentEvent;
+import co.voat.android.events.ContextualDownvoteEvent;
+import co.voat.android.events.ContextualProfileEvent;
+import co.voat.android.events.ContextualUpvoteEvent;
 import co.voat.android.events.ShowContextualMenuEvent;
 import co.voat.android.viewHolders.CommentViewHolder;
 import co.voat.android.viewHolders.CommentsHeaderViewHolder;
@@ -53,8 +62,11 @@ public class CommentFragment extends BaseFragment {
         new CommentDialog(getActivity(), submission).show();
     }
 
-    Submission submission;
     ViewGroup commentMenu;
+    CommentAdapter commentAdapter;
+
+    Submission submission;
+    EventReceiver eventReceiver;
 
     private final View.OnClickListener commentReplyListener = new View.OnClickListener() {
         @Override
@@ -111,11 +123,13 @@ public class CommentFragment extends BaseFragment {
 
         submission = (Submission) getArguments().getSerializable(EXTRA_SUBMISSION);
         commentList.setLayoutManager(new LinearLayoutManager(getActivity()));
+        commentAdapter = new CommentAdapter(submission);
+        commentList.setAdapter(commentAdapter);
         VoatClient.instance().getComments(submission.getSubverse(), submission.getId(), new Callback<CommentsResponse>() {
             @Override
             public void success(CommentsResponse commentsResponse, Response response) {
                 if (commentsResponse.success) {
-                    commentList.setAdapter(new CommentAdapter(submission, commentsResponse.data));
+                    commentAdapter.setData(commentsResponse.data);
                 }
             }
 
@@ -126,6 +140,77 @@ public class CommentFragment extends BaseFragment {
                         .show();
             }
         });
+        eventReceiver = new EventReceiver();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        VoatApp.bus().register(eventReceiver);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        VoatApp.bus().unregister(eventReceiver);
+    }
+
+    private class EventReceiver {
+
+        @Subscribe
+        public void onContextualComment(ContextualCommentEvent event) {
+            VoatApp.bus().post(new ShowContextualMenuEvent());
+        }
+
+        @Subscribe
+        public void onContextualUpvote(ContextualUpvoteEvent event) {
+            VoatApp.bus().post(new ShowContextualMenuEvent());
+            VoatClient.instance().postVote(Vote.VOTE_COMMENT,
+                    commentAdapter.getSelectedComment().getId(),
+                    Vote.VOTE_UP, "", new Callback<VoteResponse>() {
+                        @Override
+                        public void success(VoteResponse voteResponse, Response response) {
+                            Toast.makeText(getActivity(), getString(R.string.vote_cast), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Timber.e(error.toString());
+                            Toast.makeText(getActivity(), getString(R.string.comment_error), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+
+        }
+
+        @Subscribe
+        public void onContextualDownvote(ContextualDownvoteEvent event) {
+            VoatApp.bus().post(new ShowContextualMenuEvent());
+            VoatClient.instance().postVote(Vote.VOTE_COMMENT,
+                    commentAdapter.getSelectedComment().getId(),
+                    Vote.VOTE_UP, "", new Callback<VoteResponse>() {
+                        @Override
+                        public void success(VoteResponse voteResponse, Response response) {
+                            Toast.makeText(getActivity(), getString(R.string.vote_cast), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Timber.e(error.toString());
+                            Toast.makeText(getActivity(), getString(R.string.comment_error), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
+        }
+
+        @Subscribe
+        public void onContextualProfile(ContextualProfileEvent event) {
+            VoatApp.bus().post(new ShowContextualMenuEvent());
+            commentAdapter.getSelectedComment().getUserName();
+        }
+
     }
 
     public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -134,21 +219,32 @@ public class CommentFragment extends BaseFragment {
         private static final int TYPE_COMMENT = 1;
 
         private Submission submission;
-        private List<Comment> comments;
+        private ArrayList<Comment> comments = new ArrayList<>();
+        private Comment selectedComment;
 
         public Comment getValueAt(int position) {
             return comments.get(position-1);
         }
 
-        public CommentAdapter(Submission submission, List<Comment> items) {
-            comments = items;
+        public Comment getSelectedComment() {
+            return selectedComment;
+        }
+
+        public CommentAdapter(Submission submission) {
             this.submission = submission;
+        }
+
+        public void setData(List<Comment> newComments) {
+            comments.clear();
+            comments.addAll(newComments);
+            notifyDataSetChanged();
         }
 
         private final View.OnLongClickListener onCommentLongClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
                 VoatApp.bus().post(new ShowContextualMenuEvent());
+                selectedComment = getValueAt((int) v.getTag(R.id.list_position));
                 return true;
             }
         };
@@ -172,6 +268,7 @@ public class CommentFragment extends BaseFragment {
                 Comment comment = getValueAt(position);
                 ((CommentViewHolder) holder).bind(comment);
                 holder.itemView.setTag(R.id.list_position, position);
+                ((CommentViewHolder) holder).contentText.setTag(R.id.list_position, position);
             } else if (holder instanceof CommentsHeaderViewHolder) {
                 ((CommentsHeaderViewHolder) holder).bind(submission);
             }

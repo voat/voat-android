@@ -85,5 +85,8 @@ public class SendMessageDialog extends AppCompatDialog {
         super(context);
         setContentView(R.layout.dialog_send_message);
         ButterKnife.inject(this);
+        userHint.setErrorEnabled(true);
+        subjectHint.setErrorEnabled(true);
+        messageHint.setErrorEnabled(true);
     }
 }

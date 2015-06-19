@@ -21,12 +21,21 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <TextView
-        android:id="@+id/send"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/padding_medium"
-        android:gravity="center"
-        android:text="@string/send"
-        android:background="@drawable/selector_cool"/>
+        android:gravity="right">
+
+        <TextView
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/padding_medium"
+            android:gravity="center"
+            android:text="@string/send"
+            android:textAllCaps="true"
+            android:textColor="?attr/colorAccent"
+            android:textStyle="bold"
+            android:background="?attr/selectableItemBackground"/>
+    </LinearLayout>
 </LinearLayout>

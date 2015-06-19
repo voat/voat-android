@@ -1,5 +1,9 @@
 package co.voat.android.util;
 
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 
@@ -22,5 +26,16 @@ public class ColorUtils {
         SpannableString ss = new SpannableString(str);
         ss.setSpan(new ForegroundColorSpan(color), startIndex, endIndex, 0);
         return ss;
+    }
+
+    public static Drawable getColoredDrawable(Context context, int resId, int color) {
+        Drawable drawable;
+        if (Build.VERSION.SDK_INT >= 21) {
+            drawable = context.getResources().getDrawable(resId, context.getTheme());
+        } else {
+            drawable = context.getResources().getDrawable(resId);
+        }
+        DrawableCompat.setTint(drawable, color);
+        return drawable;
     }
 }

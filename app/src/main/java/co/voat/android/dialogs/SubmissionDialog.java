@@ -113,6 +113,9 @@ public class SubmissionDialog extends AppCompatDialog {
         super(context);
         setContentView(R.layout.dialog_submission);
         ButterKnife.inject(this);
+        subverseHint.setErrorEnabled(true);
+        titleHint.setErrorEnabled(true);
+        textHint.setErrorEnabled(true);
         setMode(MODE_TEXT);
     }
 
