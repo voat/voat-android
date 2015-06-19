@@ -19,6 +19,7 @@ import co.voat.android.api.UserResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.User;
 import co.voat.android.events.LoginEvent;
+import co.voat.android.util.IntentUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -45,6 +46,11 @@ public class LoginDialog extends AppCompatDialog {
     EditText passwordEditText;
 
     AuthResponse auth;
+
+    @OnClick(R.id.register)
+    void onRegisterClick(View v) {
+        IntentUtils.openBrowser(getContext(), getContext().getString(R.string.url_registration));
+    }
 
     @OnClick(R.id.login)
     void onLoginClick(View v) {
@@ -109,9 +115,15 @@ public class LoginDialog extends AppCompatDialog {
     };
 
     public LoginDialog(Context context) {
-        super(context);
+        this(context, 0);
+    }
+
+    public LoginDialog(Context context, int theme) {
+        super(context, theme);
         setContentView(R.layout.dialog_login);
         ButterKnife.inject(this);
+        usernameHint.setErrorEnabled(true);
+        passwordHint.setErrorEnabled(true);
     }
 
     private TypedString createLoginString(String username, String password) {

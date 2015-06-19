@@ -16,11 +16,13 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
+import co.voat.android.VoatApp;
 import co.voat.android.api.CommentsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Comment;
 import co.voat.android.data.Submission;
 import co.voat.android.dialogs.CommentDialog;
+import co.voat.android.events.ShowContextualMenuEvent;
 import co.voat.android.viewHolders.CommentViewHolder;
 import co.voat.android.viewHolders.CommentsHeaderViewHolder;
 import retrofit.Callback;
@@ -121,7 +123,7 @@ public class CommentFragment extends BaseFragment {
             public void failure(RetrofitError error) {
                 Timber.e(error.toString());
                 Snackbar.make(getActivity().getWindow().getDecorView(), getString(R.string.error), Snackbar.LENGTH_SHORT)
-                    .show();
+                        .show();
             }
         });
     }
@@ -146,7 +148,7 @@ public class CommentFragment extends BaseFragment {
         private final View.OnLongClickListener onCommentLongClick = new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                commentMenu.setVisibility(View.VISIBLE);
+                VoatApp.bus().post(new ShowContextualMenuEvent());
                 return true;
             }
         };
@@ -158,6 +160,7 @@ public class CommentFragment extends BaseFragment {
             } else if (viewType == TYPE_COMMENT) {
                 RecyclerView.ViewHolder holder = CommentViewHolder.create(parent);
                 holder.itemView.setOnLongClickListener(onCommentLongClick);
+                ((CommentViewHolder)holder).contentText.setOnLongClickListener(onCommentLongClick);
                 return holder;
             }
             throw new IllegalArgumentException("No view type matches");

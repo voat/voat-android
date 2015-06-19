@@ -26,11 +26,11 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
     }
 
     @InjectView(R.id.comment_score)
-    TextView scoreText;
+    public TextView scoreText;
     @InjectView(R.id.comment_content)
-    TextView contentText;
+    public TextView contentText;
     @InjectView(R.id.comment_author)
-    TextView authorText;
+    public TextView authorText;
 
     public CommentViewHolder(View view) {
         super(view);

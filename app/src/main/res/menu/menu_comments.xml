@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_upvote"
+        android:title="@string/upvote"
+        android:icon="@drawable/ic_upvote"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_downvote"
+        android:title="@string/downvote"
+        android:icon="@drawable/ic_downvote"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_profile"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_profile"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/action_comment"
+        android:title="@string/comment"
+        android:icon="@drawable/ic_comment"
+        app:showAsAction="always" />
+
+</menu>

@@ -11,9 +11,12 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import com.squareup.otto.Subscribe;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import co.voat.android.data.Submission;
+import co.voat.android.events.ShowContextualMenuEvent;
 import co.voat.android.fragments.CommentFragment;
 import co.voat.android.fragments.WebFragment;
 
@@ -33,15 +36,26 @@ public class SubmissionActivity extends BaseActivity {
 
     @InjectView(R.id.toolbar)
     Toolbar toolbar;
+    @InjectView(R.id.contextual_toolbar)
+    Toolbar contextualToolbar;
     @InjectView(R.id.tabs)
     TabLayout tabLayout;
     @InjectView(R.id.viewpager)
     ViewPager viewPager;
 
+    EventReceiver eventReceiver;
+    int actionBarSize;
+
     private final View.OnClickListener navigationClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             finish();
+        }
+    };
+    private final View.OnClickListener contextualNavigationClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            toggleContextualToolbar();
         }
     };
 
@@ -53,9 +67,43 @@ public class SubmissionActivity extends BaseActivity {
         toolbar.setTitle(getString(R.string.messages));
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(navigationClickListener);
+        contextualToolbar.setNavigationIcon(R.drawable.ic_back);
+        contextualToolbar.setNavigationOnClickListener(contextualNavigationClickListener);
+        contextualToolbar.inflateMenu(R.menu.menu_comments);
         Submission submission = (Submission) getIntent().getSerializableExtra(EXTRA_SUBMISSION);
         viewPager.setAdapter(new PostPagerAdapter(getSupportFragmentManager(), submission));
         tabLayout.setupWithViewPager(viewPager);
+        eventReceiver = new EventReceiver();
+        actionBarSize = getResources().getDimensionPixelSize(R.dimen.actionBarSize);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        VoatApp.bus().register(eventReceiver);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        VoatApp.bus().unregister(eventReceiver);
+    }
+
+    private void toggleContextualToolbar() {
+        if (contextualToolbar.getTranslationY() == 0) {
+            contextualToolbar.animate().translationY(-actionBarSize);
+        } else {
+            contextualToolbar.animate().translationY(0);
+        }
+    }
+
+    private class EventReceiver {
+
+        @Subscribe
+        public void onContextualMenu(ShowContextualMenuEvent event) {
+            toggleContextualToolbar();
+        }
+
     }
 
     public static class PostPagerAdapter extends FragmentStatePagerAdapter {

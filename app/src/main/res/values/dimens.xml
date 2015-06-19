@@ -22,4 +22,7 @@
 
     <dimen name="detail_backdrop_height">256dp</dimen>
     <dimen name="image_size">96dp</dimen>
+    <dimen name="actionBarSize">56dp</dimen>
+    <dimen name="actionBarSizeAndThenSome">64dp</dimen>
+    <dimen name="negativeActionBarSize">-56dp</dimen>
 </resources>

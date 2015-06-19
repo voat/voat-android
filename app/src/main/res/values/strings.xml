@@ -7,6 +7,7 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="log_in">Log in</string>
+    <string name="register">Register</string>
     <string name="log_off">Log off</string>
     <string name="successfully_logged_off">Successfully logged off</string>
     <string name="successfully_logged_in">Successfully logged in</string>
@@ -26,6 +27,12 @@
     <string name="self">self</string>
     <string name="dot">•</string>
     <string name="comment_posted">Comment posted</string>
+
+    <!-- Comments -->
+    <string name="upvote">Upvote</string>
+    <string name="downvote">Downvote</string>
+    <string name="profile">Profile</string>
+    <string name="comment">Comment</string>
 
     <!-- Messages -->
     <string name="user">User</string>
