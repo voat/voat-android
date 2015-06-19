@@ -3,19 +3,23 @@ package co.voat.android;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import co.voat.android.data.Submission;
 import co.voat.android.events.ContextualCommentEvent;
 import co.voat.android.events.ContextualDownvoteEvent;
@@ -23,7 +27,10 @@ import co.voat.android.events.ContextualProfileEvent;
 import co.voat.android.events.ContextualUpvoteEvent;
 import co.voat.android.events.ShowContextualMenuEvent;
 import co.voat.android.fragments.CommentFragment;
+import co.voat.android.fragments.ImageFragment;
 import co.voat.android.fragments.WebFragment;
+import co.voat.android.util.IntentUtils;
+import co.voat.android.util.UrlUtils;
 
 /**
  * All the stuff
@@ -47,7 +54,37 @@ public class SubmissionActivity extends BaseActivity {
     TabLayout tabLayout;
     @InjectView(R.id.viewpager)
     ViewPager viewPager;
+    @InjectView(R.id.submission_bar_root)
+    ViewGroup submissionBar;
 
+    @OnClick(R.id.upvote)
+    void onUpVote(View v) {
+
+    }
+    @OnClick(R.id.downvote)
+    void onDownVote(View v) {
+
+    }
+    @OnClick(R.id.share)
+    void onClickShare(View v) {
+        if (!IntentUtils.share(this, submission.getUrl())) {
+            Snackbar.make(root, getString(R.string.no_share), Snackbar.LENGTH_SHORT)
+                    .show();
+        }
+    }
+    @OnClick(R.id.download)
+    void onClickDownload(View v) {
+
+    }
+    @OnClick(R.id.browser)
+    void onClickBrowser(View v) {
+        if (!IntentUtils.openBrowser(this, submission.getUrl())) {
+            Snackbar.make(root, getString(R.string.no_browser), Snackbar.LENGTH_SHORT)
+                    .show();
+        }
+    }
+
+    Submission submission;
     EventReceiver eventReceiver;
     int actionBarSize;
 
@@ -96,11 +133,25 @@ public class SubmissionActivity extends BaseActivity {
         contextualToolbar.setNavigationOnClickListener(contextualNavigationClickListener);
         contextualToolbar.inflateMenu(R.menu.menu_comments);
         contextualToolbar.setOnMenuItemClickListener(contextualMenuItemClickListener);
-        Submission submission = (Submission) getIntent().getSerializableExtra(EXTRA_SUBMISSION);
-        viewPager.setAdapter(new PostPagerAdapter(getSupportFragmentManager(), submission));
+        submission = (Submission) getIntent().getSerializableExtra(EXTRA_SUBMISSION);
+        viewPager.setAdapter(new PostPagerAdapter(SubmissionActivity.this, getSupportFragmentManager(), submission));
         tabLayout.setupWithViewPager(viewPager);
         eventReceiver = new EventReceiver();
         actionBarSize = getResources().getDimensionPixelSize(R.dimen.actionBarSize);
+        setupSubmissionBar();
+    }
+
+    private void setupSubmissionBar() {
+        if (TextUtils.isEmpty(submission.getUrl())) {
+            submissionBar.findViewById(R.id.browser).setVisibility(View.GONE);
+            submissionBar.findViewById(R.id.download).setVisibility(View.GONE);
+            submissionBar.findViewById(R.id.share).setVisibility(View.GONE);
+            //TODO allow sharing if API eventually returns the original url of the post
+        } else {
+            if (!UrlUtils.isImageLink(submission.getUrl())) {
+                submissionBar.findViewById(R.id.download).setVisibility(View.GONE);
+            }
+        }
     }
 
     @Override
@@ -135,9 +186,15 @@ public class SubmissionActivity extends BaseActivity {
     public static class PostPagerAdapter extends FragmentStatePagerAdapter {
 
         Submission submission;
-        PostPagerAdapter(FragmentManager fm, Submission submission) {
+        String comments;
+        String web;
+        String image;
+        PostPagerAdapter(Context context, FragmentManager fm, Submission submission) {
             super(fm);
             this.submission = submission;
+            comments = context.getString(R.string.comments);
+            web = context.getString(R.string.web);
+            image = context.getString(R.string.image);
         }
 
         /**
@@ -148,7 +205,11 @@ public class SubmissionActivity extends BaseActivity {
             switch (submission.getType()) {
                 case Submission.TYPE_LINK:
                     if (position == 0) {
-                        return WebFragment.newInstance(submission.getUrl());
+                        if (UrlUtils.isImageLink(submission.getUrl())) {
+                            return ImageFragment.newInstance(submission);
+                        } else {
+                            return WebFragment.newInstance(submission.getUrl());
+                        }
                     } else {
                         return CommentFragment.newInstance(submission);
                     }
@@ -176,12 +237,15 @@ public class SubmissionActivity extends BaseActivity {
             switch (submission.getType()) {
                 case Submission.TYPE_LINK:
                     if (position == 0) {
-                        return "Web";
+                        if (UrlUtils.isImageLink(submission.getUrl())) {
+                            return image;
+                        }
+                        return web;
                     } else {
-                        return "Comments";
+                        return comments;
                     }
                 case Submission.TYPE_SELF:
-                    return "Comments";
+                    return comments;
                 default:
                     return null;
             }

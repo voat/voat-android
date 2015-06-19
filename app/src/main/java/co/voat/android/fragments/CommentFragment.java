@@ -3,6 +3,7 @@ package co.voat.android.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -54,6 +55,8 @@ public class CommentFragment extends BaseFragment {
         return fragment;
     }
 
+    @InjectView(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
     @InjectView(R.id.comment_list)
     RecyclerView commentList;
 
@@ -62,45 +65,31 @@ public class CommentFragment extends BaseFragment {
         new CommentDialog(getActivity(), submission).show();
     }
 
-    ViewGroup commentMenu;
+    private final SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
+        @Override
+        public void onRefresh() {
+            loadComments();
+        }
+    };
+
     CommentAdapter commentAdapter;
 
     Submission submission;
     EventReceiver eventReceiver;
 
-    private final View.OnClickListener commentReplyListener = new View.OnClickListener() {
+    private Callback<CommentsResponse> commentsResponseCallback = new Callback<CommentsResponse>() {
         @Override
-        public void onClick(View v) {
-            Toast.makeText(getActivity(), "reply", Toast.LENGTH_SHORT)
-                    .show();
-            commentMenu.setVisibility(View.GONE);
+        public void success(CommentsResponse commentsResponse, Response response) {
+            if (commentsResponse.success) {
+                commentAdapter.setData(commentsResponse.data);
+            }
         }
-    };
 
-    private final View.OnClickListener upVoteCommentListener = new View.OnClickListener() {
         @Override
-        public void onClick(View v) {
-            Toast.makeText(getActivity(), "upVote", Toast.LENGTH_SHORT)
+        public void failure(RetrofitError error) {
+            Timber.e(error.toString());
+            Snackbar.make(getActivity().getWindow().getDecorView(), getString(R.string.error), Snackbar.LENGTH_SHORT)
                     .show();
-            commentMenu.setVisibility(View.GONE);
-        }
-    };
-
-    private final View.OnClickListener downVoteCommentListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(getActivity(), "downvote", Toast.LENGTH_SHORT)
-                    .show();
-            commentMenu.setVisibility(View.GONE);
-        }
-    };
-
-    private final View.OnClickListener profileListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            Toast.makeText(getActivity(), "Profile", Toast.LENGTH_SHORT)
-                    .show();
-            commentMenu.setVisibility(View.GONE);
         }
     };
 
@@ -114,33 +103,19 @@ public class CommentFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
-        //commentMenu = (LinearLayout) getActivity().getLayoutInflater().inflate(R.layout.action_comments, null);
-        commentMenu = (ViewGroup) view.findViewById(R.id.action_root);
-        commentMenu.findViewById(R.id.action_reply).setOnClickListener(commentReplyListener);
-        commentMenu.findViewById(R.id.action_upvote).setOnClickListener(upVoteCommentListener);
-        commentMenu.findViewById(R.id.action_downvote).setOnClickListener(downVoteCommentListener);
-        commentMenu.findViewById(R.id.action_profile).setOnClickListener(profileListener);
 
         submission = (Submission) getArguments().getSerializable(EXTRA_SUBMISSION);
         commentList.setLayoutManager(new LinearLayoutManager(getActivity()));
         commentAdapter = new CommentAdapter(submission);
         commentList.setAdapter(commentAdapter);
-        VoatClient.instance().getComments(submission.getSubverse(), submission.getId(), new Callback<CommentsResponse>() {
-            @Override
-            public void success(CommentsResponse commentsResponse, Response response) {
-                if (commentsResponse.success) {
-                    commentAdapter.setData(commentsResponse.data);
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Timber.e(error.toString());
-                Snackbar.make(getActivity().getWindow().getDecorView(), getString(R.string.error), Snackbar.LENGTH_SHORT)
-                        .show();
-            }
-        });
+        swipeRefreshLayout.setOnRefreshListener(refreshListener);
         eventReceiver = new EventReceiver();
+        loadComments();
+    }
+
+    private void loadComments() {
+        swipeRefreshLayout.setRefreshing(true);
+        VoatClient.instance().getComments(submission.getSubverse(), submission.getId(), commentsResponseCallback);
     }
 
     @Override

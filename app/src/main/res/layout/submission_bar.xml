@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/submission_bar_root"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize"
@@ -14,6 +15,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_upvote"
+            android:contentDescription="@null"
             android:background="?attr/actionBarItemBackground"/>
 
         <ImageView
@@ -23,6 +25,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_downvote"
+            android:contentDescription="@null"
             android:background="?attr/actionBarItemBackground"/>
 
         <ImageView
@@ -32,6 +35,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_share"
+            android:contentDescription="@null"
             android:background="?attr/actionBarItemBackground"/>
 
         <ImageView
@@ -41,6 +45,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_download"
+            android:contentDescription="@null"
             android:background="?attr/actionBarItemBackground"/>
 
         <ImageView
@@ -50,6 +55,7 @@
             android:layout_weight="1"
             android:layout_gravity="center_vertical"
             android:src="@drawable/ic_browser"
+            android:contentDescription="@null"
             android:background="?attr/actionBarItemBackground"/>
 
 

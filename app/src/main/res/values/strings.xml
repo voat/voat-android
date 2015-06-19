@@ -27,6 +27,9 @@
     <string name="self">self</string>
     <string name="dot">•</string>
     <string name="comment_posted">Comment posted</string>
+    <string name="web">Web</string>
+    <string name="image">Image</string>
+    <string name="comments">Comments</string>
 
     <!-- Comments -->
     <string name="upvote">Upvote</string>

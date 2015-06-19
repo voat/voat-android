@@ -280,14 +280,6 @@ public class MainActivity extends BaseActivity {
             }
         };
 
-        private final View.OnClickListener onImageClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = (int) v.getTag(R.id.list_position);
-                gotoImage(mValues.get(position));
-            }
-        };
-
         private final Callback<VoteResponse> voteResponseCallback = new Callback<VoteResponse>() {
             @Override
             public void success(VoteResponse voteResponse, Response response) {
@@ -343,7 +335,6 @@ public class MainActivity extends BaseActivity {
             SubmissionViewHolder holder = SubmissionViewHolder.create(parent);
             holder.itemView.setOnClickListener(onItemClickListener);
             holder.comments.setOnClickListener(onItemClickListener);
-            holder.image.setOnClickListener(onImageClickListener);
             holder.upVote.setOnClickListener(onUpvoteClickListener);
             holder.downVote.setOnClickListener(onDownvoteClickListener);
             return holder;

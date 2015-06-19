@@ -7,10 +7,17 @@
     android:layout_height="match_parent"
     android:paddingBottom="@dimen/actionBarSize">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/comment_list"
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/comment_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <com.getbase.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
@@ -21,8 +28,5 @@
         app:fab_colorNormal="?attr/colorPrimary"
         app:fab_colorPressed="?attr/colorPrimaryDark"
         app:fab_icon="@drawable/ic_comment"/>
-
-    <include layout="@layout/action_comments"
-        android:visibility="gone"/>
 
 </FrameLayout>
