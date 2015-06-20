@@ -11,7 +11,6 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,6 +21,7 @@ import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -32,6 +32,7 @@ import co.voat.android.api.SubscriptionsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.api.VoteResponse;
 import co.voat.android.data.Submission;
+import co.voat.android.data.Subscription;
 import co.voat.android.data.User;
 import co.voat.android.data.Vote;
 import co.voat.android.dialogs.LoginDialog;
@@ -48,11 +49,8 @@ import timber.log.Timber;
  */
 public class MainActivity extends BaseActivity {
 
-    private static final String EXTRA_SELECTED_SUBVERSE = "extra_selected_subverse";
-
-    public static Intent newInstance(Context context, String selectedSubverse) {
+    public static Intent newInstance(Context context) {
         Intent intent = new Intent(context, MainActivity.class);
-        intent.putExtra(EXTRA_SELECTED_SUBVERSE, selectedSubverse);
         return intent;
     }
 
@@ -100,8 +98,6 @@ public class MainActivity extends BaseActivity {
         submissionDialog.show();
     }
     SubmissionDialog submissionDialog;
-
-    String selectedSubverse;
 
     private final Toolbar.OnMenuItemClickListener menuItemClickListener = new Toolbar.OnMenuItemClickListener() {
         @Override
@@ -173,7 +169,9 @@ public class MainActivity extends BaseActivity {
     private final SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            loadSubverse(subversesSpinnerAdapter.getItem(0));
+            if (subversesSpinnerAdapter != null && !subversesSpinnerAdapter.isEmpty()) {
+                loadSubverse(subversesSpinnerAdapter.getItem(0));
+            }
         }
     };
 
@@ -182,14 +180,37 @@ public class MainActivity extends BaseActivity {
         public void success(SubscriptionsResponse subscriptionsResponse, Response response) {
             if (subscriptionsResponse.success) {
                 //TODO filter to subverse subscriptions and add them here
+                ArrayList<String> subs = new ArrayList<>();
+                for (Subscription subscription : subscriptionsResponse.data) {
+                    if (subscription.getType() == Subscription.TYPE_SUBVERSE) {
+                        subs.add(subscription.getName());
+                    }
+                }
                 subversesSpinnerAdapter = new ArrayAdapter<>(MainActivity.this,
                         R.layout.support_simple_spinner_dropdown_item,
-                        VoatClient.getDefaultSubverses());
+                        subs.toArray(new String[subs.size()]));
                 subversesSpinner.setAdapter(subversesSpinnerAdapter);
-                if (TextUtils.isEmpty(selectedSubverse)) {
-                    loadSubverse(subversesSpinnerAdapter.getItem(0));
-                }
+                subversesSpinner.setVisibility(View.VISIBLE);
             }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Timber.e(error.toString());
+        }
+    };
+
+    private final Callback<List<String>> defaultSubversesResponseCallback = new Callback<List<String>>() {
+        @Override
+        public void success(List<String> defaultSubverses, Response response) {
+            if (defaultSubverses != null && !defaultSubverses.isEmpty()) {
+                subversesSpinnerAdapter = new ArrayAdapter<>(MainActivity.this,
+                        R.layout.support_simple_spinner_dropdown_item,
+                        defaultSubverses.toArray(new String[defaultSubverses.size()]));
+                subversesSpinner.setAdapter(subversesSpinnerAdapter);
+                subversesSpinner.setVisibility(View.VISIBLE);
+            }
+
         }
 
         @Override
@@ -211,7 +232,6 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
         ButterKnife.inject(this);
-        selectedSubverse = getIntent().getStringExtra(EXTRA_SELECTED_SUBVERSE);
         submissionDialog = new SubmissionDialog(this);
         submissionDialog.setOnSubmissionListener(submissionListener);
         setupToolbar();
@@ -229,13 +249,6 @@ public class MainActivity extends BaseActivity {
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue));
         list.setLayoutManager(new LinearLayoutManager(this));
-        if (!TextUtils.isEmpty(selectedSubverse)) {
-            loadSubverse(selectedSubverse);
-        } else {
-            if (User.getCurrentUser() == null) {
-                loadSubverse(subversesSpinnerAdapter.getItem(0));
-            }
-        }
     }
 
     private void setupToolbar() {
@@ -253,10 +266,7 @@ public class MainActivity extends BaseActivity {
 
     private void setupSpinner() {
         if (User.getCurrentUser() == null) {
-            subversesSpinnerAdapter = new ArrayAdapter<>(this,
-                    R.layout.support_simple_spinner_dropdown_item,
-                    VoatClient.getDefaultSubverses());
-            subversesSpinner.setAdapter(subversesSpinnerAdapter);
+            VoatClient.instance().getDefaultSubverses(defaultSubversesResponseCallback);
         } else {
             VoatClient.instance().getUserSubscriptions(User.getCurrentUser().getUserName(),
                     subscriptionsResponseCallback);

@@ -75,7 +75,8 @@ public class SubscriptionsActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 int position = (int) v.getTag(R.id.list_position);
-                gotoMain(mValues.get(position).getName());
+                //gotoMain(mValues.get(position).getName());
+                //TODO go to single Subverse screen
             }
         };
 

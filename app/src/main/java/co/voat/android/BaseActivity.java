@@ -40,11 +40,6 @@ public class BaseActivity extends AppCompatActivity {
         VoatApp.bus().unregister(eventReceiver);
     }
 
-    protected void gotoMain(String selectedSubmission) {
-        startActivity(MainActivity.newInstance(this, selectedSubmission));
-        overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
-    }
-
     protected void gotoSettings() {
         startActivity(SettingsActivity.newInstance(this));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);

@@ -148,6 +148,13 @@ public class VoatClient {
                 @Body TypedString auth,
                 Callback<AuthResponse> authResponseCallback
         );
+
+        //From deprecated API
+        @GET("/defaultsubverses")
+        void getDefaultSubverses(
+                Callback<List<String>> responseCallback
+        );
+
     }
 
     public static Voat instance() {
@@ -171,21 +178,5 @@ public class VoatClient {
                 request.addHeader(PARAM_AUTHORIZATION_KEY, "Bearer " + User.getCurrentUser().getAuthToken().accessToken);
             }
         }
-    }
-
-    //TODO make this a thing when it is added to the API
-    public static List<String> getDefaultSubverses() {
-        ArrayList<String> defaults = new ArrayList<>();
-        defaults.add("Api");
-        defaults.add("AskFakeVout");
-        defaults.add("Playground");
-        defaults.add("Test");
-        defaults.add("Universall");
-        defaults.add("funnystuff");
-        defaults.add("nsfw");
-        defaults.add("Anon");
-        defaults.add("MinCCP");
-        defaults.add("Private");
-        return defaults;
     }
 }
