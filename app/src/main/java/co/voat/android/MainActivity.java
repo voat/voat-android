@@ -127,21 +127,34 @@ public class MainActivity extends BaseActivity {
         public boolean onNavigationItemSelected(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.nav_my_subverse:
-                    gotoMySubscriptions();
+                    if (User.getCurrentUser() == null) {
+                        Toast.makeText(MainActivity.this, getString(R.string.must_be_logged_in), Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        gotoMySubscriptions();
+                        menuItem.setChecked(true);
+                    }
                     break;
                 case R.id.nav_messages:
-                    gotoMessages();
+                    if (User.getCurrentUser() == null) {
+                        Toast.makeText(MainActivity.this, getString(R.string.must_be_logged_in), Toast.LENGTH_SHORT)
+                                .show();
+                    } else {
+                        gotoMessages();
+                        menuItem.setChecked(true);
+                    }
                     break;
                 case R.id.nav_settings:
                     //TODO delay this until the drawer is closed
                     gotoSettings();
+                    menuItem.setChecked(true);
                     break;
                 case R.id.nav_about:
                     //TODO delay this until the drawer is closed
                     gotoAbout();
+                    menuItem.setChecked(true);
                     break;
             }
-            menuItem.setChecked(true);
             drawerLayout.closeDrawers();
             return true;
         }

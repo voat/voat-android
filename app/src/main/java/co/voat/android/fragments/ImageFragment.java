@@ -36,33 +36,6 @@ public class ImageFragment extends BaseFragment {
     @InjectView(R.id.image)
     PhotoView image;
 
-    @OnClick(R.id.upvote)
-    void onUpVote(View v) {
-
-    }
-    @OnClick(R.id.downvote)
-    void onDownVote(View v) {
-
-    }
-    @OnClick(R.id.share)
-    void onClickShare(View v) {
-        if (!IntentUtils.share(getActivity(), submission.getUrl())) {
-            Snackbar.make(root, getString(R.string.no_share), Snackbar.LENGTH_SHORT)
-                    .show();
-        }
-    }
-    @OnClick(R.id.download)
-    void onClickDownload(View v) {
-
-    }
-    @OnClick(R.id.browser)
-    void onClickBrowser(View v) {
-        if (!IntentUtils.openBrowser(getActivity(), submission.getUrl())) {
-            Snackbar.make(root, getString(R.string.no_browser), Snackbar.LENGTH_SHORT)
-                    .show();
-        }
-    }
-
     Submission submission;
 
     private final View.OnClickListener onImageClickListener = new View.OnClickListener() {

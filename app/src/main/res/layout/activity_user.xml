@@ -18,19 +18,20 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-            <ImageView
-                android:id="@+id/backdrop"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/detail_backdrop_height"
-                android:scaleType="fitXY"
-                android:background="?attr/colorAccent"/>
+                <ImageView
+                    android:id="@+id/backdrop"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/detail_backdrop_height"
+                    android:scaleType="fitXY"
+                    android:background="?attr/colorAccent"
+                    android:contentDescription="@null"/>
 
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/user_image"
-                android:layout_height="@dimen/image_size"
-                android:layout_width="@dimen/image_size"
-                android:layout_margin="@dimen/padding_default"
-                android:layout_gravity="bottom"/>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/user_image"
+                    android:layout_height="@dimen/image_size"
+                    android:layout_width="@dimen/image_size"
+                    android:layout_margin="@dimen/padding_default"
+                    android:layout_gravity="bottom"/>
             </FrameLayout>
 
             <TextView
@@ -65,7 +66,17 @@
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/badge_list"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="wrap_content"/>
+
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/viewpager"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"/>
 
         </LinearLayout>
 

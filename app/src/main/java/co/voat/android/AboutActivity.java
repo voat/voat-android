@@ -2,6 +2,7 @@ package co.voat.android;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -87,6 +88,7 @@ public class AboutActivity extends BaseActivity {
                 .setFriction(0.0f)
                 .setRestitution(0.0f)
                 .build();
+        int borderSize = getResources().getDimensionPixelSize(R.dimen.border_size);
         for (int i=0; i<contributors.size(); i++) {
             Contributor contributor = contributors.get(i);
             CircleImageView imageView = new CircleImageView(this);
@@ -94,6 +96,8 @@ public class AboutActivity extends BaseActivity {
                     getResources().getDimensionPixelSize(R.dimen.image_size),
                     getResources().getDimensionPixelSize(R.dimen.image_size));
             imageView.setLayoutParams(llp);
+            imageView.setBorderWidth(borderSize);
+            imageView.setBorderColor(Color.BLACK);
             Physics.setPhysicsConfig(imageView, config);
             physicsLayout.addView(imageView);
 

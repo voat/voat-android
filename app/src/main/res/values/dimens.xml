@@ -24,4 +24,5 @@
     <dimen name="image_size">96dp</dimen>
     <dimen name="actionBarSize">56dp</dimen>
     <dimen name="negativeActionBarSize">-56dp</dimen>
+    <dimen name="border_size">1dp</dimen>
 </resources>

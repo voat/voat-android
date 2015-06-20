@@ -13,6 +13,14 @@
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary" />
 
+    <TextView
+        android:id="@+id/contributors"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/padding_default"
+        android:text="@string/contributors"
+        android:textSize="@dimen/text_size_large"/>
+
     <com.jawnnypoo.physicslayout.PhysicsFrameLayout
         android:id="@+id/physics_layout"
         android:layout_width="match_parent"

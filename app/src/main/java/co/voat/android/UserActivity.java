@@ -1,10 +1,17 @@
 package co.voat.android;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -23,8 +30,14 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import co.voat.android.data.Badge;
+import co.voat.android.data.Message;
 import co.voat.android.data.User;
 import co.voat.android.events.LogoffEvent;
+import co.voat.android.fragments.CommentFragment;
+import co.voat.android.fragments.MessagesFragment;
+import co.voat.android.fragments.SubmissionsFragment;
+import co.voat.android.fragments.SubscriptionsFragment;
+import co.voat.android.fragments.UserCommentsFragment;
 import co.voat.android.util.ColorUtils;
 import co.voat.android.util.CommonColors;
 import co.voat.android.util.CommonDrawables;
@@ -63,6 +76,10 @@ public class UserActivity extends BaseActivity {
     TextView cpText;
     @InjectView(R.id.badge_list)
     RecyclerView badgeList;
+    @InjectView(R.id.tabs)
+    TabLayout tabLayout;
+    @InjectView(R.id.viewpager)
+    ViewPager messagesViewPager;
 
     User user;
 
@@ -78,16 +95,24 @@ public class UserActivity extends BaseActivity {
         public boolean onMenuItemClick(MenuItem menuItem) {
             switch (menuItem.getItemId()) {
                 case R.id.action_log_off:
-                    User.setCurrentUser(null);
-                    VoatPrefs.clearUser(UserActivity.this);
-                    final Handler handler = new Handler();
-                    handler.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            VoatApp.bus().post(new LogoffEvent());
-                        }
-                    }, 450);
-                    finish();
+                    new AlertDialog.Builder(UserActivity.this)
+                            .setMessage(getString(R.string.log_off_confirmation))
+                            .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    User.setCurrentUser(null);
+                                    VoatPrefs.clearUser(UserActivity.this);
+                                    final Handler handler = new Handler();
+                                    handler.postDelayed(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            VoatApp.bus().post(new LogoffEvent());
+                                        }
+                                    }, 450);
+                                    finish();
+                                }
+                            })
+                            .setNegativeButton(android.R.string.no, null)
+                            .show();
                     return true;
             }
             return false;
@@ -151,7 +176,8 @@ public class UserActivity extends BaseActivity {
                 badgeList.setVisibility(View.GONE);
             }
         }
-
+        messagesViewPager.setAdapter(new UserPagerAdapter(this, getSupportFragmentManager()));
+        tabLayout.setupWithViewPager(messagesViewPager);
     }
 
     private void addFakeBadge() {
@@ -188,5 +214,41 @@ public class UserActivity extends BaseActivity {
         public int getItemCount() {
             return mValues.size();
         }
+    }
+
+    public static class UserPagerAdapter extends FragmentStatePagerAdapter {
+
+        String[] titles;
+        UserPagerAdapter(Context context, FragmentManager fm) {
+            super(fm);
+            titles = context.getResources().getStringArray(R.array.user_sections);
+        }
+
+        /**
+         * Return the fragment page to be shown
+         */
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return UserCommentsFragment.newInstance();
+                case 1:
+                    return SubmissionsFragment.newInstance();
+                case 2:
+                    return SubscriptionsFragment.newInstance();
+            }
+            throw new RuntimeException("IDK WHAT YOU DID");
+        }
+
+        @Override
+        public int getCount() {
+            return titles.length;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return titles[position];
+        }
+
     }
 }

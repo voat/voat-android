@@ -9,6 +9,7 @@
     <string name="log_in">Log in</string>
     <string name="register">Register</string>
     <string name="log_off">Log off</string>
+    <string name="log_off_confirmation">Are you sure you want to log off?</string>
     <string name="successfully_logged_off">Successfully logged off</string>
     <string name="successfully_logged_in">Successfully logged in</string>
 
@@ -47,6 +48,13 @@
     <string name="member_for">Member for</string>
     <string name="cp">CP</string>
 
+    <string-array name="user_sections">
+        <item>Comments</item>
+        <item>Submissions</item>
+        <item>Subscriptions</item>
+    </string-array>
+
+
     <!-- Drawer -->
     <string name="home">Home</string>
     <string name="messages">Messages</string>
@@ -66,7 +74,7 @@
     <string name="no_share">No app to share with</string>
     <string name="submission_error">Submission did not work</string>
     <string name="comment_error">Comment did not work</string>
-    <string name="must_be_logged_in">You must be logged in</string>
+    <string name="must_be_logged_in">You\'ve got to log in first</string>
 
     <!-- Empty -->
     <string name="empty">Nothing to see here</string>
@@ -74,5 +82,8 @@
     <!-- Muzei -->
     <string name="source_name">Voat</string>
     <string name="source_description">Choose subverses from Voat</string>
+
+    <!-- About -->
+    <string name="contributors">Contributors:</string>
 
 </resources>
