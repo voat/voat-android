@@ -9,7 +9,7 @@ import co.voat.android.data.User;
 import timber.log.Timber;
 
 /**
- * Aaaaaap
+ * Aaaaaapp
  * Created by John on 6/11/2015.
  */
 public class VoatApp extends Application {

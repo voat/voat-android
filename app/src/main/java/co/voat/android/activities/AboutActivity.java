@@ -1,4 +1,4 @@
-package co.voat.android;
+package co.voat.android.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -18,6 +18,8 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import co.voat.android.BuildConfig;
+import co.voat.android.R;
 import co.voat.android.github.Contributor;
 import co.voat.android.github.GithubClient;
 import de.hdodenhof.circleimageview.CircleImageView;

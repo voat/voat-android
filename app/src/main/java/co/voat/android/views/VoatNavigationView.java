@@ -1,4 +1,4 @@
-package co.voat.android.view;
+package co.voat.android.views;
 
 import android.content.Context;
 import android.graphics.PorterDuff;
@@ -18,8 +18,8 @@ import co.voat.android.VoatApp;
 import co.voat.android.data.User;
 import co.voat.android.events.LoginEvent;
 import co.voat.android.events.LogoffEvent;
-import co.voat.android.util.CommonColors;
-import co.voat.android.util.CommonDrawables;
+import co.voat.android.utils.CommonColors;
+import co.voat.android.utils.CommonDrawables;
 
 /**
  * So that we dont have navigation specific stuff all over our activities

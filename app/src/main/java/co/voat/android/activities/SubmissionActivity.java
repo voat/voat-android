@@ -1,4 +1,4 @@
-package co.voat.android;
+package co.voat.android.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -20,6 +20,8 @@ import com.squareup.otto.Subscribe;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import co.voat.android.R;
+import co.voat.android.VoatApp;
 import co.voat.android.data.Submission;
 import co.voat.android.events.ContextualCommentEvent;
 import co.voat.android.events.ContextualDownvoteEvent;
@@ -29,8 +31,8 @@ import co.voat.android.events.ShowContextualMenuEvent;
 import co.voat.android.fragments.CommentFragment;
 import co.voat.android.fragments.ImageFragment;
 import co.voat.android.fragments.WebFragment;
-import co.voat.android.util.IntentUtils;
-import co.voat.android.util.UrlUtils;
+import co.voat.android.utils.IntentUtils;
+import co.voat.android.utils.UrlUtils;
 
 /**
  * All the stuff

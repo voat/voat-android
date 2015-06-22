@@ -1,4 +1,4 @@
-package co.voat.android;
+package co.voat.android.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import co.voat.android.R;
 import co.voat.android.api.SubscriptionsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Subscription;

@@ -1,4 +1,4 @@
-package co.voat.android.util;
+package co.voat.android.utils;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package co.voat.android.util;
+package co.voat.android.utils;
 
 import java.util.Random;
 

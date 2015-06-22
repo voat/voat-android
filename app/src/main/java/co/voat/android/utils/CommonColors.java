@@ -1,4 +1,4 @@
-package co.voat.android.util;
+package co.voat.android.utils;
 
 import android.content.Context;
 import android.util.TypedValue;

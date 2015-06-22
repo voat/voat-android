@@ -2,7 +2,6 @@ package co.voat.android.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,10 +10,8 @@ import com.bumptech.glide.Glide;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.data.Submission;
-import co.voat.android.util.IntentUtils;
 import uk.co.senab.photoview.PhotoView;
 
 /**

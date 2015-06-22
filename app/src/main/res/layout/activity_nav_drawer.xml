@@ -6,7 +6,7 @@
 
     <include layout="@layout/activity_main"/>
 
-    <co.voat.android.view.VoatNavigationView
+    <co.voat.android.views.VoatNavigationView
         android:id="@+id/nav_view"
         android:layout_height="match_parent"
         android:layout_width="wrap_content"

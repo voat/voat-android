@@ -1,19 +1,17 @@
-package co.voat.android;
+package co.voat.android.activities;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import co.voat.android.R;
 import co.voat.android.api.UserPreferencesResponse;
-import co.voat.android.api.VoatClient;
 import co.voat.android.data.User;
 import retrofit.Callback;
 import retrofit.RetrofitError;

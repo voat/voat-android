@@ -1,4 +1,4 @@
-package co.voat.android;
+package co.voat.android.activities;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +7,8 @@ import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
+import co.voat.android.R;
+import co.voat.android.VoatApp;
 import co.voat.android.data.Submission;
 import co.voat.android.data.User;
 import co.voat.android.events.LoginEvent;

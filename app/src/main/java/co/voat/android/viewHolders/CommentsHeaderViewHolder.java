@@ -16,10 +16,10 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.data.Submission;
-import co.voat.android.util.ColorUtils;
-import co.voat.android.util.CommonColors;
-import co.voat.android.util.CommonStrings;
-import co.voat.android.util.UrlUtils;
+import co.voat.android.utils.ColorUtils;
+import co.voat.android.utils.CommonColors;
+import co.voat.android.utils.CommonStrings;
+import co.voat.android.utils.UrlUtils;
 
 /**
  * Submissions, yay!

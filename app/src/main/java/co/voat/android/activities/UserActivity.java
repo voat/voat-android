@@ -1,4 +1,4 @@
-package co.voat.android;
+package co.voat.android.activities;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,16 +29,20 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import co.voat.android.BuildConfig;
+import co.voat.android.R;
+import co.voat.android.VoatApp;
+import co.voat.android.VoatPrefs;
 import co.voat.android.data.Badge;
 import co.voat.android.data.User;
 import co.voat.android.events.LogoffEvent;
 import co.voat.android.fragments.SubmissionsFragment;
 import co.voat.android.fragments.SubscriptionsFragment;
 import co.voat.android.fragments.UserCommentsFragment;
-import co.voat.android.util.ColorUtils;
-import co.voat.android.util.CommonColors;
-import co.voat.android.util.CommonDrawables;
-import co.voat.android.util.CommonStrings;
+import co.voat.android.utils.ColorUtils;
+import co.voat.android.utils.CommonColors;
+import co.voat.android.utils.CommonDrawables;
+import co.voat.android.utils.CommonStrings;
 import co.voat.android.viewHolders.BadgeViewHolder;
 
 /**

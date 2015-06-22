@@ -12,7 +12,7 @@ import java.util.Random;
 import co.voat.android.api.SubmissionsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Submission;
-import co.voat.android.util.UrlUtils;
+import co.voat.android.utils.UrlUtils;
 import retrofit.ErrorHandler;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;

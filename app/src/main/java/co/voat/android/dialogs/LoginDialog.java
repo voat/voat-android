@@ -19,7 +19,7 @@ import co.voat.android.api.UserResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.User;
 import co.voat.android.events.LoginEvent;
-import co.voat.android.util.IntentUtils;
+import co.voat.android.utils.IntentUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;

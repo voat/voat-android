@@ -1,4 +1,4 @@
-package co.voat.android;
+package co.voat.android.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,6 +14,7 @@ import android.view.View;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import co.voat.android.R;
 import co.voat.android.data.Message;
 import co.voat.android.dialogs.SendMessageDialog;
 import co.voat.android.fragments.MessagesFragment;
