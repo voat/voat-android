@@ -1,9 +1,11 @@
 package co.voat.android.data;
 
+import java.io.Serializable;
+
 /**
  * Created by Jawn on 6/11/2015.
  */
-public class Comment {
+public class Comment implements Serializable{
     int id;
     //TODO api returns null... ug
     int parentId;

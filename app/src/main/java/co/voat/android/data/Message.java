@@ -1,9 +1,11 @@
 package co.voat.android.data;
 
+import java.io.Serializable;
+
 /**
  * Created by Jawn on 6/11/2015.
  */
-public class Message {
+public class Message implements Serializable {
 
     public static final String MESSAGE_TYPE_INBOX = "Inbox";
     public static final String MESSAGE_TYPE_SENT = "Sent";

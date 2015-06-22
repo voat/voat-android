@@ -30,11 +30,8 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import co.voat.android.data.Badge;
-import co.voat.android.data.Message;
 import co.voat.android.data.User;
 import co.voat.android.events.LogoffEvent;
-import co.voat.android.fragments.CommentFragment;
-import co.voat.android.fragments.MessagesFragment;
 import co.voat.android.fragments.SubmissionsFragment;
 import co.voat.android.fragments.SubscriptionsFragment;
 import co.voat.android.fragments.UserCommentsFragment;
@@ -124,18 +121,23 @@ public class UserActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
         ButterKnife.inject(this);
+        user = (User) getIntent().getSerializableExtra(EXTRA_USER);
+        boolean userProfile = false;
+        if (user == null) {
+            user = User.getCurrentUser();
+            userProfile = true;
+        }
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(navigationClickListener);
-        toolbar.inflateMenu(R.menu.menu_user);
-        toolbar.setOnMenuItemClickListener(menuItemClickListener);
+        if (userProfile) {
+            toolbar.inflateMenu(R.menu.menu_user);
+            toolbar.setOnMenuItemClickListener(menuItemClickListener);
+        }
         Glide.with(this)
                 .load(CommonDrawables.getRandomHeader())
                 .into(backdrop);
         backdrop.setColorFilter(CommonColors.colorPrimary(this), PorterDuff.Mode.MULTIPLY);
-        user = (User) getIntent().getSerializableExtra(EXTRA_USER);
-        if (user == null) {
-            user = User.getCurrentUser();
-        }
+
         bind(user);
     }
 

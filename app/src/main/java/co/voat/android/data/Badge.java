@@ -1,9 +1,11 @@
 package co.voat.android.data;
 
+import java.io.Serializable;
+
 /**
  * Created by Jawn on 6/11/2015.
  */
-public class Badge {
+public class Badge implements Serializable{
 
     public static Badge createFakeBadge() {
         Badge badge = new Badge();

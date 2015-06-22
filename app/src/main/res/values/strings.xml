@@ -75,6 +75,7 @@
     <string name="submission_error">Submission did not work</string>
     <string name="comment_error">Comment did not work</string>
     <string name="must_be_logged_in">You\'ve got to log in first</string>
+    <string name="could_not_retrieve_user">Could not retrieve user</string>
 
     <!-- Empty -->
     <string name="empty">Nothing to see here</string>

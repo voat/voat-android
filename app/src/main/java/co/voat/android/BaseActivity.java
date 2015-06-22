@@ -40,36 +40,40 @@ public class BaseActivity extends AppCompatActivity {
         VoatApp.bus().unregister(eventReceiver);
     }
 
-    protected void gotoSettings() {
+    public void gotoSettings() {
         startActivity(SettingsActivity.newInstance(this));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
-    protected void gotoAbout() {
+    public void gotoAbout() {
         startActivity(AboutActivity.newInstance(this));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
-    protected void gotoSubmission(Submission submission) {
+    public void gotoSubmission(Submission submission) {
+        gotoSubmission(submission, false);
+    }
+
+    public void gotoSubmission(Submission submission, boolean openToComments) {
         startActivity(SubmissionActivity.newInstance(this, submission));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
-    protected void gotoUser() {
+    public void gotoUser() {
         gotoUser(null);
     }
 
-    protected void gotoUser(User user) {
+    public void gotoUser(User user) {
         startActivity(UserActivity.newInstance(this, user));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
-    protected void gotoMySubscriptions() {
+    public void gotoMySubscriptions() {
         startActivity(SubscriptionsActivity.newInstance(this));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 
-    protected void gotoMessages() {
+    public void gotoMessages() {
         startActivity(MessagesActivity.newInstance(this));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }

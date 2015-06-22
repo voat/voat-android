@@ -1,9 +1,11 @@
 package co.voat.android.data;
 
+import java.io.Serializable;
+
 /**
  * Created by John on 6/11/2015.
  */
-public class Subverse {
+public class Subverse implements Serializable {
     String name;
     String title;
     String description;

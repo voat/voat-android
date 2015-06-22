@@ -22,6 +22,7 @@ import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
 import co.voat.android.api.CommentsResponse;
+import co.voat.android.api.UserResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.api.VoteResponse;
 import co.voat.android.data.Comment;
@@ -145,14 +146,19 @@ public class CommentFragment extends BaseFragment {
                     Vote.VOTE_UP, "", new Callback<VoteResponse>() {
                         @Override
                         public void success(VoteResponse voteResponse, Response response) {
-                            Toast.makeText(getActivity(), getString(R.string.vote_cast), Toast.LENGTH_SHORT)
-                                    .show();
+                            if (voteResponse.success && voteResponse.data.success) {
+                                Toast.makeText(getActivity(), getString(R.string.vote_cast), Toast.LENGTH_SHORT)
+                                        .show();
+                            } else {
+                                Toast.makeText(getActivity(), voteResponse.data.message, Toast.LENGTH_SHORT)
+                                        .show();
+                            }
                         }
 
                         @Override
                         public void failure(RetrofitError error) {
                             Timber.e(error.toString());
-                            Toast.makeText(getActivity(), getString(R.string.comment_error), Toast.LENGTH_SHORT)
+                            Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_SHORT)
                                     .show();
                         }
                     });
@@ -167,14 +173,19 @@ public class CommentFragment extends BaseFragment {
                     Vote.VOTE_UP, "", new Callback<VoteResponse>() {
                         @Override
                         public void success(VoteResponse voteResponse, Response response) {
-                            Toast.makeText(getActivity(), getString(R.string.vote_cast), Toast.LENGTH_SHORT)
-                                    .show();
+                            if (voteResponse.success && voteResponse.data.success) {
+                                Toast.makeText(getActivity(), getString(R.string.vote_cast), Toast.LENGTH_SHORT)
+                                        .show();
+                            } else {
+                                Toast.makeText(getActivity(), voteResponse.data.message, Toast.LENGTH_SHORT)
+                                        .show();
+                            }
                         }
 
                         @Override
                         public void failure(RetrofitError error) {
                             Timber.e(error.toString());
-                            Toast.makeText(getActivity(), getString(R.string.comment_error), Toast.LENGTH_SHORT)
+                            Toast.makeText(getActivity(), getString(R.string.error), Toast.LENGTH_SHORT)
                                     .show();
                         }
                     });
@@ -183,7 +194,25 @@ public class CommentFragment extends BaseFragment {
         @Subscribe
         public void onContextualProfile(ContextualProfileEvent event) {
             VoatApp.bus().post(new ShowContextualMenuEvent());
-            commentAdapter.getSelectedComment().getUserName();
+            VoatClient.instance().getUserInfo(
+                    commentAdapter.getSelectedComment().getUserName(), new Callback<UserResponse>() {
+                        @Override
+                        public void success(UserResponse userResponse, Response response) {
+                            if (userResponse.success) {
+                                getBaseActivity().gotoUser(userResponse.data);
+                            } else {
+                                Toast.makeText(getActivity(), getString(R.string.could_not_retrieve_user), Toast.LENGTH_SHORT)
+                                        .show();
+                            }
+                        }
+
+                        @Override
+                        public void failure(RetrofitError error) {
+                            Timber.e(error.toString());
+                            Toast.makeText(getActivity(), getString(R.string.could_not_retrieve_user), Toast.LENGTH_SHORT)
+                                    .show();
+                        }
+                    });
         }
 
     }

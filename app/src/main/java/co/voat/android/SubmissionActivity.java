@@ -39,10 +39,16 @@ import co.voat.android.util.UrlUtils;
 public class SubmissionActivity extends BaseActivity {
 
     private static final String EXTRA_SUBMISSION = "extra_submission";
+    private static final String EXTRA_STRAIGHT_TO_COMMENTS = "extra_straight_to_comments";
 
     public static Intent newInstance(Context context, Submission submission) {
+        return newInstance(context, submission, false);
+    }
+
+    public static Intent newInstance(Context context, Submission submission, boolean straightToComments) {
         Intent intent = new Intent(context, SubmissionActivity.class);
         intent.putExtra(EXTRA_SUBMISSION, submission);
+        intent.putExtra(EXTRA_STRAIGHT_TO_COMMENTS, straightToComments);
         return intent;
     }
 
@@ -134,7 +140,11 @@ public class SubmissionActivity extends BaseActivity {
         contextualToolbar.inflateMenu(R.menu.menu_comments);
         contextualToolbar.setOnMenuItemClickListener(contextualMenuItemClickListener);
         submission = (Submission) getIntent().getSerializableExtra(EXTRA_SUBMISSION);
+        boolean straightToComments = getIntent().getBooleanExtra(EXTRA_STRAIGHT_TO_COMMENTS, false);
         viewPager.setAdapter(new PostPagerAdapter(SubmissionActivity.this, getSupportFragmentManager(), submission));
+        if (straightToComments && submission.getType() == Submission.TYPE_LINK) {
+            viewPager.setCurrentItem(1);
+        }
         tabLayout.setupWithViewPager(viewPager);
         eventReceiver = new EventReceiver();
         actionBarSize = getResources().getDimensionPixelSize(R.dimen.actionBarSize);
