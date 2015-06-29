@@ -11,8 +11,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.data.Message;
@@ -30,11 +30,11 @@ public class MessagesActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.tabs)
+    @Bind(R.id.tabs)
     TabLayout tabLayout;
-    @InjectView(R.id.viewpager)
+    @Bind(R.id.viewpager)
     ViewPager messagesViewPager;
 
     @OnClick(R.id.fab)
@@ -53,7 +53,7 @@ public class MessagesActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messages);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         toolbar.setTitle(getString(R.string.messages));
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(navigationClickListener);

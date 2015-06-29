@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
@@ -36,13 +36,13 @@ public class LoginDialog extends AppCompatDialog {
     private static final String PARAM_USERNAME = "&username=";
     private static final String PARAM_PASSWORD = "&password=";
 
-    @InjectView(R.id.username_hint)
+    @Bind(R.id.username_hint)
     TextInputLayout usernameHint;
-    @InjectView(R.id.username)
+    @Bind(R.id.username)
     EditText usernameEditText;
-    @InjectView(R.id.password_hint)
+    @Bind(R.id.password_hint)
     TextInputLayout passwordHint;
-    @InjectView(R.id.password)
+    @Bind(R.id.password)
     EditText passwordEditText;
 
     AuthResponse auth;
@@ -121,7 +121,7 @@ public class LoginDialog extends AppCompatDialog {
     public LoginDialog(Context context, int theme) {
         super(context, theme);
         setContentView(R.layout.dialog_login);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         usernameHint.setErrorEnabled(true);
         passwordHint.setErrorEnabled(true);
     }

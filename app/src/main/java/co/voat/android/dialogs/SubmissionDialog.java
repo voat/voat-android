@@ -12,8 +12,8 @@ import android.widget.Toast;
 
 import java.util.regex.Pattern;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.api.SubmissionBody;
@@ -37,17 +37,17 @@ public class SubmissionDialog extends AppCompatDialog {
     }
     OnSubmissionListener listener;
 
-    @InjectView(R.id.subverse_hint)
+    @Bind(R.id.subverse_hint)
     TextInputLayout subverseHint;
-    @InjectView(R.id.subverse)
+    @Bind(R.id.subverse)
     EditText subverseText;
-    @InjectView(R.id.title_hint)
+    @Bind(R.id.title_hint)
     TextInputLayout titleHint;
-    @InjectView(R.id.title)
+    @Bind(R.id.title)
     EditText titleText;
-    @InjectView(R.id.text_hint)
+    @Bind(R.id.text_hint)
     TextInputLayout textHint;
-    @InjectView(R.id.text)
+    @Bind(R.id.text)
     EditText textText;
 
     private static Pattern urlPattern = Patterns.WEB_URL;
@@ -112,7 +112,7 @@ public class SubmissionDialog extends AppCompatDialog {
     public SubmissionDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_submission);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         subverseHint.setErrorEnabled(true);
         titleHint.setErrorEnabled(true);
         textHint.setErrorEnabled(true);

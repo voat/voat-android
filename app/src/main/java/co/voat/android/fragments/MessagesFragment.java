@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.api.UserMessagesResponse;
 import co.voat.android.api.VoatClient;
@@ -39,13 +39,13 @@ public class MessagesFragment extends BaseFragment {
         return frag;
     }
 
-    @InjectView(R.id.root)
+    @Bind(R.id.root)
     View root;
-    @InjectView(R.id.empty_root)
+    @Bind(R.id.empty_root)
     View emptyView;
-    @InjectView(R.id.list)
+    @Bind(R.id.list)
     RecyclerView messagesList;
-    @InjectView(R.id.swipe_refresh)
+    @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
 
     String type;
@@ -89,7 +89,7 @@ public class MessagesFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         type = getArguments().getString(EXTRA_TYPE);
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
         messagesList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -101,6 +101,12 @@ public class MessagesFragment extends BaseFragment {
         VoatClient.instance().getUserMessages(type,
                 Message.MESSAGE_STATE_ALL,
                 messagesResponseCallback);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     public class MessagesAdapter extends RecyclerView.Adapter<MessageViewHolder> {

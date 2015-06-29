@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.data.Subscription;
 
@@ -23,12 +23,12 @@ public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
         return new SubscriptionViewHolder(view);
     }
 
-    @InjectView(R.id.subverse_name)
+    @Bind(R.id.subverse_name)
     TextView nameText;
 
     public SubscriptionViewHolder(View view) {
         super(view);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
     }
 
     public void bind(Subscription subscription) {

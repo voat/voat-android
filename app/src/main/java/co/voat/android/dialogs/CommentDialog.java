@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
@@ -29,9 +29,9 @@ import timber.log.Timber;
  */
 public class CommentDialog extends AppCompatDialog {
 
-    @InjectView(R.id.comment_hint)
+    @Bind(R.id.comment_hint)
     TextInputLayout commentHint;
-    @InjectView(R.id.comment)
+    @Bind(R.id.comment)
     EditText commentText;
 
     Submission submission;
@@ -76,7 +76,7 @@ public class CommentDialog extends AppCompatDialog {
     public CommentDialog(Context context, Submission submission) {
         super(context);
         setContentView(R.layout.dialog_comment);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         commentHint.setErrorEnabled(true);
         this.submission = submission;
     }

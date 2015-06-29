@@ -16,8 +16,8 @@ import com.squareup.otto.Subscribe;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
@@ -56,9 +56,9 @@ public class CommentFragment extends BaseFragment {
         return fragment;
     }
 
-    @InjectView(R.id.swipe_refresh)
+    @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(R.id.comment_list)
+    @Bind(R.id.comment_list)
     RecyclerView commentList;
 
     @OnClick(R.id.fab)
@@ -103,7 +103,7 @@ public class CommentFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         submission = (Submission) getArguments().getSerializable(EXTRA_SUBMISSION);
         commentList.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -129,6 +129,12 @@ public class CommentFragment extends BaseFragment {
     public void onPause() {
         super.onPause();
         VoatApp.bus().unregister(eventReceiver);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 
     private class EventReceiver {

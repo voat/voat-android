@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.squareup.otto.Subscribe;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
 import co.voat.android.data.User;
@@ -27,11 +27,11 @@ import co.voat.android.utils.CommonDrawables;
  */
 public class VoatNavigationView extends NavigationView {
 
-    @InjectView(R.id.nav_header_image)
+    @Bind(R.id.nav_header_image)
     ImageView headerImage;
-    @InjectView(R.id.nav_header_user_image)
+    @Bind(R.id.nav_header_user_image)
     ImageView headerUserImage;
-    @InjectView(R.id.nav_header_username)
+    @Bind(R.id.nav_header_username)
     TextView headerUsername;
 
     EventReceiver eventReceiver;
@@ -53,7 +53,7 @@ public class VoatNavigationView extends NavigationView {
 
     private void init() {
         this.inflateHeaderView(R.layout.nav_header);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         eventReceiver = new EventReceiver();
         bindUser();
     }

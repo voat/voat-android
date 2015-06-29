@@ -27,8 +27,8 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.BuildConfig;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
@@ -61,25 +61,25 @@ public class UserActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.backdrop)
+    @Bind(R.id.backdrop)
     ImageView backdrop;
-    @InjectView(R.id.user_image)
+    @Bind(R.id.user_image)
     ImageView userImage;
-    @InjectView(R.id.username)
+    @Bind(R.id.username)
     TextView usernameText;
-    @InjectView(R.id.user_bio)
+    @Bind(R.id.user_bio)
     TextView bioText;
-    @InjectView(R.id.user_member_time)
+    @Bind(R.id.user_member_time)
     TextView memberTimeText;
-    @InjectView(R.id.user_cp)
+    @Bind(R.id.user_cp)
     TextView cpText;
-    @InjectView(R.id.badge_list)
+    @Bind(R.id.badge_list)
     RecyclerView badgeList;
-    @InjectView(R.id.tabs)
+    @Bind(R.id.tabs)
     TabLayout tabLayout;
-    @InjectView(R.id.viewpager)
+    @Bind(R.id.viewpager)
     ViewPager messagesViewPager;
 
     User user;
@@ -124,7 +124,7 @@ public class UserActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         user = (User) getIntent().getSerializableExtra(EXTRA_USER);
         boolean userProfile = false;
         if (user == null) {

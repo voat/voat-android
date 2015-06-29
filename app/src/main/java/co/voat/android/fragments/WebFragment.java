@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 
 /**
@@ -28,11 +28,11 @@ public class WebFragment extends BaseFragment {
         return frag;
     }
 
-    @InjectView(R.id.root)
+    @Bind(R.id.root)
     View root;
-    @InjectView(R.id.swipe_refresh)
+    @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(R.id.webview)
+    @Bind(R.id.webview)
     WebView webView;
 
     String url;
@@ -66,7 +66,7 @@ public class WebFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         url = getArguments().getString(EXTRA_URL);
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
         //Fix so that the webview isnt zoomed in initially
@@ -82,5 +82,11 @@ public class WebFragment extends BaseFragment {
     private void load() {
         swipeRefreshLayout.setRefreshing(true);
         webView.loadUrl(url);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }

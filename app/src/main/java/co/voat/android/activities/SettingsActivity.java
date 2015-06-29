@@ -8,8 +8,8 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.api.UserPreferencesResponse;
 import co.voat.android.data.User;
@@ -27,14 +27,14 @@ public class SettingsActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.setting_username) TextView userName;
-    @InjectView(R.id.setting_enableAdultContent)CheckBox adultContent;
-    @InjectView(R.id.setting_enableNightMode)CheckBox nightMode;
-    @InjectView(R.id.setting_openLinkNewWindow)CheckBox openLinkNewView;
-    @InjectView(R.id.setting_publicyDisplaySubscriptions)CheckBox displaySubscription;
-    @InjectView(R.id.setting_publicyDisplyVotes)CheckBox displayVote;
+    @Bind(R.id.setting_username) TextView userName;
+    @Bind(R.id.setting_enableAdultContent)CheckBox adultContent;
+    @Bind(R.id.setting_enableNightMode)CheckBox nightMode;
+    @Bind(R.id.setting_openLinkNewWindow)CheckBox openLinkNewView;
+    @Bind(R.id.setting_publicyDisplaySubscriptions)CheckBox displaySubscription;
+    @Bind(R.id.setting_publicyDisplyVotes)CheckBox displayVote;
 
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
     User.Preferences userPreference;
 
@@ -64,7 +64,7 @@ public class SettingsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         toolbar.setTitle(getString(R.string.settings));
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(navigationClickListener);

@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.data.Submission;
 import uk.co.senab.photoview.PhotoView;
@@ -28,9 +28,9 @@ public class ImageFragment extends BaseFragment {
         return fragment;
     }
 
-    @InjectView(R.id.root)
+    @Bind(R.id.root)
     View root;
-    @InjectView(R.id.image)
+    @Bind(R.id.image)
     PhotoView image;
 
     Submission submission;
@@ -51,11 +51,17 @@ public class ImageFragment extends BaseFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
         submission = (Submission) getArguments().getSerializable(EXTRA_SUBMISSION);
         Glide.with(this)
                 .load(submission.getUrl())
                 .into(image);
         image.setOnClickListener(onImageClickListener);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        ButterKnife.unbind(this);
     }
 }
