@@ -8,8 +8,8 @@ import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.data.Badge;
 
@@ -25,12 +25,12 @@ public class BadgeViewHolder extends RecyclerView.ViewHolder {
         return new BadgeViewHolder(view);
     }
 
-    @InjectView(R.id.image)
+    @Bind(R.id.image)
     ImageView image;
 
     public BadgeViewHolder(View view) {
         super(view);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
     }
 
     public void bind(Badge badge) {

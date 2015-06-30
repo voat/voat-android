@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.data.Submission;
 import co.voat.android.utils.ColorUtils;
@@ -31,30 +31,30 @@ public class SubmissionViewHolder extends RecyclerView.ViewHolder {
         return new SubmissionViewHolder(view);
     }
 
-    @InjectView(R.id.post_source)
+    @Bind(R.id.post_source)
     public TextView sourceText;
-    @InjectView(R.id.post_title)
+    @Bind(R.id.post_title)
     public TextView titleText;
-    @InjectView(R.id.post_origin)
+    @Bind(R.id.post_origin)
     public TextView originText;
-    @InjectView(R.id.post_image)
+    @Bind(R.id.post_image)
     public ImageView image;
-    @InjectView(R.id.post_comments)
+    @Bind(R.id.post_comments)
     public View comments;
-    @InjectView(R.id.comments_count)
+    @Bind(R.id.comments_count)
     public TextView commentCount;
-    @InjectView(R.id.post_upvote)
+    @Bind(R.id.post_upvote)
     public View upVote;
-    @InjectView(R.id.upvote_count)
+    @Bind(R.id.upvote_count)
     public TextView upvoteCount;
-    @InjectView(R.id.post_downvote)
+    @Bind(R.id.post_downvote)
     public View downVote;
-    @InjectView(R.id.downvote_count)
+    @Bind(R.id.downvote_count)
     public TextView downvoteCount;
 
     public SubmissionViewHolder(View view) {
         super(view);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
     }
 
     public void bind(Submission submission) {

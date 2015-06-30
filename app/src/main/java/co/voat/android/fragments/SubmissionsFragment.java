@@ -13,8 +13,8 @@ import com.squareup.otto.Subscribe;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
 import co.voat.android.api.SubmissionsResponse;
@@ -42,9 +42,9 @@ public class SubmissionsFragment extends BaseFragment{
         return fragment;
     }
 
-    @InjectView(R.id.swipe_refresh)
+    @Bind(R.id.swipe_refresh)
     SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(R.id.list)
+    @Bind(R.id.list)
     RecyclerView list;
 
     EventReceiver eventReceiver;
@@ -65,7 +65,7 @@ public class SubmissionsFragment extends BaseFragment{
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
 
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue));

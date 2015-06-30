@@ -8,8 +8,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.data.Comment;
 
@@ -25,16 +25,16 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
         return new CommentViewHolder(view);
     }
 
-    @InjectView(R.id.comment_score)
+    @Bind(R.id.comment_score)
     public TextView scoreText;
-    @InjectView(R.id.comment_content)
+    @Bind(R.id.comment_content)
     public TextView contentText;
-    @InjectView(R.id.comment_author)
+    @Bind(R.id.comment_author)
     public TextView authorText;
 
     public CommentViewHolder(View view) {
         super(view);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
     }
 
     public void bind(Comment comment) {

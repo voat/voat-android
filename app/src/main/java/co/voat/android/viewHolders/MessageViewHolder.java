@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.data.Message;
 
@@ -23,16 +23,16 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
         return new MessageViewHolder(view);
     }
 
-    @InjectView(R.id.comment_score)
+    @Bind(R.id.comment_score)
     TextView scoreText;
-    @InjectView(R.id.comment_content)
+    @Bind(R.id.comment_content)
     TextView contentText;
-    @InjectView(R.id.comment_author)
+    @Bind(R.id.comment_author)
     TextView authorText;
 
     public MessageViewHolder(View view) {
         super(view);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
     }
 
     public void bind(Message message) {

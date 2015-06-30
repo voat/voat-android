@@ -12,8 +12,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.data.Submission;
 import co.voat.android.utils.ColorUtils;
@@ -33,20 +33,20 @@ public class CommentsHeaderViewHolder extends RecyclerView.ViewHolder {
         return new CommentsHeaderViewHolder(view);
     }
 
-    @InjectView(R.id.post_source)
+    @Bind(R.id.post_source)
     public TextView sourceText;
-    @InjectView(R.id.post_title)
+    @Bind(R.id.post_title)
     public TextView titleText;
-    @InjectView(R.id.post_origin)
+    @Bind(R.id.post_origin)
     public TextView originText;
-    @InjectView(R.id.post_image)
+    @Bind(R.id.post_image)
     public ImageView image;
-    @InjectView(R.id.post_content)
+    @Bind(R.id.post_content)
     public TextView contentText;
 
     public CommentsHeaderViewHolder(View view) {
         super(view);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
     }
 
     public void bind(Submission submission) {

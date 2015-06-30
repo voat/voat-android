@@ -7,8 +7,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.api.MessageBody;
@@ -25,17 +25,17 @@ import timber.log.Timber;
  */
 public class SendMessageDialog extends AppCompatDialog {
 
-    @InjectView(R.id.user_hint)
+    @Bind(R.id.user_hint)
     TextInputLayout userHint;
-    @InjectView(R.id.user)
+    @Bind(R.id.user)
     EditText userText;
-    @InjectView(R.id.subject_hint)
+    @Bind(R.id.subject_hint)
     TextInputLayout subjectHint;
-    @InjectView(R.id.subject)
+    @Bind(R.id.subject)
     EditText subjectText;
-    @InjectView(R.id.message_hint)
+    @Bind(R.id.message_hint)
     TextInputLayout messageHint;
-    @InjectView(R.id.message)
+    @Bind(R.id.message)
     EditText messageText;
 
     @OnClick(R.id.send)
@@ -84,7 +84,7 @@ public class SendMessageDialog extends AppCompatDialog {
     public SendMessageDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_send_message);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         userHint.setErrorEnabled(true);
         subjectHint.setErrorEnabled(true);
         messageHint.setErrorEnabled(true);

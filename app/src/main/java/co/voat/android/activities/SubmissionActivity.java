@@ -17,8 +17,8 @@ import android.view.ViewGroup;
 
 import com.squareup.otto.Subscribe;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
@@ -54,15 +54,15 @@ public class SubmissionActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.contextual_toolbar)
+    @Bind(R.id.contextual_toolbar)
     Toolbar contextualToolbar;
-    @InjectView(R.id.tabs)
+    @Bind(R.id.tabs)
     TabLayout tabLayout;
-    @InjectView(R.id.viewpager)
+    @Bind(R.id.viewpager)
     ViewPager viewPager;
-    @InjectView(R.id.submission_bar_root)
+    @Bind(R.id.submission_bar_root)
     ViewGroup submissionBar;
 
     @OnClick(R.id.upvote)
@@ -133,7 +133,7 @@ public class SubmissionActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submission);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         toolbar.setTitle(getString(R.string.messages));
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(navigationClickListener);

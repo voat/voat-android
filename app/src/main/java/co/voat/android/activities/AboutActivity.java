@@ -16,8 +16,8 @@ import com.jawnnypoo.physicslayout.PhysicsFrameLayout;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.BuildConfig;
 import co.voat.android.R;
 import co.voat.android.github.Contributor;
@@ -42,12 +42,12 @@ public class AboutActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.physics_layout)
+    @Bind(R.id.physics_layout)
     PhysicsFrameLayout physicsLayout;
-    @InjectView(R.id.version)
+    @Bind(R.id.version)
     TextView versionText;
 
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
 
     private final View.OnClickListener navigationClickListener = new View.OnClickListener() {
@@ -73,7 +73,7 @@ public class AboutActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_about);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         toolbar.setTitle(getString(R.string.about));
         toolbar.setNavigationIcon(R.drawable.ic_back);
         toolbar.setNavigationOnClickListener(navigationClickListener);

@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.api.SubscriptionsResponse;
 import co.voat.android.api.VoatClient;
@@ -34,9 +34,9 @@ public class SubscriptionsActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.list)
+    @Bind(R.id.list)
     RecyclerView subversesList;
-    @InjectView(R.id.empty_root)
+    @Bind(R.id.empty_root)
     View emptyView;
 
     private final Callback<SubscriptionsResponse> subscriptionsResponseCallback = new Callback<SubscriptionsResponse>() {
@@ -65,7 +65,7 @@ public class SubscriptionsActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subscriptions);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         subversesList.setLayoutManager(new LinearLayoutManager(this));
         VoatClient.instance().getUserSubscriptions(User.getCurrentUser().getUserName(), subscriptionsResponseCallback);
     }

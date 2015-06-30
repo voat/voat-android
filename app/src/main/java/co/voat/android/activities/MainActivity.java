@@ -7,6 +7,8 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,8 +22,8 @@ import com.getbase.floatingactionbutton.FloatingActionsMenu;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
@@ -49,18 +51,24 @@ public class MainActivity extends BaseActivity {
         return intent;
     }
 
-    @InjectView(R.id.drawer_layout)
+    @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @InjectView(R.id.nav_view)
+    @Bind(R.id.nav_header_root)
+    View navigationViewHeader;
+    @Bind(R.id.nav_view)
     NavigationView navigationView;
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.subverses_spinner)
+    @Bind(R.id.subverses_spinner)
     Spinner subversesSpinner;
     ArrayAdapter<String> subversesSpinnerAdapter;
-    @InjectView(R.id.fab)
+    @Bind(R.id.swipe_refresh)
+    SwipeRefreshLayout swipeRefreshLayout;
+    @Bind(R.id.list)
+    RecyclerView list;
+    @Bind(R.id.fab)
     FloatingActionsMenu fab;
-    @InjectView(R.id.fragment_root)
+    @Bind(R.id.fragment_root)
     View fragmentRoot;
 
     @OnClick(R.id.nav_header_root)
@@ -213,7 +221,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         submissionDialog = new SubmissionDialog(this);
         submissionDialog.setOnSubmissionListener(submissionListener);
         setupToolbar();

@@ -6,8 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import butterknife.Bind;
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 import co.voat.android.R;
 import co.voat.android.data.Subverse;
 
@@ -23,12 +23,12 @@ public class SubverseViewHolder extends RecyclerView.ViewHolder {
         return new SubverseViewHolder(view);
     }
 
-    @InjectView(R.id.subverse_name)
+    @Bind(R.id.subverse_name)
     TextView nameText;
 
     public SubverseViewHolder(View view) {
         super(view);
-        ButterKnife.inject(this, view);
+        ButterKnife.bind(this, view);
     }
 
     public void bind(Subverse subverse) {
