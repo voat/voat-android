@@ -7,13 +7,9 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -28,17 +24,15 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import co.voat.android.R;
-import co.voat.android.api.SubmissionsResponse;
+import co.voat.android.VoatApp;
 import co.voat.android.api.SubscriptionsResponse;
 import co.voat.android.api.VoatClient;
-import co.voat.android.api.VoteResponse;
-import co.voat.android.data.Submission;
 import co.voat.android.data.Subscription;
 import co.voat.android.data.User;
-import co.voat.android.data.Vote;
 import co.voat.android.dialogs.LoginDialog;
 import co.voat.android.dialogs.SubmissionDialog;
-import co.voat.android.viewHolders.SubmissionViewHolder;
+import co.voat.android.events.ToolbarSubverseEvent;
+import co.voat.android.fragments.SubmissionsFragment;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -57,8 +51,6 @@ public class MainActivity extends BaseActivity {
 
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @InjectView(R.id.nav_header_root)
-    View navigationViewHeader;
     @InjectView(R.id.nav_view)
     NavigationView navigationView;
     @InjectView(R.id.toolbar)
@@ -66,12 +58,10 @@ public class MainActivity extends BaseActivity {
     @InjectView(R.id.subverses_spinner)
     Spinner subversesSpinner;
     ArrayAdapter<String> subversesSpinnerAdapter;
-    @InjectView(R.id.swipe_refresh)
-    SwipeRefreshLayout swipeRefreshLayout;
-    @InjectView(R.id.list)
-    RecyclerView list;
     @InjectView(R.id.fab)
     FloatingActionsMenu fab;
+    @InjectView(R.id.fragment_root)
+    View fragmentRoot;
 
     @OnClick(R.id.nav_header_root)
     void onNavHeaderClick(View v) {
@@ -160,20 +150,11 @@ public class MainActivity extends BaseActivity {
     private final AdapterView.OnItemSelectedListener spinnerItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-            loadSubverse(subversesSpinnerAdapter.getItem(position));
+            VoatApp.bus().post(new ToolbarSubverseEvent(subversesSpinnerAdapter.getItem(position)));
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> parent) { }
-    };
-
-    private final SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
-        @Override
-        public void onRefresh() {
-            if (subversesSpinnerAdapter != null && !subversesSpinnerAdapter.isEmpty()) {
-                loadSubverse(subversesSpinnerAdapter.getItem(0));
-            }
-        }
     };
 
     private final Callback<SubscriptionsResponse> subscriptionsResponseCallback = new Callback<SubscriptionsResponse>() {
@@ -238,6 +219,9 @@ public class MainActivity extends BaseActivity {
         setupToolbar();
         setupDrawer();
         setupSpinner();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.fragment_root, SubmissionsFragment.newInstance())
+                .commit();
 
         // This is a hack seen here:
         // http://stackoverflow.com/questions/2562248/how-to-keep-onitemselected-from-firing-off-on-a-newly-instantiated-spinner
@@ -247,9 +231,6 @@ public class MainActivity extends BaseActivity {
                 subversesSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
             }
         });
-        swipeRefreshLayout.setOnRefreshListener(refreshListener);
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue));
-        list.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void setupToolbar() {
@@ -274,118 +255,5 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    private void loadSubverse(String subverse) {
-        swipeRefreshLayout.setRefreshing(true);
-        VoatClient.instance().getSubmissions(subverse, new Callback<SubmissionsResponse>() {
-            @Override
-            public void success(SubmissionsResponse submissionsResponse, Response response) {
-                swipeRefreshLayout.setRefreshing(false);
-                if (submissionsResponse.success) {
-                    list.setAdapter(new PostAdapter(submissionsResponse.data));
-                }
-            }
 
-            @Override
-            public void failure(RetrofitError error) {
-                swipeRefreshLayout.setRefreshing(false);
-                Timber.e(error.toString());
-            }
-        });
-    }
-
-    //TODO make this static?
-    public class PostAdapter extends RecyclerView.Adapter<SubmissionViewHolder> {
-
-        private final View.OnClickListener onItemClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = (int) v.getTag(R.id.list_position);
-                gotoSubmission(mValues.get(position));
-            }
-        };
-
-        private final View.OnClickListener onCommentsClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = (int) v.getTag(R.id.list_position);
-                gotoSubmission(mValues.get(position), true);
-            }
-        };
-
-        private final Callback<VoteResponse> voteResponseCallback = new Callback<VoteResponse>() {
-            @Override
-            public void success(VoteResponse voteResponse, Response response) {
-                if (voteResponse.success && voteResponse.data.success) {
-                    Toast.makeText(MainActivity.this, getString(R.string.vote_cast), Toast.LENGTH_SHORT)
-                            .show();
-                } else {
-                    Toast.makeText(MainActivity.this, voteResponse.data.message, Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Timber.e(error.toString());
-                Toast.makeText(MainActivity.this, getString(R.string.error), Toast.LENGTH_SHORT)
-                        .show();
-            }
-        };
-
-        private final View.OnClickListener onUpvoteClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = (int) v.getTag(R.id.list_position);
-                VoatClient.instance().postVote(Vote.VOTE_SUBMISSION,
-                        mValues.get(position).getId(),
-                        Vote.VOTE_UP, "", voteResponseCallback);
-            }
-        };
-
-        private final View.OnClickListener onDownvoteClickListener = new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                int position = (int) v.getTag(R.id.list_position);
-                VoatClient.instance().postVote(Vote.VOTE_SUBMISSION,
-                        mValues.get(position).getId(),
-                        Vote.VOTE_DOWN, "", voteResponseCallback);
-            }
-        };
-
-        private List<Submission> mValues;
-
-        public Submission getValueAt(int position) {
-            return mValues.get(position);
-        }
-
-        public PostAdapter(List<Submission> items) {
-            mValues = items;
-        }
-
-        @Override
-        public SubmissionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            SubmissionViewHolder holder = SubmissionViewHolder.create(parent);
-            holder.itemView.setOnClickListener(onItemClickListener);
-            holder.comments.setOnClickListener(onCommentsClickListener);
-            holder.upVote.setOnClickListener(onUpvoteClickListener);
-            holder.downVote.setOnClickListener(onDownvoteClickListener);
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(final SubmissionViewHolder holder, int position) {
-            Submission submission = getValueAt(position);
-            holder.bind(submission);
-            holder.itemView.setTag(R.id.list_position, position);
-            holder.comments.setTag(R.id.list_position, position);
-            holder.image.setTag(R.id.list_position, position);
-            holder.upVote.setTag(R.id.list_position, position);
-            holder.downVote.setTag(R.id.list_position, position);
-        }
-
-        @Override
-        public int getItemCount() {
-            return mValues.size();
-        }
-    }
 }
