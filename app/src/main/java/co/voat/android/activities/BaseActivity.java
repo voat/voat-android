@@ -57,7 +57,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void gotoSubmission(Submission submission, boolean openToComments) {
-        startActivity(SubmissionActivity.newInstance(this, submission));
+        startActivity(SubmissionActivity.newInstance(this, submission, openToComments));
         overridePendingTransition(R.anim.fade_in, R.anim.do_nothing);
     }
 

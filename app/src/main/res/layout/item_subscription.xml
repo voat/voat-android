@@ -2,6 +2,7 @@
 
 <android.support.v7.widget.CardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/Card"
     android:background="@drawable/selector_cool"
     android:id="@+id/post_root"
@@ -11,16 +12,29 @@
     android:layout_marginRight="@dimen/padding_default"
     android:layout_marginTop="@dimen/padding_default">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:padding="@dimen/padding_default">
 
         <TextView
             android:id="@+id/subverse_name"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@+id/subscription_delete"
+            tools:text="Android"/>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@id/subscription_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/ic_delete"
+            android:contentDescription="@null"
+            android:tint="?attr/colorAccent"/>
+
+    </RelativeLayout>
 </android.support.v7.widget.CardView>

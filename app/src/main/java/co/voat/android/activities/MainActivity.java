@@ -7,8 +7,6 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +28,7 @@ import co.voat.android.VoatApp;
 import co.voat.android.api.SubscriptionsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Subscription;
+import co.voat.android.data.Subverse;
 import co.voat.android.data.User;
 import co.voat.android.dialogs.LoginDialog;
 import co.voat.android.dialogs.SubmissionDialog;
@@ -62,10 +61,6 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.subverses_spinner)
     Spinner subversesSpinner;
     ArrayAdapter<String> subversesSpinnerAdapter;
-    @Bind(R.id.swipe_refresh)
-    SwipeRefreshLayout swipeRefreshLayout;
-    @Bind(R.id.list)
-    RecyclerView list;
     @Bind(R.id.fab)
     FloatingActionsMenu fab;
     @Bind(R.id.fragment_root)
@@ -255,11 +250,13 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setupSpinner() {
-        if (User.getCurrentUser() == null) {
-            VoatClient.instance().getDefaultSubverses(defaultSubversesResponseCallback);
-        } else {
+        if (User.getCurrentUser() != null) {
             VoatClient.instance().getUserSubscriptions(User.getCurrentUser().getUserName(),
                     subscriptionsResponseCallback);
+        } else {
+            subversesSpinner.setVisibility(View.GONE);
+            //This causes the default to load for a non logged in user
+            VoatApp.bus().post(new ToolbarSubverseEvent(Subverse.SUBVERSE_FRONT));
         }
     }
 

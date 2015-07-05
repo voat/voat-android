@@ -70,6 +70,7 @@ public class SubmissionsFragment extends BaseFragment{
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue));
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
+        eventReceiver = new EventReceiver();
     }
 
     private void loadSubverse() {
@@ -107,6 +108,7 @@ public class SubmissionsFragment extends BaseFragment{
 
         @Subscribe
         public void onToolbarSubverse(ToolbarSubverseEvent event) {
+            Timber.d("activity told us to load subverse: " + event.subverse);
             subverse = event.subverse;
             loadSubverse();
         }

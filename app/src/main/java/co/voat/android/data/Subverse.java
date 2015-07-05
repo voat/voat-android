@@ -6,6 +6,10 @@ import java.io.Serializable;
  * Created by John on 6/11/2015.
  */
 public class Subverse implements Serializable {
+    public static final String SUBVERSE_FRONT = "_front";
+    public static final String SUBVERSE_DEFAULT = "_default";
+    public static final String SUBVERSE_ALL = "_all";
+
     String name;
     String title;
     String description;

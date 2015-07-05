@@ -16,8 +16,8 @@
             android:id="@+id/comment"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textAutoCorrect"
-            android:hint="@string/message" />
+            android:inputType="textAutoCorrect|textCapSentences"
+            android:hint="@string/comment" />
 
     </android.support.design.widget.TextInputLayout>
 

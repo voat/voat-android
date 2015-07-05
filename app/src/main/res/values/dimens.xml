@@ -25,4 +25,6 @@
     <dimen name="actionBarSize">56dp</dimen>
     <dimen name="negativeActionBarSize">-56dp</dimen>
     <dimen name="border_size">1dp</dimen>
+
+    <integer name="grid_column_number">1</integer>
 </resources>

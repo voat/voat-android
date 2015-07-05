@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 
@@ -12,7 +13,6 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.voat.android.R;
 import co.voat.android.data.Submission;
-import uk.co.senab.photoview.PhotoView;
 
 /**
  * Created by Jawn on 6/13/2015.
@@ -31,16 +31,9 @@ public class ImageFragment extends BaseFragment {
     @Bind(R.id.root)
     View root;
     @Bind(R.id.image)
-    PhotoView image;
+    ImageView image;
 
     Submission submission;
-
-    private final View.OnClickListener onImageClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            getActivity().finish();
-        }
-    };
 
     @Nullable
     @Override
@@ -56,7 +49,6 @@ public class ImageFragment extends BaseFragment {
         Glide.with(this)
                 .load(submission.getUrl())
                 .into(image);
-        image.setOnClickListener(onImageClickListener);
     }
 
     @Override

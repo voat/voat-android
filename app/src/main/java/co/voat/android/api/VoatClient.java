@@ -2,9 +2,6 @@ package co.voat.android.api;
 
 import android.text.TextUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import co.voat.android.BuildConfig;
 import co.voat.android.data.Submission;
 import co.voat.android.data.User;
@@ -148,13 +145,6 @@ public class VoatClient {
                 @Body TypedString auth,
                 Callback<AuthResponse> authResponseCallback
         );
-
-        //From deprecated API
-        @GET("/defaultsubverses")
-        void getDefaultSubverses(
-                Callback<List<String>> responseCallback
-        );
-
     }
 
     public static Voat instance() {
