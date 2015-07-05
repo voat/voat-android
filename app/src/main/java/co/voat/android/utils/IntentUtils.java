@@ -1,9 +1,11 @@
 package co.voat.android.utils;
 
+import android.app.DownloadManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Environment;
 
 import co.voat.android.R;
 
@@ -34,5 +36,24 @@ public class IntentUtils {
         } catch (ActivityNotFoundException e) {
             return false;
         }
+    }
+
+    public static void download(Context context, String fileName, String url) {
+        DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+
+        // This put the download in the same Download dir the browser uses
+        request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, fileName);
+
+        // When downloading music and videos they will be listed in the player
+        // (Seems to be available since Honeycomb only)
+        request.allowScanningByMediaScanner();
+
+        // Notify user when download is completed
+        // (Seems to be available since Honeycomb only)
+        request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+
+        // Start download
+        DownloadManager dm = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+        dm.enqueue(request);
     }
 }

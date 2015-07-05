@@ -14,6 +14,7 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.squareup.otto.Subscribe;
 
@@ -22,7 +23,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
+import co.voat.android.api.VoatClient;
+import co.voat.android.api.VoteResponse;
 import co.voat.android.data.Submission;
+import co.voat.android.data.Vote;
 import co.voat.android.events.ContextualCommentEvent;
 import co.voat.android.events.ContextualDownvoteEvent;
 import co.voat.android.events.ContextualProfileEvent;
@@ -33,6 +37,10 @@ import co.voat.android.fragments.ImageFragment;
 import co.voat.android.fragments.WebFragment;
 import co.voat.android.utils.IntentUtils;
 import co.voat.android.utils.UrlUtils;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import timber.log.Timber;
 
 /**
  * All the stuff
@@ -67,11 +75,16 @@ public class SubmissionActivity extends BaseActivity {
 
     @OnClick(R.id.upvote)
     void onUpVote(View v) {
+        VoatClient.instance().postVote(Vote.VOTE_SUBMISSION,
+                submission.getId(),
+                Vote.VOTE_UP, "", voteResponseCallback);
 
     }
     @OnClick(R.id.downvote)
     void onDownVote(View v) {
-
+        VoatClient.instance().postVote(Vote.VOTE_SUBMISSION,
+                submission.getId(),
+                Vote.VOTE_DOWN, "", voteResponseCallback);
     }
     @OnClick(R.id.share)
     void onClickShare(View v) {
@@ -82,6 +95,7 @@ public class SubmissionActivity extends BaseActivity {
     }
     @OnClick(R.id.download)
     void onClickDownload(View v) {
+        IntentUtils.download(this, submission.getUrl(), submission.getUrl());
 
     }
     @OnClick(R.id.browser)
@@ -126,6 +140,26 @@ public class SubmissionActivity extends BaseActivity {
                     return true;
             }
             return false;
+        }
+    };
+
+    private final Callback<VoteResponse> voteResponseCallback = new Callback<VoteResponse>() {
+        @Override
+        public void success(VoteResponse voteResponse, Response response) {
+            if (voteResponse.success && voteResponse.data.success) {
+                Toast.makeText(SubmissionActivity.this, getString(R.string.vote_cast), Toast.LENGTH_SHORT)
+                        .show();
+            } else {
+                Toast.makeText(SubmissionActivity.this, voteResponse.data.message, Toast.LENGTH_SHORT)
+                        .show();
+            }
+        }
+
+        @Override
+        public void failure(RetrofitError error) {
+            Timber.e(error.toString());
+            Toast.makeText(SubmissionActivity.this, getString(R.string.error), Toast.LENGTH_SHORT)
+                    .show();
         }
     };
 

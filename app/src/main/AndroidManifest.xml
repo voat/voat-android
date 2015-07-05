@@ -2,7 +2,10 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="co.voat.android" >
 
+    <!-- I think we know why this is required-->
     <uses-permission android:name="android.permission.INTERNET"/>
+    <!-- Required to download files-->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <!-- Required by RemoteMuzeiArtSource -->
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
