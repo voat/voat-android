@@ -7,9 +7,8 @@ import java.io.Serializable;
  */
 public class Comment implements Serializable{
     int id;
-    //TODO api returns null... ug
-    int parentId;
-    int submissionId;
+    int parentID;
+    int submissionID;
     String subverse;
     String date;
     String lastEditDate;
@@ -26,11 +25,11 @@ public class Comment implements Serializable{
     }
 
     public int getParentId() {
-        return parentId;
+        return parentID;
     }
 
     public int getSubmissionId() {
-        return submissionId;
+        return submissionID;
     }
 
     public String getSubverse() {

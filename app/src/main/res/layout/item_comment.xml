@@ -11,25 +11,14 @@
     android:layout_marginRight="@dimen/padding_default"
     android:layout_marginTop="@dimen/padding_default">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:padding="@dimen/padding_default">
-
         <LinearLayout
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="3"
+            android:padding="@dimen/padding_default"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/comment_score"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:id="@+id/comment_author"
+                android:id="@+id/comment_header"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
 
@@ -40,5 +29,4 @@
 
         </LinearLayout>
 
-    </LinearLayout>
 </android.support.v7.widget.CardView>

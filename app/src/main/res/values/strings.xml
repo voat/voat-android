@@ -37,6 +37,7 @@
     <string name="downvote">Downvote</string>
     <string name="profile">Profile</string>
     <string name="comment">Comment</string>
+    <string name="points">points</string>
 
     <!-- Messages -->
     <string name="user">User</string>

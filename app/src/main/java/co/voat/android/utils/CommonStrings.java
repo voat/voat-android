@@ -33,4 +33,12 @@ public class CommonStrings {
         }
         return dot;
     }
+
+    private static String points;
+    public static String points(Context context) {
+        if (points == null) {
+            points = context.getString(R.string.points);
+        }
+        return points;
+    }
 }

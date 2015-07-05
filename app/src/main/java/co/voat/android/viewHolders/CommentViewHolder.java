@@ -9,9 +9,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import butterknife.Bind;
+import butterknife.BindDimen;
 import butterknife.ButterKnife;
 import co.voat.android.R;
 import co.voat.android.data.Comment;
+import co.voat.android.utils.ColorUtils;
+import co.voat.android.utils.CommonColors;
+import co.voat.android.utils.CommonStrings;
+import timber.log.Timber;
 
 /**
  * Submissions, yay!
@@ -25,12 +30,12 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
         return new CommentViewHolder(view);
     }
 
-    @Bind(R.id.comment_score)
-    public TextView scoreText;
+    @Bind(R.id.comment_header)
+    public TextView headerText;
     @Bind(R.id.comment_content)
     public TextView contentText;
-    @Bind(R.id.comment_author)
-    public TextView authorText;
+    @BindDimen(R.dimen.padding_medium)
+    int mediumPadding;
 
     public CommentViewHolder(View view) {
         super(view);
@@ -38,9 +43,20 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bind(Comment comment) {
-        scoreText.setText(comment.getUpVotes() + "");
+        headerText.setText(ColorUtils.colorWords(comment.getUserName(), CommonColors.colorPrimary(itemView.getContext())));
+        headerText.append(" " + CommonStrings.dot(itemView.getContext()) + " ");
+        headerText.append(comment.getUpVotes() - comment.getDownVotes() + " " +
+                CommonStrings.points(itemView.getContext()));
+        //TODO add timestamp
         contentText.setText(Html.fromHtml(comment.getFormattedContent()));
         contentText.setMovementMethod(LinkMovementMethod.getInstance());
-        authorText.setText(comment.getUserName());
+        Timber.d("comment parent id " + comment.getParentId());
+
+        RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) itemView.getLayoutParams();
+        if (comment.getParentId() > 0) {
+            lp.setMargins(mediumPadding * comment.getLevel(), 0, 0, 0);
+        } else {
+            lp.setMargins(0, 0, 0, 0);
+        }
     }
 }
