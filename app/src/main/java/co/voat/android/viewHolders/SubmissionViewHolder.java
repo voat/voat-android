@@ -25,7 +25,7 @@ import co.voat.android.utils.UrlUtils;
  */
 public class SubmissionViewHolder extends RecyclerView.ViewHolder {
 
-    public static SubmissionViewHolder create(ViewGroup parent) {
+    public static SubmissionViewHolder newInstance(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_submission, parent, false);
         return new SubmissionViewHolder(view);

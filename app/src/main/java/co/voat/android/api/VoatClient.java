@@ -1,13 +1,17 @@
 package co.voat.android.api;
 
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import co.voat.android.BuildConfig;
+import co.voat.android.VoatApp;
 import co.voat.android.data.Submission;
 import co.voat.android.data.User;
 import retrofit.Callback;
+import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Headers;
@@ -153,6 +157,7 @@ public class VoatClient {
                     .setEndpoint(FAKE_API_URL)
                     .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                     .setRequestInterceptor(new VoatRequestInterceptor())
+                    .setErrorHandler(new VoatErrorHandler())
                     .build();
             mVoat = restAdapter.create(Voat.class);
         }
@@ -167,6 +172,17 @@ public class VoatClient {
                     && !TextUtils.isEmpty(User.getCurrentUser().getAuthToken().accessToken)) {
                 request.addHeader(PARAM_AUTHORIZATION_KEY, "Bearer " + User.getCurrentUser().getAuthToken().accessToken);
             }
+        }
+    }
+
+    public static class VoatErrorHandler implements ErrorHandler {
+
+        @Override
+        public Throwable handleError(RetrofitError cause) {
+            if (BuildConfig.DEBUG) {
+                Toast.makeText(VoatApp.instance(), cause.toString(), Toast.LENGTH_LONG).show();
+            }
+            return cause;
         }
     }
 }

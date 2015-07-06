@@ -14,10 +14,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.voat.android.R;
-import co.voat.android.api.CommentsResponse;
+import co.voat.android.api.SubscriptionsResponse;
 import co.voat.android.api.VoatClient;
-import co.voat.android.data.Comment;
-import co.voat.android.viewHolders.CommentViewHolder;
+import co.voat.android.data.Subscription;
+import co.voat.android.viewHolders.SubscriptionViewHolder;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -27,12 +27,12 @@ import timber.log.Timber;
  * Get the comments for a user
  * Created by Jawn on 6/20/2015.
  */
-public class UserCommentsFragment extends BaseFragment {
+public class UserSubscriptionsFragment extends BaseFragment {
 
     private static final String EXTRA_USER = "extra_user";
 
-    public static UserCommentsFragment newInstance(String user) {
-        UserCommentsFragment fragment = new UserCommentsFragment();
+    public static UserSubscriptionsFragment newInstance(String user) {
+        UserSubscriptionsFragment fragment = new UserSubscriptionsFragment();
         Bundle args = new Bundle();
         args.putString(EXTRA_USER, user);
         fragment.setArguments(args);
@@ -50,15 +50,15 @@ public class UserCommentsFragment extends BaseFragment {
 
     String user;
 
-    private final Callback<CommentsResponse> commentsResponseCallback = new Callback<CommentsResponse>() {
+    private final Callback<SubscriptionsResponse> subscriptionsResponseCallback = new Callback<SubscriptionsResponse>() {
         @Override
-        public void success(CommentsResponse commentsResponse, Response response) {
+        public void success(SubscriptionsResponse subscriptionsResponse, Response response) {
             swipeRefreshLayout.setRefreshing(false);
-            if (commentsResponse.success
-                    && commentsResponse.data != null
-                    && !commentsResponse.data.isEmpty()) {
+            if (subscriptionsResponse.success
+                    && subscriptionsResponse.data != null
+                    && !subscriptionsResponse.data.isEmpty()) {
                 emptyView.setVisibility(View.GONE);
-                messagesList.setAdapter(new UserCommentsAdapter(commentsResponse.data));
+                messagesList.setAdapter(new UserSubscriptionsAdapter(subscriptionsResponse.data));
             } else {
                 emptyView.setVisibility(View.VISIBLE);
             }
@@ -77,7 +77,7 @@ public class UserCommentsFragment extends BaseFragment {
     private final SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            loadComments();
+            load();
         }
     };
 
@@ -93,36 +93,36 @@ public class UserCommentsFragment extends BaseFragment {
         user = getArguments().getString(EXTRA_USER);
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
         messagesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        loadComments();
+        load();
     }
 
-    private void loadComments() {
+    private void load() {
         swipeRefreshLayout.setRefreshing(true);
-        VoatClient.instance().getUserComments(user, commentsResponseCallback);
+        VoatClient.instance().getUserSubscriptions(user, subscriptionsResponseCallback);
     }
 
-    public class UserCommentsAdapter extends RecyclerView.Adapter<CommentViewHolder> {
+    public class UserSubscriptionsAdapter extends RecyclerView.Adapter<SubscriptionViewHolder> {
 
-        private List<Comment> mValues;
+        private List<Subscription> mValues;
 
-        public Comment getValueAt(int position) {
+        public Subscription getValueAt(int position) {
             return mValues.get(position);
         }
 
-        public UserCommentsAdapter(List<Comment> items) {
+        public UserSubscriptionsAdapter(List<Subscription> items) {
             mValues = items;
         }
 
         @Override
-        public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            CommentViewHolder holder = CommentViewHolder.newInstance(parent);
+        public SubscriptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            SubscriptionViewHolder holder = SubscriptionViewHolder.newInstance(parent);
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(final CommentViewHolder holder, int position) {
-            Comment comment = getValueAt(position);
-            holder.bind(comment);
+        public void onBindViewHolder(final SubscriptionViewHolder holder, int position) {
+            Subscription subscription = getValueAt(position);
+            holder.bind(subscription);
             holder.itemView.setTag(R.id.list_position, position);
         }
 

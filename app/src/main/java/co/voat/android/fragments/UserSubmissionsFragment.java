@@ -14,10 +14,10 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import co.voat.android.R;
-import co.voat.android.api.CommentsResponse;
+import co.voat.android.api.SubmissionsResponse;
 import co.voat.android.api.VoatClient;
-import co.voat.android.data.Comment;
-import co.voat.android.viewHolders.CommentViewHolder;
+import co.voat.android.data.Submission;
+import co.voat.android.viewHolders.SubmissionViewHolder;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -27,12 +27,12 @@ import timber.log.Timber;
  * Get the comments for a user
  * Created by Jawn on 6/20/2015.
  */
-public class UserCommentsFragment extends BaseFragment {
+public class UserSubmissionsFragment extends BaseFragment {
 
     private static final String EXTRA_USER = "extra_user";
 
-    public static UserCommentsFragment newInstance(String user) {
-        UserCommentsFragment fragment = new UserCommentsFragment();
+    public static UserSubmissionsFragment newInstance(String user) {
+        UserSubmissionsFragment fragment = new UserSubmissionsFragment();
         Bundle args = new Bundle();
         args.putString(EXTRA_USER, user);
         fragment.setArguments(args);
@@ -50,15 +50,15 @@ public class UserCommentsFragment extends BaseFragment {
 
     String user;
 
-    private final Callback<CommentsResponse> commentsResponseCallback = new Callback<CommentsResponse>() {
+    private final Callback<SubmissionsResponse> submissionsResponseCallback = new Callback<SubmissionsResponse>() {
         @Override
-        public void success(CommentsResponse commentsResponse, Response response) {
+        public void success(SubmissionsResponse subscriptionsResponse, Response response) {
             swipeRefreshLayout.setRefreshing(false);
-            if (commentsResponse.success
-                    && commentsResponse.data != null
-                    && !commentsResponse.data.isEmpty()) {
+            if (subscriptionsResponse.success
+                    && subscriptionsResponse.data != null
+                    && !subscriptionsResponse.data.isEmpty()) {
                 emptyView.setVisibility(View.GONE);
-                messagesList.setAdapter(new UserCommentsAdapter(commentsResponse.data));
+                messagesList.setAdapter(new UserSubmissionsAdapter(subscriptionsResponse.data));
             } else {
                 emptyView.setVisibility(View.VISIBLE);
             }
@@ -77,7 +77,7 @@ public class UserCommentsFragment extends BaseFragment {
     private final SwipeRefreshLayout.OnRefreshListener refreshListener = new SwipeRefreshLayout.OnRefreshListener() {
         @Override
         public void onRefresh() {
-            loadComments();
+            load();
         }
     };
 
@@ -93,36 +93,36 @@ public class UserCommentsFragment extends BaseFragment {
         user = getArguments().getString(EXTRA_USER);
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
         messagesList.setLayoutManager(new LinearLayoutManager(getActivity()));
-        loadComments();
+        load();
     }
 
-    private void loadComments() {
+    private void load() {
         swipeRefreshLayout.setRefreshing(true);
-        VoatClient.instance().getUserComments(user, commentsResponseCallback);
+        VoatClient.instance().getUserSubmissions(user, submissionsResponseCallback);
     }
 
-    public class UserCommentsAdapter extends RecyclerView.Adapter<CommentViewHolder> {
+    public class UserSubmissionsAdapter extends RecyclerView.Adapter<SubmissionViewHolder> {
 
-        private List<Comment> mValues;
+        private List<Submission> mValues;
 
-        public Comment getValueAt(int position) {
+        public Submission getValueAt(int position) {
             return mValues.get(position);
         }
 
-        public UserCommentsAdapter(List<Comment> items) {
+        public UserSubmissionsAdapter(List<Submission> items) {
             mValues = items;
         }
 
         @Override
-        public CommentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            CommentViewHolder holder = CommentViewHolder.newInstance(parent);
+        public SubmissionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            SubmissionViewHolder holder = SubmissionViewHolder.newInstance(parent);
             return holder;
         }
 
         @Override
-        public void onBindViewHolder(final CommentViewHolder holder, int position) {
-            Comment comment = getValueAt(position);
-            holder.bind(comment);
+        public void onBindViewHolder(final SubmissionViewHolder holder, int position) {
+            Submission submission = getValueAt(position);
+            holder.bind(submission);
             holder.itemView.setTag(R.id.list_position, position);
         }
 

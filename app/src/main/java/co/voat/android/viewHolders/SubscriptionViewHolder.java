@@ -17,7 +17,7 @@ import co.voat.android.data.Subscription;
  */
 public class SubscriptionViewHolder extends RecyclerView.ViewHolder {
 
-    public static SubscriptionViewHolder create(ViewGroup parent) {
+    public static SubscriptionViewHolder newInstance(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_subscription, parent, false);
         return new SubscriptionViewHolder(view);

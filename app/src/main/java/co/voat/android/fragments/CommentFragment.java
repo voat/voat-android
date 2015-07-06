@@ -264,7 +264,7 @@ public class CommentFragment extends BaseFragment {
             if (viewType == TYPE_HEADER) {
                 return CommentsHeaderViewHolder.create(parent);
             } else if (viewType == TYPE_COMMENT) {
-                RecyclerView.ViewHolder holder = CommentViewHolder.create(parent);
+                RecyclerView.ViewHolder holder = CommentViewHolder.newInstance(parent);
                 holder.itemView.setOnLongClickListener(onCommentLongClick);
                 ((CommentViewHolder)holder).contentText.setOnLongClickListener(onCommentLongClick);
                 return holder;

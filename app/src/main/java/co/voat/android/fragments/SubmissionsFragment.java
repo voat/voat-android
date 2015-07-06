@@ -186,7 +186,7 @@ public class SubmissionsFragment extends BaseFragment{
 
         @Override
         public SubmissionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            SubmissionViewHolder holder = SubmissionViewHolder.create(parent);
+            SubmissionViewHolder holder = SubmissionViewHolder.newInstance(parent);
             holder.itemView.setOnClickListener(onItemClickListener);
             holder.comments.setOnClickListener(onCommentsClickListener);
             holder.upVote.setOnClickListener(onUpvoteClickListener);

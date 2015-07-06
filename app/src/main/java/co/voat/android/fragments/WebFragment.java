@@ -75,6 +75,7 @@ public class WebFragment extends BaseFragment {
         webView.getSettings().setUseWideViewPort(true);
         webView.getSettings().setBuiltInZoomControls(true);
         webView.getSettings().setDisplayZoomControls(false);
+        webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(webViewClient);
         webView.loadUrl(url);
     }

@@ -93,7 +93,7 @@ public class SubscriptionsActivity extends BaseActivity {
 
         @Override
         public SubscriptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            SubscriptionViewHolder holder = SubscriptionViewHolder.create(parent);
+            SubscriptionViewHolder holder = SubscriptionViewHolder.newInstance(parent);
             return holder;
         }
 

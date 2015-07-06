@@ -30,9 +30,15 @@ public class VoatApp extends Application {
         return bus;
     }
 
+    private static VoatApp instance;
+    public static VoatApp instance() {
+        return instance;
+    }
+
     @Override
     public void onCreate() {
         super.onCreate();
+        instance = this;
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());
         }

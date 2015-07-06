@@ -36,9 +36,9 @@ import co.voat.android.VoatPrefs;
 import co.voat.android.data.Badge;
 import co.voat.android.data.User;
 import co.voat.android.events.LogoffEvent;
-import co.voat.android.fragments.SubmissionsFragment;
-import co.voat.android.fragments.SubscriptionsFragment;
 import co.voat.android.fragments.UserCommentsFragment;
+import co.voat.android.fragments.UserSubmissionsFragment;
+import co.voat.android.fragments.UserSubscriptionsFragment;
 import co.voat.android.utils.ColorUtils;
 import co.voat.android.utils.CommonColors;
 import co.voat.android.utils.CommonDrawables;
@@ -182,7 +182,7 @@ public class UserActivity extends BaseActivity {
                 badgeList.setVisibility(View.GONE);
             }
         }
-        messagesViewPager.setAdapter(new UserPagerAdapter(this, getSupportFragmentManager()));
+        messagesViewPager.setAdapter(new UserPagerAdapter(this, getSupportFragmentManager(), user));
         tabLayout.setupWithViewPager(messagesViewPager);
     }
 
@@ -225,9 +225,11 @@ public class UserActivity extends BaseActivity {
     public static class UserPagerAdapter extends FragmentStatePagerAdapter {
 
         String[] titles;
-        UserPagerAdapter(Context context, FragmentManager fm) {
+        User user;
+        UserPagerAdapter(Context context, FragmentManager fm, User user) {
             super(fm);
             titles = context.getResources().getStringArray(R.array.user_sections);
+            this.user = user;
         }
 
         /**
@@ -237,11 +239,11 @@ public class UserActivity extends BaseActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return UserCommentsFragment.newInstance();
+                    return UserCommentsFragment.newInstance(user.getUserName());
                 case 1:
-                    return SubmissionsFragment.newInstance();
+                    return UserSubmissionsFragment.newInstance(user.getUserName());
                 case 2:
-                    return SubscriptionsFragment.newInstance();
+                    return UserSubscriptionsFragment.newInstance(user.getUserName());
             }
             throw new RuntimeException("IDK WHAT YOU DID");
         }

@@ -24,7 +24,7 @@ import timber.log.Timber;
  */
 public class CommentViewHolder extends RecyclerView.ViewHolder {
 
-    public static CommentViewHolder create(ViewGroup parent) {
+    public static CommentViewHolder newInstance(ViewGroup parent) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_comment, parent, false);
         return new CommentViewHolder(view);
