@@ -1,6 +1,7 @@
 package co.voat.android.data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Submission, ya know?
@@ -16,7 +17,7 @@ public class Submission implements Serializable {
     int id;
     int commentCount;
     //TODO fix date
-    String date;
+    Date date;
     int upVotes;
     int downVotes;
     //TODO fix date
@@ -39,7 +40,7 @@ public class Submission implements Serializable {
         return commentCount;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 

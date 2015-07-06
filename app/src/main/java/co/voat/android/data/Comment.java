@@ -1,6 +1,7 @@
 package co.voat.android.data;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by Jawn on 6/11/2015.
@@ -10,7 +11,7 @@ public class Comment implements Serializable{
     int parentID;
     int submissionID;
     String subverse;
-    String date;
+    Date date;
     String lastEditDate;
     int upVotes;
     int downVotes;
@@ -36,7 +37,7 @@ public class Comment implements Serializable{
         return subverse;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 

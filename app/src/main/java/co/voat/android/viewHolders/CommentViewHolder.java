@@ -47,7 +47,8 @@ public class CommentViewHolder extends RecyclerView.ViewHolder {
         headerText.append(" " + CommonStrings.dot(itemView.getContext()) + " ");
         headerText.append(comment.getUpVotes() - comment.getDownVotes() + " " +
                 CommonStrings.points(itemView.getContext()));
-        //TODO add timestamp
+        headerText.append(" " + CommonStrings.dot(itemView.getContext()) + " ");
+        headerText.append(CommonStrings.timestamp(comment.getDate()));
         contentText.setText(Html.fromHtml(comment.getFormattedContent()));
         contentText.setMovementMethod(LinkMovementMethod.getInstance());
         Timber.d("comment parent id " + comment.getParentId());

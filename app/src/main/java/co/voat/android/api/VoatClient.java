@@ -1,5 +1,7 @@
 package co.voat.android.api;
 
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.widget.Toast;
 
@@ -12,6 +14,7 @@ import retrofit.ErrorHandler;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
+import retrofit.converter.GsonConverter;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.Headers;
@@ -154,6 +157,7 @@ public class VoatClient {
     public static Voat instance() {
         if (mVoat == null) {
             RestAdapter restAdapter = new RestAdapter.Builder()
+                    .setConverter(new GsonConverter(VoatApp.gson()))
                     .setEndpoint(FAKE_API_URL)
                     .setLogLevel(BuildConfig.DEBUG ? RestAdapter.LogLevel.FULL : RestAdapter.LogLevel.NONE)
                     .setRequestInterceptor(new VoatRequestInterceptor())
@@ -178,9 +182,15 @@ public class VoatClient {
     public static class VoatErrorHandler implements ErrorHandler {
 
         @Override
-        public Throwable handleError(RetrofitError cause) {
+        public Throwable handleError(final RetrofitError cause) {
             if (BuildConfig.DEBUG) {
-                Toast.makeText(VoatApp.instance(), cause.toString(), Toast.LENGTH_LONG).show();
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(VoatApp.instance(), cause.toString(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
             return cause;
         }

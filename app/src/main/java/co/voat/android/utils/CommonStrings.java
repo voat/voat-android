@@ -1,6 +1,9 @@
 package co.voat.android.utils;
 
 import android.content.Context;
+import android.text.format.DateUtils;
+
+import java.util.Date;
 
 import co.voat.android.R;
 
@@ -40,5 +43,19 @@ public class CommonStrings {
             points = context.getString(R.string.points);
         }
         return points;
+    }
+
+    /**
+     * Get a timestamp from a date
+     * @param date date of post/comment/whatever
+     * @return string that tells the amount of time that has passed
+     */
+    public static CharSequence timestamp(Date date) {
+        return DateUtils.getRelativeTimeSpanString(
+                date.getTime(),
+                System.currentTimeMillis(),
+                DateUtils.MINUTE_IN_MILLIS,
+                DateUtils.FORMAT_SHOW_YEAR | DateUtils.FORMAT_ABBREV_RELATIVE
+                        | DateUtils.FORMAT_ABBREV_ALL);
     }
 }

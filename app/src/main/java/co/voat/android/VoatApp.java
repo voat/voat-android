@@ -3,6 +3,7 @@ package co.voat.android;
 import android.app.Application;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 
 import co.voat.android.data.User;
@@ -17,7 +18,9 @@ public class VoatApp extends Application {
     private static Gson gson;
     public static Gson gson() {
         if (gson == null) {
-            gson = new Gson();
+            gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+                .create();
         }
         return gson;
     }

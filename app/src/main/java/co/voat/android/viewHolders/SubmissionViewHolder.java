@@ -67,7 +67,8 @@ public class SubmissionViewHolder extends RecyclerView.ViewHolder {
         } else {
             originText.setText(CommonStrings.self(itemView.getContext()) + "." + submission.getSubverse());
         }
-        originText.append(" " + CommonStrings.dot(itemView.getContext()) + " " + submission.getDate());
+        originText.append(" " + CommonStrings.dot(itemView.getContext()) + " " +
+                CommonStrings.timestamp(submission.getDate()));
         if (TextUtils.isEmpty(submission.getThumbnail())) {
             image.setVisibility(View.GONE);
         } else {
