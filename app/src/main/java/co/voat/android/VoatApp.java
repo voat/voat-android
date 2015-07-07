@@ -2,11 +2,13 @@ package co.voat.android;
 
 import android.app.Application;
 
+import com.crashlytics.android.Crashlytics;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.squareup.otto.Bus;
 
 import co.voat.android.data.User;
+import io.fabric.sdk.android.Fabric;
 import timber.log.Timber;
 
 /**
@@ -41,6 +43,7 @@ public class VoatApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         instance = this;
         if (BuildConfig.DEBUG) {
             Timber.plant(new Timber.DebugTree());

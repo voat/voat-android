@@ -47,6 +47,9 @@
             <meta-data android:name="color" android:value="@color/purple" />
         </service>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="${fabric_key}" />
     </application>
 
 </manifest>
