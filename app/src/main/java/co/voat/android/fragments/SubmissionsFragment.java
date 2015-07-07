@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,9 +36,17 @@ import timber.log.Timber;
  */
 public class SubmissionsFragment extends BaseFragment{
 
+    private static final String EXTRA_SUBVERSE = "extra_subverse";
     public static SubmissionsFragment newInstance() {
+        return newInstance(null);
+    }
+
+    public static SubmissionsFragment newInstance(String subverse) {
         SubmissionsFragment fragment = new SubmissionsFragment();
         Bundle args = new Bundle();
+        if (!TextUtils.isEmpty(subverse)) {
+            args.putString(EXTRA_SUBVERSE, subverse);
+        }
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,6 +67,12 @@ public class SubmissionsFragment extends BaseFragment{
     };
 
     @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        subverse = getArguments().getString(EXTRA_SUBVERSE);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_submissions, container, false);
     }
@@ -66,11 +81,13 @@ public class SubmissionsFragment extends BaseFragment{
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
         swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue));
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
         eventReceiver = new EventReceiver();
+        if (!TextUtils.isEmpty(subverse)) {
+            loadSubverse();
+        }
     }
 
     private void loadSubverse() {

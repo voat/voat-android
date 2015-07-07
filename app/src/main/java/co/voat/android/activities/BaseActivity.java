@@ -20,26 +20,21 @@ import co.voat.android.events.LogoffEvent;
  */
 public class BaseActivity extends AppCompatActivity {
 
-    EventReceiver eventReceiver;
+    EventReceiver baseEventReceiver;
     View root;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         root = findViewById(R.id.root);
-        eventReceiver = new EventReceiver();
+        baseEventReceiver = new EventReceiver();
+        VoatApp.bus().register(baseEventReceiver);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        VoatApp.bus().register(eventReceiver);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        VoatApp.bus().unregister(eventReceiver);
+    protected void onDestroy() {
+        super.onDestroy();
+        VoatApp.bus().unregister(baseEventReceiver);
     }
 
     public void gotoSettings() {

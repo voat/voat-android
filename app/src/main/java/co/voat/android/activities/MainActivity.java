@@ -2,6 +2,7 @@ package co.voat.android.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -16,9 +17,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.getbase.floatingactionbutton.FloatingActionsMenu;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -32,8 +31,11 @@ import co.voat.android.data.Subverse;
 import co.voat.android.data.User;
 import co.voat.android.dialogs.LoginDialog;
 import co.voat.android.dialogs.SubmissionDialog;
+import co.voat.android.events.LoginEvent;
+import co.voat.android.events.LogoffEvent;
 import co.voat.android.events.ToolbarSubverseEvent;
 import co.voat.android.fragments.SubmissionsFragment;
+import co.voat.android.utils.ColorUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -65,6 +67,8 @@ public class MainActivity extends BaseActivity {
     FloatingActionsMenu fab;
     @Bind(R.id.fragment_root)
     View fragmentRoot;
+
+    EventReceiver eventReceiver;
 
     @OnClick(R.id.nav_header_root)
     void onNavHeaderClick(View v) {
@@ -122,7 +126,6 @@ public class MainActivity extends BaseActivity {
                                 .show();
                     } else {
                         gotoMySubscriptions();
-                        menuItem.setChecked(true);
                     }
                     break;
                 case R.id.nav_messages:
@@ -131,18 +134,15 @@ public class MainActivity extends BaseActivity {
                                 .show();
                     } else {
                         gotoMessages();
-                        menuItem.setChecked(true);
                     }
                     break;
                 case R.id.nav_settings:
                     //TODO delay this until the drawer is closed
                     gotoSettings();
-                    menuItem.setChecked(true);
                     break;
                 case R.id.nav_about:
                     //TODO delay this until the drawer is closed
                     gotoAbout();
-                    menuItem.setChecked(true);
                     break;
             }
             drawerLayout.closeDrawers();
@@ -153,6 +153,7 @@ public class MainActivity extends BaseActivity {
     private final AdapterView.OnItemSelectedListener spinnerItemSelectedListener = new AdapterView.OnItemSelectedListener() {
         @Override
         public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            Timber.d("onItemSelected " + subversesSpinnerAdapter.getItem(position));
             VoatApp.bus().post(new ToolbarSubverseEvent(subversesSpinnerAdapter.getItem(position)));
         }
 
@@ -164,38 +165,12 @@ public class MainActivity extends BaseActivity {
         @Override
         public void success(SubscriptionsResponse subscriptionsResponse, Response response) {
             if (subscriptionsResponse.success) {
-                //TODO filter to subverse subscriptions and add them here
-                ArrayList<String> subs = new ArrayList<>();
                 for (Subscription subscription : subscriptionsResponse.data) {
                     if (subscription.getType() == Subscription.TYPE_SUBVERSE) {
-                        subs.add(subscription.getName());
+                        subversesSpinnerAdapter.add(subscription.getName());
                     }
                 }
-                subversesSpinnerAdapter = new ArrayAdapter<>(MainActivity.this,
-                        R.layout.support_simple_spinner_dropdown_item,
-                        subs.toArray(new String[subs.size()]));
-                subversesSpinner.setAdapter(subversesSpinnerAdapter);
-                subversesSpinner.setVisibility(View.VISIBLE);
             }
-        }
-
-        @Override
-        public void failure(RetrofitError error) {
-            Timber.e(error.toString());
-        }
-    };
-
-    private final Callback<List<String>> defaultSubversesResponseCallback = new Callback<List<String>>() {
-        @Override
-        public void success(List<String> defaultSubverses, Response response) {
-            if (defaultSubverses != null && !defaultSubverses.isEmpty()) {
-                subversesSpinnerAdapter = new ArrayAdapter<>(MainActivity.this,
-                        R.layout.support_simple_spinner_dropdown_item,
-                        defaultSubverses.toArray(new String[defaultSubverses.size()]));
-                subversesSpinner.setAdapter(subversesSpinnerAdapter);
-                subversesSpinner.setVisibility(View.VISIBLE);
-            }
-
         }
 
         @Override
@@ -217,6 +192,8 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nav_drawer);
         ButterKnife.bind(this);
+        eventReceiver = new EventReceiver();
+        VoatApp.bus().register(eventReceiver);
         submissionDialog = new SubmissionDialog(this);
         submissionDialog.setOnSubmissionListener(submissionListener);
         setupToolbar();
@@ -225,22 +202,13 @@ public class MainActivity extends BaseActivity {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_root, SubmissionsFragment.newInstance())
                 .commit();
-
-        // This is a hack seen here:
-        // http://stackoverflow.com/questions/2562248/how-to-keep-onitemselected-from-firing-off-on-a-newly-instantiated-spinner
-        subversesSpinner.post(new Runnable() {
-            @Override
-            public void run() {
-                subversesSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
-            }
-        });
     }
 
     private void setupToolbar() {
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setNavigationOnClickListener(navigationClickListener);
         toolbar.setOnMenuItemClickListener(menuItemClickListener);
-        toolbar.setNavigationIcon(R.drawable.ic_menu);
+        toolbar.setNavigationIcon(ColorUtils.getColoredDrawable(this, R.drawable.ic_menu, Color.BLACK));
     }
 
     private void setupDrawer() {
@@ -250,15 +218,39 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setupSpinner() {
+        subversesSpinnerAdapter = new ArrayAdapter<>(MainActivity.this,
+                R.layout.support_simple_spinner_dropdown_item);
+        subversesSpinnerAdapter.add(Subverse.SUBVERSE_FRONT);
+        subversesSpinnerAdapter.add(Subverse.SUBVERSE_ALL);
+        subversesSpinner.setAdapter(subversesSpinnerAdapter);
+        //This will cause the first item to load right away. Its weird.
+        // http://stackoverflow.com/questions/2562248/how-to-keep-onitemselected-from-firing-off-on-a-newly-instantiated-spinner
+        subversesSpinner.setOnItemSelectedListener(spinnerItemSelectedListener);
         if (User.getCurrentUser() != null) {
             VoatClient.instance().getUserSubscriptions(User.getCurrentUser().getUserName(),
                     subscriptionsResponseCallback);
-        } else {
-            subversesSpinner.setVisibility(View.GONE);
-            //This causes the default to load for a non logged in user
-            VoatApp.bus().post(new ToolbarSubverseEvent(Subverse.SUBVERSE_FRONT));
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        VoatApp.bus().unregister(baseEventReceiver);
+        super.onDestroy();
+    }
 
+    private class EventReceiver {
+
+        @Subscribe
+        public void onLogin(LoginEvent event) {
+            Timber.d("onLogin MainActivity");
+            setupSpinner();
+        }
+
+        @Subscribe
+        public void onLogoff(LogoffEvent event) {
+            Timber.d("onLogoff MainActivity");
+            setupSpinner();
+        }
+
+    }
 }
