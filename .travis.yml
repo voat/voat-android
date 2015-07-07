@@ -22,4 +22,5 @@ before_script:
     - printf "VOAT_API_KEY = \"\"\nVOAT_FABRIC_KEY = \"\"\n" > gradle.properties
     - chmod +x gradlew
 
-script: "./gradlew build"
+#Ignore the fabric step, since we do not have a legit API key for Fabric
+script: "./gradlew build -x fabricGenerateResourcesRelease"
