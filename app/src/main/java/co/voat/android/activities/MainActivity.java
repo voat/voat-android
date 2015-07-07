@@ -223,7 +223,7 @@ public class MainActivity extends BaseActivity {
         setupDrawer();
         setupSpinner();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.fragment_root, SubmissionsFragment.newInstance())
+                .replace(R.id.fragment_root, SubmissionsFragment.newInstance())
                 .commit();
 
         // This is a hack seen here:

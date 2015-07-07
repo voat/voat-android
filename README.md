@@ -10,7 +10,9 @@ Official voat Android app repository
 ### Building
 
 You should be able to import the project directly to Android Studio by clicking open, then navigating to the outermost build.gralde file. You will then need to create your own Voat API key, and store it either in a gradle.properties file at the root of the project or in your Gradle home directory. It should be placed in your gradle.properties files as so:
+```Gradle
 VOAT_API_KEY = "YOUR_API_KEY_HERE"
+```
 
 ### Attributions
 

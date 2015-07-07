@@ -161,8 +161,8 @@ public class UserActivity extends BaseActivity {
         } else {
             bioText.setText(getString(R.string.error_no_bio));
         }
-        memberTimeText.setText(R.string.member_for);
-        memberTimeText.append(" " + user.getRegistrationDate());
+        memberTimeText.setText(R.string.member_since);
+        memberTimeText.append(" " + CommonStrings.timestamp(user.getRegistrationDate()));
 
         cpText.setText(getString(R.string.cp) + " ");
         cpText.append(ColorUtils.colorWords("" + user.getSubmissionPoints().getSum(), CommonColors.colorPrimary(UserActivity.this)));

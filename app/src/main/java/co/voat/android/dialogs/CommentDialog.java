@@ -35,6 +35,7 @@ public class CommentDialog extends AppCompatDialog {
     EditText commentText;
 
     Submission submission;
+    int commentId;
 
     @OnClick(R.id.send)
     void onSendClick(View v) {
@@ -47,10 +48,18 @@ public class CommentDialog extends AppCompatDialog {
         if (!hasError) {
             CommentBody body = new CommentBody.Builder(comment)
                     .build();
-            VoatClient.instance().postComment(submission.getSubverse(),
-                    submission.getId(),
-                    body,
-                    postCommentResponse);
+            if (commentId > 0) {
+                VoatClient.instance().postComment(submission.getSubverse(),
+                        submission.getId(),
+                        commentId,
+                        body,
+                        postCommentResponse);
+            } else {
+                VoatClient.instance().postComment(submission.getSubverse(),
+                        submission.getId(),
+                        body,
+                        postCommentResponse);
+            }
         }
     }
 
@@ -74,10 +83,15 @@ public class CommentDialog extends AppCompatDialog {
     };
 
     public CommentDialog(Context context, Submission submission) {
+        this(context, submission, 0);
+    }
+
+    public CommentDialog(Context context, Submission submission, int commentId) {
         super(context);
         setContentView(R.layout.dialog_comment);
         ButterKnife.bind(this);
         commentHint.setErrorEnabled(true);
         this.submission = submission;
+        this.commentId = commentId;
     }
 }

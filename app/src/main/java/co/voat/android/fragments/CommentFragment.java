@@ -82,7 +82,11 @@ public class CommentFragment extends BaseFragment {
         @Override
         public void success(CommentsResponse commentsResponse, Response response) {
             if (commentsResponse.success) {
-                commentAdapter.setData(commentsResponse.data);
+                if (commentsResponse.data.isEmpty()) {
+                    //TODO figure out a way to have a header and an empty view
+                } else {
+                    commentAdapter.setData(Comment.groupComments(commentsResponse.data));
+                }
             }
         }
 
@@ -142,6 +146,8 @@ public class CommentFragment extends BaseFragment {
         @Subscribe
         public void onContextualComment(ContextualCommentEvent event) {
             VoatApp.bus().post(new ShowContextualMenuEvent());
+            new CommentDialog(getActivity(), submission, commentAdapter.getSelectedComment().getId())
+                    .show();
         }
 
         @Subscribe

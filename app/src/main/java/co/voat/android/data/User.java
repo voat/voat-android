@@ -1,6 +1,7 @@
 package co.voat.android.data;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import co.voat.android.api.AuthResponse;
@@ -20,7 +21,7 @@ public class User implements Serializable {
     }
 
     String userName;
-    String registrationDate;
+    Date registrationDate;
     String bio;
     String profilePicture;
     Points commentPoints;
@@ -40,7 +41,7 @@ public class User implements Serializable {
         return userName;
     }
 
-    public String getRegistrationDate() {
+    public Date getRegistrationDate() {
         return registrationDate;
     }
 

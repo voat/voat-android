@@ -46,7 +46,7 @@
     <string name="send">Send</string>
 
     <!-- User -->
-    <string name="member_for">Member for</string>
+    <string name="member_since">Member since</string>
     <string name="cp">CP</string>
 
     <string-array name="user_sections">

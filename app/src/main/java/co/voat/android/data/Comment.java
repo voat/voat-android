@@ -2,11 +2,30 @@ package co.voat.android.data;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Jawn on 6/11/2015.
  */
 public class Comment implements Serializable{
+
+    public static List<Comment> groupComments(List<Comment> originalComments) {
+
+        for (int i=0; i<originalComments.size(); i++) {
+            Comment comment = originalComments.get(i);
+            if (comment.getParentId() > 0) {
+                for (int j=0; j<originalComments.size(); j++) {
+                    Comment parentComment = originalComments.get(j);
+                    if (parentComment.getParentId() == comment.getParentId()) {
+                        originalComments.remove(comment);
+                        originalComments.add(originalComments.indexOf(parentComment)+1, comment);
+                    }
+                }
+            }
+        }
+        return originalComments;
+    }
+
     int id;
     int parentID;
     int submissionID;

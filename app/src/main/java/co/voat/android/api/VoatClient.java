@@ -87,6 +87,23 @@ public class VoatClient {
                 Callback<CommentResponse> responseCallback
         );
 
+        /**
+         * Reply to an existing comment
+         * @param subverse subverse of the post
+         * @param submissionID submission id
+         * @param commentId id of the comment to reply to
+         * @param body body containing the comment
+         * @param responseCallback callback
+         */
+        @POST("/v1/v/{subverse}/{submissionID}/comment/{commentID}")
+        void postComment(
+                @Path("subverse") String subverse,
+                @Path("submissionID") int submissionID,
+                @Path("commentID") int commentId,
+                @Body CommentBody body,
+                Callback<CommentResponse> responseCallback
+        );
+
         @GET("/v1/u/preferences")
         void getUserPreferences(
                 Callback<UserPreferencesResponse> responseCallback
