@@ -10,6 +10,7 @@ android {
         targetSdkVersion 22
         versionCode 100
         versionName "1.0.0"
+        buildConfigField "String", "VOAT_API_KEY", project.VOAT_API_KEY
     }
     buildTypes {
         release {

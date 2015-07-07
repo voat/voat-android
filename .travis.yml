@@ -18,6 +18,8 @@ android:
     - extra-android-m2repository
 
 before_script:
+    #Create blank API key so that the build won't fail
+    - printf "VOAT_API_KEY = \"\"\n" > gradle.properties
     - chmod +x gradlew
 
 script: "./gradlew build"

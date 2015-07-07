@@ -27,8 +27,6 @@ import retrofit.mime.TypedString;
  * voat.co/api/help
  */
 public class VoatClient {
-    //Replace with your API_KEY
-    public static final String API_KEY_VALUE = "myUt2YVP/i8OKVovtTlOAQ==";
     public static final String API_URL = "http://vout.co/api/";
     public static final String FAKE_API_URL = "http://fakevout.azurewebsites.net/api/";
     public static final String PARAM_API_KEY = "Voat-ApiKey";
@@ -171,7 +169,7 @@ public class VoatClient {
     public static class VoatRequestInterceptor implements RequestInterceptor {
         @Override
         public void intercept(RequestFacade request) {
-            request.addHeader(PARAM_API_KEY, API_KEY_VALUE);
+            request.addHeader(PARAM_API_KEY, BuildConfig.VOAT_API_KEY);
             if (User.getCurrentUser() != null
                     && !TextUtils.isEmpty(User.getCurrentUser().getAuthToken().accessToken)) {
                 request.addHeader(PARAM_AUTHORIZATION_KEY, "Bearer " + User.getCurrentUser().getAuthToken().accessToken);
