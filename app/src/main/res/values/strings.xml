@@ -88,4 +88,13 @@
     <!-- About -->
     <string name="contributors">Contributors:</string>
 
+    <!-- Settings -->
+    <string name="general">General</string>
+    <string name="confirm_exit">Confirm Exit</string>
+    <string name="confirm_exit_description">Show prompt dialog before exiting the app</string>
+
+    <!-- Exit confirmation -->
+    <string name="exit">Exit</string>
+    <string name="exit_description">Are you sure you want to exit?</string>
+
 </resources>

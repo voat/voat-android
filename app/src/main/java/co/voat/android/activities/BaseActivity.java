@@ -20,7 +20,7 @@ import co.voat.android.events.LogoffEvent;
  */
 public class BaseActivity extends AppCompatActivity {
 
-    EventReceiver baseEventReceiver;
+    private EventReceiver baseEventReceiver;
     View root;
 
     @Override

@@ -1,6 +1,7 @@
 package co.voat.android.activities;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -24,6 +26,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.VoatApp;
+import co.voat.android.VoatPrefs;
 import co.voat.android.api.SubscriptionsResponse;
 import co.voat.android.api.VoatClient;
 import co.voat.android.data.Subscription;
@@ -233,8 +236,28 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawers();
+            return;
+        }
+        if (VoatPrefs.isConfirmExit(this)) {
+            new AlertDialog.Builder(this)
+                    .setTitle(R.string.exit)
+                    .setMessage(R.string.exit_description)
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            finish();
+                        }
+                    }).show();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
-        VoatApp.bus().unregister(baseEventReceiver);
+        VoatApp.bus().unregister(eventReceiver);
         super.onDestroy();
     }
 

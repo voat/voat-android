@@ -15,6 +15,7 @@ public class VoatPrefs {
     private static final String PREF_FILE_NAME = "voat_prefs";
 
     private static final String PREF_USER = "pref_user";
+    private static final String PREF_CONFIRM_EXIT = "pref_confirm_exit";
 
     private static SharedPreferences getSharedPreferences(Context context) {
         return context.getSharedPreferences(PREF_FILE_NAME, Context.MODE_PRIVATE);
@@ -39,6 +40,17 @@ public class VoatPrefs {
         getSharedPreferences(context)
                 .edit()
                 .remove(PREF_USER)
+                .apply();
+    }
+
+    public static boolean isConfirmExit(Context context) {
+        return getSharedPreferences(context).getBoolean(PREF_CONFIRM_EXIT, false);
+    }
+
+    public static void setConfirmExit(Context context, boolean confirmation) {
+        getSharedPreferences(context)
+                .edit()
+                .putBoolean(PREF_CONFIRM_EXIT, confirmation)
                 .apply();
     }
 }
