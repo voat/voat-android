@@ -71,9 +71,7 @@ public class VoatNavigationView extends NavigationView {
                         .load(user.getProfilePicture())
                         .into(headerUserImage);
             } else {
-                Glide.with(getContext())
-                        .load(R.drawable.goat)
-                        .into(headerUserImage);
+                headerUserImage.setImageResource(R.drawable.ic_goat);
             }
         } else {
             headerUserImage.setImageDrawable(null);

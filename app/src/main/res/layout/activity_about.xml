@@ -19,7 +19,8 @@
         android:layout_height="wrap_content"
         android:padding="@dimen/padding_default"
         android:text="@string/contributors"
-        android:textSize="@dimen/text_size_large"/>
+        android:textSize="@dimen/text_size_large"
+        android:textColor="?attr/colorAccent"/>
 
     <com.jawnnypoo.physicslayout.PhysicsFrameLayout
         android:id="@+id/physics_layout"
@@ -35,7 +36,8 @@
             android:layout_height="wrap_content"
             android:padding="@dimen/padding_default"
             android:textSize="@dimen/text_size_large"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            android:textColor="?attr/colorAccent"/>
 
     </com.jawnnypoo.physicslayout.PhysicsFrameLayout>
 

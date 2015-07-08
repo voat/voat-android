@@ -151,9 +151,7 @@ public class UserActivity extends BaseActivity {
                     .load(user.getProfilePicture())
                     .into(userImage);
         } else {
-            Glide.with(this)
-                    .load(R.drawable.goat)
-                    .into(userImage);
+            userImage.setImageResource(R.drawable.ic_goat);
         }
         usernameText.setText(user.getUserName());
         if (!TextUtils.isEmpty(user.getBio())) {

@@ -12,6 +12,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import co.voat.android.R;
 import co.voat.android.VoatPrefs;
+import co.voat.android.utils.CommonColors;
 
 /**
  * Created by Jawn on 6/11/2015.
@@ -25,6 +26,8 @@ public class SettingsActivity extends BaseActivity {
 
     @Bind(R.id.setting_confirm_exit)
     CompoundButton checkConfirmExit;
+    @Bind(R.id.setting_dark_theme)
+    CompoundButton checkDarkTheme;
 
     @Bind(R.id.toolbar)
     Toolbar toolbar;
@@ -35,10 +38,17 @@ public class SettingsActivity extends BaseActivity {
         VoatPrefs.setConfirmExit(this, checkConfirmExit.isChecked());
     }
 
+    @OnClick(R.id.setting_dark_theme_root)
+    void onDarkThemeClick() {
+        checkDarkTheme.setChecked(!checkDarkTheme.isChecked());
+        VoatPrefs.setDarkTheme(this, checkDarkTheme.isChecked());
+        CommonColors.clear();
+    }
+
     private final View.OnClickListener navigationClickListener = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            finish();
+            onBackPressed();
         }
     };
 
@@ -54,7 +64,14 @@ public class SettingsActivity extends BaseActivity {
         setUI();
     }
 
+    @Override
+    public void onBackPressed() {
+        startActivity(MainActivity.newInstance(this));
+        finish();
+    }
+
     private void setUI() {
         checkConfirmExit.setChecked(VoatPrefs.isConfirmExit(this));
+        checkDarkTheme.setChecked(VoatPrefs.isDarkTheme(this));
     }
 }

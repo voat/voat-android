@@ -92,6 +92,9 @@
     <string name="general">General</string>
     <string name="confirm_exit">Confirm Exit</string>
     <string name="confirm_exit_description">Show prompt dialog before exiting the app</string>
+    <string name="theme">Theme</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="dark_theme_description">Use dark theme</string>
 
     <!-- Exit confirmation -->
     <string name="exit">Exit</string>

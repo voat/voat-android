@@ -50,7 +50,7 @@
             android:textAllCaps="true"
             android:textColor="?attr/colorAccent"
             android:textStyle="bold"
-            android:background="@drawable/selector_cool"/>
+            android:background="?attr/selectableItemBackground"/>
 
         <TextView
             android:id="@+id/login"
@@ -62,7 +62,7 @@
             android:textAllCaps="true"
             android:textColor="?attr/colorAccent"
             android:textStyle="bold"
-            android:background="@drawable/selector_cool"/>
+            android:background="?attr/selectableItemBackground"/>
 
     </LinearLayout>
 </LinearLayout>

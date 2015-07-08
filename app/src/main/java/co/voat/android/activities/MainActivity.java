@@ -3,7 +3,6 @@ package co.voat.android.activities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -38,7 +37,6 @@ import co.voat.android.events.LoginEvent;
 import co.voat.android.events.LogoffEvent;
 import co.voat.android.events.ToolbarSubverseEvent;
 import co.voat.android.fragments.SubmissionsFragment;
-import co.voat.android.utils.ColorUtils;
 import retrofit.Callback;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
@@ -142,6 +140,7 @@ public class MainActivity extends BaseActivity {
                 case R.id.nav_settings:
                     //TODO delay this until the drawer is closed
                     gotoSettings();
+                    finish();
                     break;
                 case R.id.nav_about:
                     //TODO delay this until the drawer is closed
@@ -211,7 +210,7 @@ public class MainActivity extends BaseActivity {
         toolbar.inflateMenu(R.menu.menu_main);
         toolbar.setNavigationOnClickListener(navigationClickListener);
         toolbar.setOnMenuItemClickListener(menuItemClickListener);
-        toolbar.setNavigationIcon(ColorUtils.getColoredDrawable(this, R.drawable.ic_menu, Color.BLACK));
+        toolbar.setNavigationIcon(R.drawable.ic_menu);
     }
 
     private void setupDrawer() {
@@ -252,7 +251,9 @@ public class MainActivity extends BaseActivity {
                             finish();
                         }
                     }).show();
+            return;
         }
+        super.onBackPressed();
     }
 
     @Override

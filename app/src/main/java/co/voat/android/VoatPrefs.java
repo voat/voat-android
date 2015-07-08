@@ -15,6 +15,7 @@ public class VoatPrefs {
     private static final String PREF_FILE_NAME = "voat_prefs";
 
     private static final String PREF_USER = "pref_user";
+    private static final String PREF_IS_DARK_THEME = "pref_is_dark_theme";
     private static final String PREF_CONFIRM_EXIT = "pref_confirm_exit";
 
     private static SharedPreferences getSharedPreferences(Context context) {
@@ -51,6 +52,17 @@ public class VoatPrefs {
         getSharedPreferences(context)
                 .edit()
                 .putBoolean(PREF_CONFIRM_EXIT, confirmation)
+                .apply();
+    }
+
+    public static boolean isDarkTheme(Context context) {
+        return getSharedPreferences(context).getBoolean(PREF_IS_DARK_THEME, false);
+    }
+
+    public static void setDarkTheme(Context context, boolean confirmation) {
+        getSharedPreferences(context)
+                .edit()
+                .putBoolean(PREF_IS_DARK_THEME, confirmation)
                 .apply();
     }
 }

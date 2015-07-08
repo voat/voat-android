@@ -9,6 +9,7 @@ import com.squareup.otto.Subscribe;
 
 import co.voat.android.R;
 import co.voat.android.VoatApp;
+import co.voat.android.VoatPrefs;
 import co.voat.android.data.Submission;
 import co.voat.android.data.User;
 import co.voat.android.events.LoginEvent;
@@ -25,6 +26,11 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (VoatPrefs.isDarkTheme(this)) {
+            setTheme(R.style.AppThemeDark);
+        } else {
+            setTheme(R.style.AppThemeLight);
+        }
         super.onCreate(savedInstanceState);
         root = findViewById(R.id.root);
         baseEventReceiver = new EventReceiver();

@@ -39,7 +39,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/padding_large"
-                android:textSize="@dimen/text_size_huge"/>
+                android:textSize="@dimen/text_size_huge"
+                android:textColor="?attr/colorPrimary"/>
 
             <TextView
                 android:id="@+id/user_bio"
@@ -83,7 +84,7 @@
 
     </ScrollView>
 
-    <android.support.v7.widget.Toolbar
+    <co.voat.android.views.VoatToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"/>

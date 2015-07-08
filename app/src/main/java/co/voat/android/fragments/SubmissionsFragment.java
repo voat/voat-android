@@ -82,7 +82,6 @@ public class SubmissionsFragment extends BaseFragment{
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
         swipeRefreshLayout.setOnRefreshListener(refreshListener);
-        swipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.blue));
         list.setLayoutManager(new LinearLayoutManager(getActivity()));
         eventReceiver = new EventReceiver();
         if (!TextUtils.isEmpty(subverse)) {

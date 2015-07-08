@@ -34,6 +34,7 @@ public class ColorUtils {
             drawable = context.getResources().getDrawable(resId, context.getTheme());
         } else {
             drawable = context.getResources().getDrawable(resId);
+            drawable = DrawableCompat.wrap(drawable);
         }
         DrawableCompat.setTint(drawable, color);
         return drawable;

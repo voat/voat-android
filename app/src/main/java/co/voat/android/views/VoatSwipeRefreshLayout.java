@@ -23,6 +23,6 @@ public class VoatSwipeRefreshLayout extends SwipeRefreshLayout {
     }
 
     private void init() {
-        setColorSchemeColors(CommonColors.colorAccent(getContext()));
+        setColorSchemeColors(CommonColors.colorAccent(getContext()), CommonColors.colorPrimary(getContext()));
     }
 }

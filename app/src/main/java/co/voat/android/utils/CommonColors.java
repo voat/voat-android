@@ -40,5 +40,30 @@ public class CommonColors {
         return colorAccent;
     }
 
+    private static int colorForeground = -1;
+    public static int colorForground(Context context) {
+        if (colorForeground == -1) {
+            context.getTheme().resolveAttribute(android.R.attr.colorForeground, typedValue, true);
+            colorForeground = typedValue.data;
+        }
+        return colorForeground;
+    }
 
+    private static int colorForegroundInverse = -1;
+    public static int colorForegroundInverse(Context context) {
+        if (colorForegroundInverse == -1) {
+            context.getTheme().resolveAttribute(android.R.attr.colorForegroundInverse, typedValue, true);
+            colorForegroundInverse = typedValue.data;
+        }
+        return colorForegroundInverse;
+    }
+
+    /**
+     * Clear all the colors that have to do with the theme so that we do not
+     * cache values that relate to the theme applied
+     */
+    public static void clear() {
+        colorForeground = -1;
+        colorForegroundInverse = -1;
+    }
 }

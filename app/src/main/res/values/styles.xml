@@ -1,26 +1,25 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="BaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppThemeLight" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/purple</item>
         <item name="colorPrimaryDark">@color/purple_dark</item>
         <item name="android:navigationBarColor">?attr/colorPrimaryDark</item>
         <item name="colorAccent">@color/blue</item>
     </style>
 
-    <style name="AppTheme" parent="BaseTheme">
-    </style>
-
-    <style name="AppTheme.TranslucentWindow">
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowBackground">@color/black_50</item>
+    <style name="AppThemeDark" parent="Theme.AppCompat.NoActionBar">
+        <item name="colorPrimary">@color/purple</item>
+        <item name="colorPrimaryDark">@color/purple_dark</item>
+        <item name="android:navigationBarColor">?attr/colorPrimaryDark</item>
+        <item name="colorAccent">@color/blue</item>
     </style>
 
     <style name="Card">
         <item name="cardUseCompatPadding">true</item>
         <item name="cardElevation">@dimen/elevation_low</item>
         <item name="cardCornerRadius">1dp</item>
+        <item name="cardBackgroundColor">?android:colorForegroundInverse</item>
         <item name="android:foreground">?attr/selectableItemBackground</item>
     </style>
 
