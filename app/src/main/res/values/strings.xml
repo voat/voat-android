@@ -1,0 +1,103 @@
+<resources>
+    <string name="app_name">Voat</string>
+
+    <string name="filter">Filter</string>
+
+    <!-- Login -->
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log in</string>
+    <string name="register">Register</string>
+    <string name="log_off">Log off</string>
+    <string name="log_off_confirmation">Are you sure you want to log off?</string>
+    <string name="successfully_logged_off">Successfully logged off</string>
+    <string name="successfully_logged_in">Successfully logged in</string>
+
+    <!-- Submissions-->
+    <string name="in">in</string>
+    <string name="vote_cast">Vote cast</string>
+
+    <!-- Submission-->
+    <string name="subverse">Subverse</string>
+    <string name="title">Title</string>
+    <string name="text">Text</string>
+    <string name="url">Url</string>
+    <string name="submit">Submit</string>
+    <string name="share_url_via">Share url via</string>
+    <string name="submission_successfully_posted">Submission successfully posted</string>
+    <string name="self">self</string>
+    <string name="dot">•</string>
+    <string name="comment_posted">Comment posted</string>
+    <string name="web">Web</string>
+    <string name="image">Image</string>
+    <string name="comments">Comments</string>
+
+    <!-- Comments -->
+    <string name="upvote">Upvote</string>
+    <string name="downvote">Downvote</string>
+    <string name="profile">Profile</string>
+    <string name="comment">Comment</string>
+    <string name="points">points</string>
+
+    <!-- Messages -->
+    <string name="user">User</string>
+    <string name="subject">Subject</string>
+    <string name="message">Message</string>
+    <string name="send">Send</string>
+
+    <!-- User -->
+    <string name="member_since">Member since</string>
+    <string name="cp">CP</string>
+
+    <string-array name="user_sections">
+        <item>Comments</item>
+        <item>Submissions</item>
+        <item>Subscriptions</item>
+    </string-array>
+
+
+    <!-- Drawer -->
+    <string name="home">Home</string>
+    <string name="messages">Messages</string>
+    <string name="my_subverses">My Subverses</string>
+    <string name="settings">Settings</string>
+    <string name="about">About</string>
+
+    <!-- Error -->
+    <string name="error">Eeek! Voat is sinking!</string>
+    <string name="error_no_bio">\"Aww snap, this user did not yet write their bio. If they did, it would show up here, you know.\"</string>
+    <string name="required_field">This is required</string>
+    <string name="log_in_error">Error logging in</string>
+    <string name="too_short">Too short</string>
+    <string name="too_long">Too long</string>
+    <string name="not_a_valid_url">Not a valid url</string>
+    <string name="no_browser">Somehow you don\'t have a browser...</string>
+    <string name="no_share">No app to share with</string>
+    <string name="submission_error">Submission did not work</string>
+    <string name="comment_error">Comment did not work</string>
+    <string name="must_be_logged_in">You\'ve got to log in first</string>
+    <string name="could_not_retrieve_user">Could not retrieve user</string>
+
+    <!-- Empty -->
+    <string name="empty">Nothing to see here</string>
+
+    <!-- Muzei -->
+    <string name="source_name">Voat</string>
+    <string name="source_description">Choose subverses from Voat</string>
+
+    <!-- About -->
+    <string name="contributors">Contributors:</string>
+
+    <!-- Settings -->
+    <string name="general">General</string>
+    <string name="confirm_exit">Confirm Exit</string>
+    <string name="confirm_exit_description">Show prompt dialog before exiting the app</string>
+    <string name="theme">Theme</string>
+    <string name="dark_theme">Dark Theme</string>
+    <string name="dark_theme_description">Use dark theme</string>
+
+    <!-- Exit confirmation -->
+    <string name="exit">Exit</string>
+    <string name="exit_description">Are you sure you want to exit?</string>
+
+</resources>
