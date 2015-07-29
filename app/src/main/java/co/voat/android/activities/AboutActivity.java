@@ -3,6 +3,10 @@ package co.voat.android.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -13,6 +17,8 @@ import com.bumptech.glide.Glide;
 import com.jawnnypoo.physicslayout.Physics;
 import com.jawnnypoo.physicslayout.PhysicsConfig;
 import com.jawnnypoo.physicslayout.PhysicsFrameLayout;
+
+import org.jbox2d.common.Vec2;
 
 import java.util.List;
 
@@ -46,9 +52,23 @@ public class AboutActivity extends BaseActivity {
     PhysicsFrameLayout physicsLayout;
     @Bind(R.id.version)
     TextView versionText;
-
     @Bind(R.id.toolbar)
     Toolbar toolbar;
+
+    SensorManager sensorManager;
+    Sensor accelerometer;
+
+    private final SensorEventListener sensorEventListener = new SensorEventListener() {
+        @Override
+        public void onSensorChanged(SensorEvent event) {
+            if (event.sensor.getType() == Sensor.TYPE_GRAVITY) {
+                physicsLayout.getPhysics().getWorld().setGravity(new Vec2(- event.values[0], event.values[1]));
+            }
+        }
+
+        @Override
+        public void onAccuracyChanged(Sensor sensor, int accuracy) { }
+    };
 
     private final View.OnClickListener navigationClickListener = new View.OnClickListener() {
         @Override
@@ -79,8 +99,21 @@ public class AboutActivity extends BaseActivity {
         toolbar.setNavigationOnClickListener(navigationClickListener);
         versionText.setText(BuildConfig.VERSION_NAME);
         physicsLayout.getPhysics().enableFling();
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
         GithubClient.instance().contributors(REPO_USER, REPO_NAME, contributorResponseCallback);
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorManager.registerListener(sensorEventListener, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorManager.unregisterListener(sensorEventListener);
     }
 
     private void addContributors(List<Contributor> contributors) {
@@ -90,7 +123,11 @@ public class AboutActivity extends BaseActivity {
                 .setFriction(0.0f)
                 .setRestitution(0.0f)
                 .build();
+
         int borderSize = getResources().getDimensionPixelSize(R.dimen.border_size);
+        int x = 0;
+        int y = 0;
+        int imageSize = getResources().getDimensionPixelSize(R.dimen.image_size);
         for (int i=0; i<contributors.size(); i++) {
             Contributor contributor = contributors.get(i);
             CircleImageView imageView = new CircleImageView(this);
@@ -102,11 +139,17 @@ public class AboutActivity extends BaseActivity {
             imageView.setBorderColor(Color.BLACK);
             Physics.setPhysicsConfig(imageView, config);
             physicsLayout.addView(imageView);
+            imageView.setX(x);
+            imageView.setY(y);
+            x = (x + imageSize);
+            if (x > physicsLayout.getWidth()) {
+                x = 0;
+                y = (y + imageSize) % physicsLayout.getHeight();
+            }
 
             Glide.with(this)
                     .load(contributor.avatarUrl)
                     .into(imageView);
         }
-        physicsLayout.getPhysics().onLayout(true);
     }
 }
